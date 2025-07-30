@@ -1,9 +1,12 @@
+## Target KPIs
+
+1. Perform 30% better than random model (simulated earlier following brownian motion) (Notice patterns from here)
+
 ## What is our final goal (Possibilities)
 
 1. Flying drones for power efficiency, time, duration
 2. Flying drones to cover various depths of details at the cost of reduced span frame
 3. Exploration of an unknown environment with no prior history
-4. 
 
 ## Ideas that can be used to implement
 
