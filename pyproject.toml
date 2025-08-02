@@ -1,0 +1,19 @@
+[project]
+name = "pathplanning"
+version = "0.1.0"
+description = "BPT Project for optimizing the paths of a drone surveillance system"
+authors = [
+    {name = "shahi-dKhan",email = "shahidkhan12082004@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (>=2.3.2,<3.0.0)",
+    "pandas (>=2.3.1,<3.0.0)",
+    "torch (>=2.7.1,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
