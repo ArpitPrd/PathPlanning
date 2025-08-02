@@ -1,7 +1,30 @@
+## Applications
+
+1. Street lamp lighting with various charging pods offereing discrete event chargings and replacement street drones
+2. Videography for speacial purpose tasks (coal mining, tunnel detours), farming
+3. Rescue operations in situations of floods, mines, earthquakes (inside broken buildings)
+
+## Modelling
+
+Two things are to be modelled: 
+1. Agent(s):
+    - Number of drones
+    - max speed, max angle of deflections, max image resoltions, max height of the drone
+2. Environment:
+    - Area of interests
+    - Units of Area
+
+## Algorithm
+1. Reuse existing algorithms and apply multi-objective programming to find the number of drones and time taken
+2. Improve RL
+
+## Theory (Limitations of this Model towards the Applications)
+
+To find the areas that cannot be visited
 ## Target KPIs
 
 1. Perform 30% better than random model (simulated earlier following brownian motion) (Notice patterns from here)
-2. Improvise speed of algorothm 
+2. Improvise speed of algorothm
 
 ## What is our final goal (Possibilities)
 
