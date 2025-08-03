@@ -48,7 +48,9 @@ To find the areas that cannot be visited
 1 | [A Reinforcement Learning-based Path Planning for Collaborative UAVs](https://dl.acm.org/doi/pdf/10.1145/3477314.3507052) | Not Available | Uses many mobile devices to track info supplied by few drones
 2 (very useful) | [Reinforcement Learning approach for cooperative UAVs exploration of critical environments](https://webthesis.biblio.polito.it/secure/19281/1/tesi.pdf) | [github](https://github.com/gbattocletti-riccardoUrb/rl-exploration-for-uavs) | Based on charges and RL 
 3 | [Adaptive Informative Path Planning Using Deep Reinforcement Learning for UAV-based Active Sensing](https://arxiv.org/pdf/2109.13570) | [github](https://github.com/dmar-bonn/ipp-rl?tab=readme-ov-file) | combines tree search with an offline-learned neural network predicting informative sensing actions
-
+4 | Path Planning for drones using A* algorithm | [github](https://github.com/abhiojha8/3D-Motion-Planning/tree/master?tab=readme-ov-file) | uses A* algorithm in 3D notion from point A to point B, something called udacity, can look
+5 | UAV Motion Planning which includes: A*, RRT, RRT*+Min Snap | [github](https://github.com/peiyu-cui/uav_motion_planning) | Has all possible methods implemented from papers [Robust and Efficient Quadrotor Trajectory Generation for Fast Autonomous Flight](https://github.com/peiyu-cui/uav_motion_planning?tab=readme-ov-file), [Search-based Motion Planning for Aggressive Flight in SE(3)](https://arxiv.org/pdf/1710.02748), kdtree-acceleration, [Minimum Snap Trajectory Generation and Control for Quadrotors](https://web.archive.org/web/20120713162030id_/http://www.seas.upenn.edu/~dmel/mellingerICRA11.pdf)
+6 | Reinforcement Learning for Autonomous navigation of UAVs, papers: [link](https://arxiv.org/abs/1801.05086), [link](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) | RL for indoor environments, paper 1 has PID controller
 
 ## From TESI Paper Github implementation
 
