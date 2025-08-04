@@ -44,7 +44,7 @@ Can we know how many UAVs can be synchronized together, but its just a research,
 
 
 There are again two main methods -> A* and the dynamic algorithm
-Let us try to study the A* algorithm, and trying to understand it with the brain I have got [[A*_understanding]]
+Let us try to study the A* algorithm, and trying to understand it with the brain I have got [[Understanding_TESI]]
 Also, I think I should understand the current dynamics, of what kinds of researches are being held across the world [[dynamics]]
 
 

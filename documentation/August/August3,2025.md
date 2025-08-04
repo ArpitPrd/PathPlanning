@@ -15,3 +15,7 @@ Tasks to do:
 Points to be noted:
 - A drone does know its speed, through sensor fusion mechanisms
 - Brownian motion is a very random process, which very much depends on the initialisation of the drones. 
+
+
+
+
