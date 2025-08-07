@@ -3,6 +3,7 @@
 1. Street lamp lighting with various charging pods offereing discrete event chargings and replacement street drones
 2. Videography for speacial purpose tasks (coal mining, tunnel detours), farming
 3. Rescue operations in situations of floods, mines, earthquakes (inside broken buildings)
+4. 
 
 ## Modelling
 
@@ -61,3 +62,17 @@ To find the areas that cannot be visited
 5. retrain instead of training all over again
 6. Use pymoo opts on top of this to get hold of time and number of drones, assuming this algorithm is gold
 7. get the main running tomorrow
+
+## Drone type vs battery life vs costs
+
+| Drone Type | Typical Payload Capacity | Typical Flight Time (Loaded) | Approximate Cost Range |
+|---|---|---|---|
+| **Consumer Drones** | Up to 2 kg (4.4 lbs) | 25 - 50 minutes | $50 - $2,000 |
+| **Commercial/Industrial Drones** | 2 - 10 kg (4.4 - 22 lbs) | 20 - 45 minutes | $5,000 - $20,000 |
+| **Heavy-Lift Drones** | 10 - 30 kg (22 - 66 lbs) | 10 - 30 minutes | Over $20,000 |
+| **Ultra-Heavy-Lift Drones** | 30 - 200 kg (66 - 440 lbs) | 5 - 20 minutes | Starting at $60,000 |
+
+Citations:
+- [Market](https://www.grandviewresearch.com/industry-analysis/drone-market-report)
+- [Heavy Lift drones](https://www.grepow.com/blog/what-is-a-heavy-lift-drone.html#:~:text=Unlike%20consumer%20drones%20built%20for,and%20performance%20under%20heavy%20load.)
+- [Floght time vs payload](https://www.researchgate.net/figure/Drone-payload-and-flight-time_fig4_348496100)
