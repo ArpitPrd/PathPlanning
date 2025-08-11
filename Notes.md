@@ -3,7 +3,6 @@
 1. Street lamp lighting with various charging pods offereing discrete event chargings and replacement street drones
 2. Videography for speacial purpose tasks (coal mining, tunnel detours), farming
 3. Rescue operations in situations of floods, mines, earthquakes (inside broken buildings)
-4. 
 
 ## Modelling
 
@@ -52,6 +51,7 @@ To find the areas that cannot be visited
 4 | Path Planning for drones using A* algorithm | [github](https://github.com/abhiojha8/3D-Motion-Planning/tree/master?tab=readme-ov-file) | uses A* algorithm in 3D notion from point A to point B, something called udacity, can look
 5 | UAV Motion Planning which includes: A*, RRT, RRT*+Min Snap | [github](https://github.com/peiyu-cui/uav_motion_planning) | Has all possible methods implemented from papers [Robust and Efficient Quadrotor Trajectory Generation for Fast Autonomous Flight](https://github.com/peiyu-cui/uav_motion_planning?tab=readme-ov-file), [Search-based Motion Planning for Aggressive Flight in SE(3)](https://arxiv.org/pdf/1710.02748), kdtree-acceleration, [Minimum Snap Trajectory Generation and Control for Quadrotors](https://web.archive.org/web/20120713162030id_/http://www.seas.upenn.edu/~dmel/mellingerICRA11.pdf)
 6 | Reinforcement Learning for Autonomous navigation of UAVs, papers: [link](https://arxiv.org/abs/1801.05086), [link](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) | RL for indoor environments, paper 1 has PID controller
+7 | [Multi-objective path planning for multi-UAV connectivity and area coverage](https://www.sciencedirect.com/science/article/pii/S1570870524001318?via%3Dihub) | Not Available | uses NSGA-II to optimise both on coverage and time
 
 ## From TESI Paper Github implementation
 
@@ -76,3 +76,11 @@ Citations:
 - [Market](https://www.grandviewresearch.com/industry-analysis/drone-market-report)
 - [Heavy Lift drones](https://www.grepow.com/blog/what-is-a-heavy-lift-drone.html#:~:text=Unlike%20consumer%20drones%20built%20for,and%20performance%20under%20heavy%20load.)
 - [Floght time vs payload](https://www.researchgate.net/figure/Drone-payload-and-flight-time_fig4_348496100)
+
+## Application
+
+- Notice this can almost be anything, once we project it into a model then algorithms may be different
+- Most of the applicatoins Modelling boild down to RL/ some sort of optimisation
+- contributing in a new application 
+- We can improve only one segment of the above stages, mostly possible with 'algorithms'
+- We will also keep coverage area + coverage time as opt functions

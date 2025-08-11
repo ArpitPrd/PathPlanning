@@ -22,3 +22,11 @@
 - Make a ppt for presentation to the professor
 - Most of the papers are from one of the following applications - RL, A*, RRT*, etc., their application purpose is different.
 - Finsihed ppt and reading the paper planned, nothing new found except usage of PID
+
+## Day 2
+
+- Discuss about some novel aspects of how to implement this system
+
+## Day 3
+
+- produce possible usecases for the UAVs
