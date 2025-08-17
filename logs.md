@@ -25,8 +25,15 @@
 
 ## Day 2
 
-- Discuss about some novel aspects of how to implement this system
+- produce possible usecases for the UAVs
+- Need to figure out a way to model batteries as a new index for battery life associated with each of the models. Ideas that may be used (taken from the discussion today):
+    - curr_battery_level = fn(prev_battery_level, time)
+    - location co-ordinates for the drones
+    - piece wise defined function for fn
+    - fit this in MILP
 
 ## Day 3
 
-- produce possible usecases for the UAVs
+- we have the paper, look at the paper and make some analysis of how things can be done
+- write a code to implement the energy model of drones
+- understand the code on git

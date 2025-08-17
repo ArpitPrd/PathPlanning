@@ -84,3 +84,47 @@ Citations:
 - contributing in a new application 
 - We can improve only one segment of the above stages, mostly possible with 'algorithms'
 - We will also keep coverage area + coverage time as opt functions
+
+## Work on Paper CCPP
+
+- the goal of the paper is to be able to model relay of information 
+    - first formulation: maintain area coverage to the base station while maintaining connectivity
+    - second formulation: minimize the number of movements required to achieve the given coverage, again, while maintaining the connectivity 
+
+- A glue that binds you, another that repels you to seek more area
+- mobility strategy required
+- energy constraints, time constraints, communicagtion constraintes
+- introducing three way angles that split the space
+
+- paper on drone battery modelling: [Energy efficient solar power model](http://dx.doi.org/10.1016/j.adhoc.2021.102517)
+- paper on wihtout exceeding max flight time: [Total Coverage with connectivity constraints ](http://dx.doi.org/10.1504/IJSNET.2020.109714), can help in modelling the battery
+- can introduce buffering of data
+
+- constraints:
+    - Position constraint: self existence 
+    - collision avoidance: no two drones in same grid 
+    - sink connectivity 
+    - nodes connectivity (p imp)
+    - movement constraints
+    - 
+
+## Some imp points for later:
+
+- : (i) traveling/movement and sensing ranges of UAVs are limited
+due to which multiple UAVs may visit a grid point across different
+time-steps to reach uncovered grid points, and (ii) UAVs need to be
+within the communication range of at least one other UAV in order
+to maintain network connectivity
+
+## Modelling Energy Constraints:
+
+- your grid point becomes (x, y, t), where t is the angle that was used to reach this state
+- fn = {
+    battery - eps_static; if static
+    battery - eps_movement; if t = 0
+    battery - eps_movement - eps_turm; if t > 0
+}
+
+- constraint can be:
+    - sum across all nodes battery lives > eps_min_to_return_to_base * N
+    - need some constraint on replacement policy
