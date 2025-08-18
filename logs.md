@@ -37,3 +37,9 @@
 - we have the paper, look at the paper and make some analysis of how things can be done
 - write a code to implement the energy model of drones
 - understand the code on git
+
+- setup the matlab for linux machines
+
+## Day 4
+
+- think further on the energy idea, try to make a constraint out of it

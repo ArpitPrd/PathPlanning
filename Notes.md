@@ -40,6 +40,7 @@ To find the areas that cannot be visited
 4. height and resolution
 5. policy and a subpolicy
 6. Share between exploration and exploitation ([link](https://dl.acm.org/doi/pdf/10.1145/3477314.3507052))
+7. Leader follower coalition to perform certain tasks by certain group of solutions. this can be used as a follow up to our intial approach (by API calls to the lower levels)
 
 ## Papers that can be used to refer
 
@@ -122,9 +123,31 @@ to maintain network connectivity
 - fn = {
     battery - eps_static; if static
     battery - eps_movement; if t = 0
-    battery - eps_movement - eps_turm; if t > 0
+    battery - eps_movement - eps_turm; if t > 0 
 }
+
+- currently modelling the case when the charging pod is the base and instantaneous charging
+
+- for the turn you can start with 45 degree movements, which indicate diagonal movements, this will inroduce some variability to the movements
+
+- the location of the drone is still denoted by (x, y)
+
+- change the maximising function to -> coverage + sigma(b)
+    - these two are anti of eachother
+    - each drone has another variable the is 
+        b(k, n) = {
+            eps if battery level changed from prev time stamp
+            0 otherwise
+        }
 
 - constraint can be:
     - sum across all nodes battery lives > eps_min_to_return_to_base * N
     - need some constraint on replacement policy
+    - if sum of battery levels are bounded, this would force some of them, to be static and only a few to be moving
+
+- replacement policy:
+    - the moment the battery of a drone drops below eps_min_to_return_to_base
+    - it takes the shortest route in an altitude below the surviellance atlitude 
+    - we no more consider this drone in the system
+    - 
+z(k, i, n) denotes the kth time instant, ith grid point, nth drone
