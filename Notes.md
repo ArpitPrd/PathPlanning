@@ -53,16 +53,8 @@ To find the areas that cannot be visited
 5 | UAV Motion Planning which includes: A*, RRT, RRT*+Min Snap | [github](https://github.com/peiyu-cui/uav_motion_planning) | Has all possible methods implemented from papers [Robust and Efficient Quadrotor Trajectory Generation for Fast Autonomous Flight](https://github.com/peiyu-cui/uav_motion_planning?tab=readme-ov-file), [Search-based Motion Planning for Aggressive Flight in SE(3)](https://arxiv.org/pdf/1710.02748), kdtree-acceleration, [Minimum Snap Trajectory Generation and Control for Quadrotors](https://web.archive.org/web/20120713162030id_/http://www.seas.upenn.edu/~dmel/mellingerICRA11.pdf)
 6 | Reinforcement Learning for Autonomous navigation of UAVs, papers: [link](https://arxiv.org/abs/1801.05086), [link](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) | Not Available | RL for indoor environments, paper 1 has PID controller
 7 | [Multi-objective path planning for multi-UAV connectivity and area coverage](https://www.sciencedirect.com/science/article/pii/S1570870524001318?via%3Dihub) | Not Available | uses NSGA-II to optimise both on coverage and time
+8 | [Throughput Maximization in Multi-UAV](https://ieeexplore.ieee.org/document/8476567) | NA | used for maximising the throughput of communication, seems interesting, does power + througput 
 
-## From TESI Paper Github implementation
-
-1. Generates end to end images
-2. has all models saved
-3. need to work on file path names
-4. only coverage as of now
-5. retrain instead of training all over again
-6. Use pymoo opts on top of this to get hold of time and number of drones, assuming this algorithm is gold
-7. get the main running tomorrow
 
 ## Drone type vs battery life vs costs
 
@@ -78,6 +70,9 @@ Citations:
 - [Heavy Lift drones](https://www.grepow.com/blog/what-is-a-heavy-lift-drone.html#:~:text=Unlike%20consumer%20drones%20built%20for,and%20performance%20under%20heavy%20load.)
 - [Floght time vs payload](https://www.researchgate.net/figure/Drone-payload-and-flight-time_fig4_348496100)
 
+- fixed wing uavs: only chest span wings, these have a limitation of not being able to move around in a mobile fashion, higher payload
+- rotatry wing uavs: have that rotation on the tips of the wings these can move fluently arounf, lower payload, can refer to https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8476567
+
 ## Application
 
 - Notice this can almost be anything, once we project it into a model then algorithms may be different
@@ -86,28 +81,7 @@ Citations:
 - We can improve only one segment of the above stages, mostly possible with 'algorithms'
 - We will also keep coverage area + coverage time as opt functions
 
-## Work on Paper CCPP
 
-- the goal of the paper is to be able to model relay of information 
-    - first formulation: maintain area coverage to the base station while maintaining connectivity
-    - second formulation: minimize the number of movements required to achieve the given coverage, again, while maintaining the connectivity 
-
-- A glue that binds you, another that repels you to seek more area
-- mobility strategy required
-- energy constraints, time constraints, communicagtion constraintes
-- introducing three way angles that split the space
-
-- paper on drone battery modelling: [Energy efficient solar power model](http://dx.doi.org/10.1016/j.adhoc.2021.102517)
-- paper on wihtout exceeding max flight time: [Total Coverage with connectivity constraints ](http://dx.doi.org/10.1504/IJSNET.2020.109714), can help in modelling the battery
-- can introduce buffering of data
-
-- constraints:
-    - Position constraint: self existence 
-    - collision avoidance: no two drones in same grid 
-    - sink connectivity 
-    - nodes connectivity (p imp)
-    - movement constraints
-    - 
 
 ## Some imp points for later:
 
@@ -119,6 +93,7 @@ to maintain network connectivity
 
 ## Modelling Energy Constraints:
 
+- so we want to make sure it fits the milp class problem formulations
 - your grid point becomes (x, y, t), where t is the angle that was used to reach this state
 - fn = {
     battery - eps_static; if static
@@ -151,3 +126,8 @@ to maintain network connectivity
     - we no more consider this drone in the system
     - 
 z(k, i, n) denotes the kth time instant, ith grid point, nth drone
+
+## Benchmarking
+
+- Can use existing papers and find out the novel metric that we invented for their scenario and check the performance
+- we want to be sure to use something, that is of proper importance.

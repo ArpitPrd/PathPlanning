@@ -43,3 +43,9 @@
 ## Day 4
 
 - think further on the energy idea, try to make a constraint out of it
+
+## Day 5
+
+- think of ways to get energy management. read some papers on them. stick to a paper
+- the thing is one of them follows solar energy (we dont want to do this, this has payload issues)
+- idea currently is to model these issues in terms of energy.
