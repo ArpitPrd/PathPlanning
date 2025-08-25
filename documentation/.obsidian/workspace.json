@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "August/2_Aug_2025.md",
+                "file": "August/18_August.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2_Aug_2025"
+              "title": "18_August"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "August/2_Aug_2025.md",
+                "file": "August/Understanding_TESI.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for 2_Aug_2025"
+              "title": "Backlinks for Understanding_TESI"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "August/2_Aug_2025.md",
+                "file": "August/Understanding_TESI.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 2_Aug_2025"
+              "title": "Outgoing links from Understanding_TESI"
             }
           },
           {
@@ -142,13 +142,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "August/2_Aug_2025.md",
+                "file": "August/Understanding_TESI.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 2_Aug_2025"
+              "title": "Outline of Understanding_TESI"
             }
           }
         ]
@@ -170,12 +170,19 @@
   },
   "active": "ce2539941d0cffe0",
   "lastOpenFiles": [
-    "August/August3,2025.md",
-    "August/August4,2025.md",
-    "August/dynamics.md",
-    "August/Pre-planning stage -> State of Clarity.md",
-    "August/Research_papers.md",
+    "Research_papers/Linear_prog/1-s2.0-S1570870525002148-main.pdf",
+    "August/18_August.md",
+    "Research_papers/Basic/osbook-v0.94.pdf",
+    "Research_papers/Linear_prog/MILP_optimal_path_planning_for_real-time_applications.pdf",
+    "Research_papers/Linear_prog/Node_Placement_and_Path_Planning_for_Improved_Area_Coverage_in_Mixed_Wireless_Sensor_Networks.pdf",
     "August/Understanding_TESI.md",
+    "August/Research_papers.md",
+    "August/Pre-planning stage -> State of Clarity.md",
+    "August/meeting_notes_4Aug.md",
+    "August/dynamics.md",
+    "August/August7,2025.md",
+    "Research_papers/Basic/1127649652-MIT (1).pdf",
+    "August/August3,2025.md",
     "August/2_Aug_2025.md",
     "August/August 3, 2025.md"
   ]
