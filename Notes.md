@@ -147,3 +147,7 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 - battery updatation: b(n, k+1) = Y_noexchange(n, k) * {b(n, k) - y_turn(n, k) * b_turn - y_mov(n, k) * b_mov} + Y_exchange(n, k) * b_full
 
 - objective function: (multi objective): (sigma ci over all i = 1, M), (sigma y_turn(n, k) * b_turn + y_mov(n, k) * b_mov + Y_exchange(n, k) * (b_full - b(n, k)))
+
+## General Pointers:
+
+- you need to git pull to check outhje resources
