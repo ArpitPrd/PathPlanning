@@ -41,6 +41,7 @@ To find the areas that cannot be visited
 5. policy and a subpolicy
 6. Share between exploration and exploitation ([link](https://dl.acm.org/doi/pdf/10.1145/3477314.3507052))
 7. Leader follower coalition to perform certain tasks by certain group of solutions. this can be used as a follow up to our intial approach (by API calls to the lower levels)
+8. can work to for disconnectivity of the drones in the middle, store information for a while and then join back.   
 
 ## Papers that can be used to refer
 
@@ -131,3 +132,18 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 
 - Can use existing papers and find out the novel metric that we invented for their scenario and check the performance
 - we want to be sure to use something, that is of proper importance.
+
+## Battery Constraints so far:
+
+- Max Battery Limit: b(n, k) <= b_full
+- Min Battery Limit: b(n, k) >= e_base
+- Turn vs Mov: y_turn(n, k) + y_mov(n, k) <= 1
+- Exhange vs NoExchange: Y_exchange(n, k) + Y_noexchange(n, k) <= 1
+- Binary Turn Limit: y_turn(n, k) >= 0
+- Binary Mov Limit: y_mov(n, k) >= 0
+- Binary Exchange Limit: Y_exhange(n, k) >= 0
+- Binary NoExchange Limit: Y_noexchange(n, k) >= 0
+- Binary Exchange Limit: Y_exchange(n, k) <= z(base_station, n, k)
+- battery updatation: b(n, k+1) = Y_noexchange(n, k) * {b(n, k) - y_turn(n, k) * b_turn - y_mov(n, k) * b_mov} + Y_exchange(n, k) * b_full
+
+- objective function: (multi objective): (sigma ci over all i = 1, M), (sigma y_turn(n, k) * b_turn + y_mov(n, k) * b_mov + Y_exchange(n, k) * (b_full - b(n, k)))

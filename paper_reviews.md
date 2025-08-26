@@ -60,3 +60,6 @@
 - they use ORS, which have battery replacement mechanism 
 - Physical Internet Structure (what?)
 - do not have time slotting, time slotting here is point to point delievery
+- can use binary decision varibles to switch of constraints, and have constraints on these binary variables 
+- we can capture the not producing useful product by minimizing the fact that battery has been wasted in going back to the recharing station
+- they perform only one time solve of the entire problem, which drone picks which delievey and goes where
