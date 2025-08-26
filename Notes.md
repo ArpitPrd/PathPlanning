@@ -150,4 +150,4 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 
 ## General Pointers:
 
-- you need to git pull to check outhje resources
+- you need to git pull to check outhje resourcesgit 
