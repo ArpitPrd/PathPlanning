@@ -150,4 +150,11 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 
 ## General Pointers:
 
-- you need to git pull to check outhje resourcesgit 
+- you need to git pull to check outhje resourcesgit (note this is to be done in the other branch, not in your)
+
+## MILP Solvers:
+
+- link to some of the solvers: https://stackoverflow.com/questions/26305704/python-mixed-integer-linear-programming
+- scipy does milp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html
+- cvxpy docs: https://www.cvxpy.org/ (seems useful since targetted specifically towards this)
+- MILP with GA: https://github.com/pdimh/mi-lxpm
