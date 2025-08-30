@@ -151,6 +151,9 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 ## General Pointers:
 
 - you need to git pull to check outhje resourcesgit (note this is to be done in the other branch, not in your)
+- meshgrid representation is something native to matlab, (x[i, j], y[i, j]) -> forms meshgrid provide the grid point, can use meshgid for more variety of tasks is is more like a cross product
+- unravel from linear to row, col
+- 
 
 ## MILP Solvers:
 

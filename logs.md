@@ -49,3 +49,12 @@
 - think of ways to get energy management. read some papers on them. stick to a paper
 - the thing is one of them follows solar energy (we dont want to do this, this has payload issues)
 - idea currently is to model these issues in terms of energy.
+
+## Day 6
+
+- refractor the code and understand what it is doing,
+- ask chatgpt to write the code in regrads to the aadditional constraints that are added
+
+## Day 7
+
+- continue refractor
