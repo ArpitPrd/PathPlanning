@@ -135,6 +135,12 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 
 ## Battery Constraints so far:
 
+- some sources to refer: 
+    - https://www.sciencedirect.com/science/article/pii/S157087052100072X?via%3Dihub
+    - https://www.sciencedirect.com/science/article/pii/S1570870525002148
+    - https://ieeexplore.ieee.org/document/8476567
+    - https://www.jouav.com/ useful for understanding drones
+
 - Max Battery Limit: b(n, k) <= b_full
 - Min Battery Limit: b(n, k) >= e_base
 - Turn vs Mov: y_turn(n, k) + y_mov(n, k) <= 1
