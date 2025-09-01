@@ -3,8 +3,19 @@ import matplotlib.pyplot as plt
 from matplotlib import patches
 from matplotlib.colors import ListedColormap
 from matplotlib.widgets import Button
+from battery_model import E_MAX, E_STEADY, E_MOVEMENT, E_TURN, battery_next
 
-def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,Nx, Ny, O_lin = None):
+
+
+
+
+
+
+
+
+
+
+def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,Nx, Ny, O_lin = None, battery_traces = None, position_traces=None):
     """
     Interactive plot: shows grid, per-UAV positions & paths at time t,
     and coverage summary. Click Next/Prev (or use Left/Right arrows) to step time.
@@ -160,6 +171,82 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,Nx, Ny,
 
     # State
     state = {'t': 0}
+    
+    def draw_battery_panel(t_idx):
+        """
+        Draw a right-hand legend plus a per-UAV battery panel with adaptive spacing.
+        Expects:
+        - battery_traces[uav_id] = np.array of length T+1 (E[0] at t=0)
+        - uav_paths dict keys are the UAV ids to display
+        """
+        ax_legend_pad.clear()
+        ax_legend_pad.axis('off')
+
+        # --- Static legend (top) ---
+        ax_legend_pad.text(0.0, 0.95, "Legend", fontweight='bold', fontsize=12)
+        ax_legend_pad.text(0.0, 0.88, "● UAV position", color='black')
+        ax_legend_pad.text(0.0, 0.82, "◼ Start,  ▲ End", color='black')
+        ax_legend_pad.text(0.0, 0.76, "--  Sensing radius", color='black')
+        ax_legend_pad.text(0.0, 0.66, "Cell colors:", fontweight='bold')
+        ax_legend_pad.text(0.0, 0.60, "  white  : Not covered")
+        ax_legend_pad.text(0.0, 0.54, "  lightgreen : Covered")
+        ax_legend_pad.text(0.0, 0.48, "  yellow : Sink")
+
+        # --- Battery legend header + constants ---
+        ax_legend_pad.text(0.0, 0.38, "Battery", fontweight='bold', fontsize=12)
+        ax_legend_pad.text(0.0, 0.33, f"Steady: -{E_STEADY:.1f}%", fontsize=9)
+        ax_legend_pad.text(0.0, 0.28, f"Move:   -{E_MOVEMENT:.1f}%", fontsize=9)
+        ax_legend_pad.text(0.0, 0.23, f"Turn:   -{E_TURN:.1f}%", fontsize=9)
+
+        # If no traces, show hint and bail
+        if not battery_traces:
+            ax_legend_pad.text(0.0, 0.17, "(no battery_traces)", fontsize=9, color='gray')
+            return
+
+        # --- Adaptive layout for bars (avoids overlap) ---
+        uav_ids = sorted([k for k in uav_paths.keys() if k in battery_traces])
+        n_uav = len(uav_ids)
+        if n_uav == 0:
+            ax_legend_pad.text(0.0, 0.17, "(no UAVs to display)", fontsize=9, color='gray')
+            return
+
+        # Reserve vertical space for bars only (below constants block)
+        y_top, y_bottom = 0.20, 0.02             # normalized axes coords
+        span = max(1e-6, y_top - y_bottom)
+        dy = span / n_uav                        # row height per UAV
+        bar_h = min(0.035, 0.6 * dy)             # bar thickness
+        bar_w = 0.95                              # full track width in axes coords
+        label_fs = 10
+
+        for i, uav_id in enumerate(uav_ids):
+            E = battery_traces[uav_id]
+            # UI shows step t_idx (0..T-1) -> take E at t_idx+1 (cap at end)
+            e_now = float(E[min(t_idx + 1, len(E) - 1)])
+
+            # Row center and bar bottom
+            y_c = y_top - (i + 0.5) * dy
+            y0 = y_c - bar_h / 2
+
+            # Label slightly above the bar
+            ax_legend_pad.text(0.0, y_c + bar_h * 0.9,
+                            f"UAV {uav_id+1}: {e_now:4.1f}%",
+                            fontsize=label_fs, va='bottom')
+
+            # Background track
+            ax_legend_pad.add_patch(
+                patches.Rectangle((0.0, y0), bar_w, bar_h,
+                                transform=ax_legend_pad.transAxes,
+                                facecolor='#dddddd', edgecolor='black', lw=0.6)
+            )
+            # Filled portion (green)
+            w = max(0.0, min(bar_w * (e_now / 100.0), bar_w))
+            ax_legend_pad.add_patch(
+                patches.Rectangle((0.0, y0), w, bar_h,
+                                transform=ax_legend_pad.transAxes,
+                                facecolor='green', edgecolor='none', alpha=0.85)
+            )
+
+    
 
     # ---------- Draw functions ----------
     def render_at_t(t_idx):
@@ -247,16 +334,8 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,Nx, Ny,
         ax2.set_ylabel('Row (X)', fontweight='bold')
 
         # simple legend hint in the right pad
-        ax_legend_pad.clear()
-        ax_legend_pad.axis('off')
-        ax_legend_pad.text(0.0, 0.95, "Legend", fontweight='bold', fontsize=12)
-        ax_legend_pad.text(0.0, 0.88, "● UAV position", color='black')
-        ax_legend_pad.text(0.0, 0.82, "◼ Start,  ▲ End", color='black')
-        ax_legend_pad.text(0.0, 0.76, "--  Sensing radius", color='black')
-        ax_legend_pad.text(0.0, 0.66, "Cell colors:", fontweight='bold')
-        ax_legend_pad.text(0.0, 0.60, "  white  : Not covered")
-        ax_legend_pad.text(0.0, 0.54, "  lightgreen : Covered")
-        ax_legend_pad.text(0.0, 0.48, "  yellow : Sink")
+        draw_battery_panel(t_idx)
+
 
         # coverage stats up to t
         total_nodes = Nx * Ny - 1  # exclude sink

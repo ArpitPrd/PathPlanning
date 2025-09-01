@@ -8,6 +8,8 @@ from matplotlib.colors import ListedColormap
 from matplotlib.widgets import Button
 from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths
+from battery_model import battery_next, compute_battery_for_paths
+
 
 
 def coverage_optimize():
@@ -88,8 +90,8 @@ def coverage_optimize():
         
 
     
-    N = 4  # number of UAVs
-    T = 6  # max no. of time steps
+    N = 2  # number of UAVs
+    T = 8  # max no. of time steps
     
     # ==============================
     # Objective function
@@ -373,7 +375,7 @@ def coverage_optimize():
                 path_coords.append((row+1, col+1))  # Convert to 1-based for display
             
             uav_paths[n] = path_coords
-            
+           
             # Find nodes covered by this UAV at each time step
             covered_nodes = set()
             for t in range(T):
@@ -407,7 +409,14 @@ def coverage_optimize():
     # ==============================
     # Visualization
     # ==============================
-    plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc, Nx, Ny, O_lin)
+    battery_traces, position_traces = compute_battery_for_paths(
+    uav_paths, sink, T, E0=100.0, battery_fn=battery_next, pad_mode="hold")
+    
+    
+    plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc, Nx, Ny, O_lin, battery_traces, position_traces)
+
+
+
 
     return {
         'S': S,
