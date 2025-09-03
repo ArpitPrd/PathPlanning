@@ -3,7 +3,8 @@
 
 \begin{document}
 
-\section*{Optimization Model}
+\section*{Optimization Model (with steady-idle battery drain)}
+
 
 \subsection*{Constraints}
 
@@ -12,25 +13,50 @@
 & \text{(Min Battery Limit)} && b_n^k \geq e_{\text{base}} \\
 & \text{(Turn vs Move)} && y_{\text{turn},n}^k + y_{\text{mov},n}^k \leq 1 \\
 & \text{(Exchange vs No-Exchange)} && Y_{\text{exchange},n}^k + Y_{\text{noexchange},n}^k \leq 1 \\
-& \text{(Binary Turn Limit)} && y_{\text{turn},n}^k \geq 0 \\
-& \text{(Binary Move Limit)} && y_{\text{mov},n}^k \geq 0 \\
-& \text{(Binary Exchange Limit)} && Y_{\text{exchange},n}^k \geq 0 \\
-& \text{(Binary No-Exchange Limit)} && Y_{\text{noexchange},n}^k \geq 0 \\
-& \text{(Exchange implies station presence)} && Y_{\text{exchange},n}^k \leq z_{\text{base\_station},n}^k
+& \text{(Binary Turn Limit)} && y_{\text{turn},n}^k \in \{0,1\} \\
+& \text{(Binary Move Limit)} && y_{\text{mov},n}^k \in \{0,1\} \\
+& \text{(Binary Exchange Limit)} && Y_{\text{exchange},n}^k \in \{0,1\} \\
+& \text{(Binary No-Exchange Limit)} && Y_{\text{noexchange},n}^k \in \{0,1\} \\
+& \text{(Exchange implies station presence)} && Y_{\text{exchange},n}^k \leq z_{\text{base\_station},n}^k \\
+& \text{(Non-negativity steady drain)} && b_{\text{steady}} \geq 0
 \end{align}
 
-\subsection*{Battery Update Rule}
+\subsection*{Battery update rule (including steady idle drain)}
+
+When the agent does \emph{not} exchange ($Y_{\text{noexchange},n}^k=1$) there are three mutually-exclusive energy-consumption cases in one step:
+\begin{itemize}
+  \item turning: $y_{\text{turn},n}^k = 1$ $\rightarrow$ consume $b_{\text{turn}}$,
+  \item moving: $y_{\text{mov},n}^k = 1$ $\rightarrow$ consume $b_{\text{mov}}$,
+  \item idle: neither turning nor moving ($y_{\text{turn},n}^k=0$, $y_{\text{mov},n}^k=0$) $\rightarrow$ consume $b_{\text{steady}}$.
+\end{itemize}
+
+A compact linear expression that captures these cases is:
+\begin{align}
+b_n^{k+1} =\; & Y_{\text{noexchange},n}^k \cdot \Big( b_n^k
+- y_{\text{turn},n}^k \cdot b_{\text{turn}}
+- y_{\text{mov},n}^k \cdot b_{\text{mov}} \\
+& \qquad\qquad\qquad\qquad\qquad
+- \big(1 - y_{\text{turn},n}^k - y_{\text{mov},n}^k\big)\cdot b_{\text{steady}} \Big) \nonumber \\
+& + Y_{\text{exchange},n}^k \cdot b_{\text{full}}. \nonumber
+\end{align}
+
+(Explanation: when neither turn nor move occurs, the multiplier $(1 - y_{\text{turn}} - y_{\text{mov}})$ equals 1, so the idle drain $b_{\text{steady}}$ is applied. If turning or moving happens, that term becomes zero.)
+
+\subsection*{Objective Function (multi-objective, updated energy term)}
 
 \begin{align}
-b_n^{k+1} = & \; Y_{\text{noexchange},n}^k \cdot \Big( b_n^k - y_{\text{turn},n}^k \cdot b_{\text{turn}} - y_{\text{mov},n}^k \cdot b_{\text{mov}} \Big) \nonumber \\
-& + Y_{\text{exchange},n}^k \cdot b_{\text{full}}
+\max \quad & \sum_{i=1}^{M} c_i \; .
 \end{align}
-
-\subsection*{Objective Function (Multi-Objective)}
 
 \begin{align}
-\max \quad & \sum_{i=1}^{M} c_i \; , \\
-\min \quad & \sum_{n,k} \Big( y_{\text{turn},n}^k \cdot b_{\text{turn}} + y_{\text{mov},n}^k \cdot b_{\text{mov}} + Y_{\text{exchange},n}^k \cdot \big( b_{\text{full}} - b_n^k \big) \Big)
+\min \quad & \sum_{n,k} \Big(
+y_{\text{turn},n}^k \cdot b_{\text{turn}} 
++ y_{\text{mov},n}^k \cdot b_{\text{mov}} \\
+& \qquad\qquad\qquad
++ \big(1 - y_{\text{turn},n}^k - y_{\text{mov},n}^k\big)\cdot b_{\text{steady}}\Big)\cdot Y_{\text{noexchange},n}^k \nonumber \\
+& \qquad\qquad\qquad\qquad
++ \sum_{n,k} Y_{\text{exchange},n}^k \cdot \big( b_{\text{full}} - b_n^k \big). \nonumber
 \end{align}
+
 
 \end{document}

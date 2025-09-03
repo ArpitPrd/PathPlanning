@@ -45,9 +45,13 @@ INPUT /home/arpit/.miktex/texmfs/install/tex/latex/amsfonts/umsb.fd
 INPUT /home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
+INPUT /home/arpit/.miktex/texmfs/install/fonts/tfm/public/cm/cmti10.tfm
+INPUT /home/arpit/.miktex/texmfs/install/fonts/tfm/jknappen/ec/tcrm1000.tfm
 OUTPUT battery_constraint_eq.pdf
 INPUT /home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map
 INPUT battery_constraint_eq.aux
+INPUT /home/arpit/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk
+INPUT /home/arpit/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmex10.pfb
@@ -62,3 +66,5 @@ INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb
 INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb
+INPUT /home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb

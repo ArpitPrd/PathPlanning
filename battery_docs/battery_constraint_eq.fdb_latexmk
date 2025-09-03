@@ -1,7 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1756183539.56833 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/battery_docs/battery_constraint_eq.tex" "battery_constraint_eq.pdf" "battery_constraint_eq" 1756183539.74688 0
-  "/home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1755606229.32159 96713 7ab18899c2ea864bf23a03acef9370b6 ""
+["pdflatex"] 1756723282.08791 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/battery_docs/battery_constraint_eq.tex" "battery_constraint_eq.pdf" "battery_constraint_eq" 1756723282.26763 0
+  "/home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1756545556.88303 96713 7ab18899c2ea864bf23a03acef9370b6 ""
+  "/home/arpit/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1756723162.90785 11548 e75a29bd56f6661bc942eaef3a0d6a52 ""
   "/home/arpit/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1755100822.55062 13252391 fb469f35341a3ce44cf4e6a1e5ca927b ""
+  "/home/arpit/.miktex/texmfs/install/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1754929654.20846 1436 c7f957a372ef2fbe93c0982f96625e12 ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1754929644.15449 1004 54797486969f23fa377b128694d548df ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1754929644.15908 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msam5.tfm" 1754929644.15912 924 9904cf1d39e9767e7a3622f2a125a565 ""
@@ -11,6 +13,7 @@
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1754929644.15941 940 228d6584342e91276bf566bcf9716b83 ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/cm/cmbx12.tfm" 1754929268.07278 1324 c910af8c371558dc20f2d7822f66fe64 ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/cm/cmr12.tfm" 1754929268.07396 1288 655e228510b4c2a1abe905c368440826 ""
+  "/home/arpit/.miktex/texmfs/install/fonts/tfm/public/cm/cmti10.tfm" 1754929268.07544 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmbx12.pfb" 1754929644.1725 32080 340ef9bf63678554ee606688e7b5339d ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmex10.pfb" 1754929644.1985 30251 6afa5cb1d0204815a708a080681d4674 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1754929644.2135 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
@@ -18,6 +21,7 @@
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1754929644.2375 35752 024fb6c41858982481f6968b5fc26508 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1754929644.2505 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1754929644.30051 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1754929644.32651 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/amsfonts/amsfonts.sty" 1754929644.48397 5949 3f3fd50a8cc94c3d4cbf4fc66cd3df1c ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/amsfonts/amssymb.sty" 1754929644.484 13829 94730e64147574077f8ecfea9bb69af4 ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/amsfonts/umsa.fd" 1754929644.48424 961 6518c6525a34feb5e8250ffa91731cff ""
@@ -30,9 +34,9 @@
   "/home/arpit/.miktex/texmfs/install/tex/latex/base/article.cls" 1754929261.92404 20144 b966087dda3b194755eb460d32e2ef75 ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/base/size10.clo" 1754929261.92002 8448 686612a86f0e04f41ea577f5ec7e83d8 ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def" 1754929655.7344 30351 a2b09edc6c93a742566b222c33d0278e ""
-  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/battery_docs/battery_constraint_eq.tex" 1756183539.29621 1434 538df7a427ea3b0eb6d8bdf06a5302de ""
-  "battery_constraint_eq.aux" 1756183539.69067 32 3985256e7290058c681f74d7a3565a19 "pdflatex"
-  "battery_constraint_eq.tex" 1756183539.29621 1434 538df7a427ea3b0eb6d8bdf06a5302de ""
+  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/battery_docs/battery_constraint_eq.tex" 1756723281.81105 2711 5294da97b52be06cf6cc973ba584483c ""
+  "battery_constraint_eq.aux" 1756723282.21162 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
+  "battery_constraint_eq.tex" 1756723281.81105 2711 5294da97b52be06cf6cc973ba584483c ""
   (generated)
   "battery_constraint_eq.aux"
   "battery_constraint_eq.log"
