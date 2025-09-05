@@ -12,7 +12,7 @@ import argparse
 from coverage_utils import *
 
 
-def coverage_optimize(
+def main(
         sensing_radius:int, 
         comm_radius:int,
         col_size:int,
@@ -77,159 +77,53 @@ def coverage_optimize(
     # ==============================
     # Position Constraints
     # ==============================
-    # 1(a) one-UAV-at-single-point
+    # 1(a) one-UAV-at-single-point, equality constraint
     F, E = poisition_constraints(N, T, G, G1, L, P_sink, row_size, col_size)
     
-    # 2a Sink
+    # 2a Sink, inequality constraint
     g = sink_connectivity_constraint(N, T, Irc_sink, row_size, col_size)
     
-    # 2b Inter-UAV
+    # 2b Inter-UAV, inequality constraint
     H = interUAV_connectivity_constraint(N, T, Irc, row_size, col_size, G, G1, L)
     
-    # 3 Mobility
+    # 3 Mobility, inequality constraint
     I = mobility_constraint(N, T, Irc, row_size, col_size, G1, L)
     
     
-    # Cell coverage constraint variables
+    # Cell coverage constraint variables, K equality constraint, J and Q inequality constraints
     K, J, Q = cell_coverage_constraints(N, T, row_size, col_size, G1, L, Irs)
     
+    # Inequality constraints
+    Aineq, bineq = combine_constraints((E, 1), (g, -1), (H, 0), (I, 0), (J, 0), (Q, 0))
+    
+    # Equality constraints
+    Aeq, beq = combine_constraints((F, 1), (K, 0))
     
     # Optimization problem setup
     Z1 = -f  # Objective function
     
-    # Inequality constraints
-    Aineq, bineq = inequality_constraints(E, g, H, I, J, Q)
-    
-    # Equality constraints
-    Aeq, beq = equality_constraints(F, K)
-    
     # Bounds
     lb, ub = bounds(row_size, col_size, N, T)
     
-    # -------- NO-FLY OBSTACLE BOUNDS --------
-    # Helper indexers for the 3 blocks in your variable vector
-    def idx_y(q):                      # Block A (selection), size row_size*col_size
-        return q
-
-    def idx_a(t, n, q):                # Block B (coverage assign), size N*T*row_size*col_size
-        # offset_A = row_size*col_size
-        return row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + q
-
-    def idx_x(t, n, q):                # Block C (positions), size N*T*row_size*col_size (binary)
-        # offset_A = row_size*col_size; offset_B = N*T*row_size*col_size
-        return row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size) + q
-
-    if O_lin.size > 0:
-        for q in O_lin:
-            # Never select obstacle cells
-            ub[idx_y(q)] = 0.0
-            # Never assign coverage to obstacle cells
-            for t in range(T):
-                for n in range(N):
-                    ub[idx_a(t, n, q)] = 0.0
-                    # Never occupy obstacle cells (NO-FLY)
-                    ub[idx_x(t, n, q)] = 0.0
-
-    # -------- END NO-FLY OBSTACLE BOUNDS --------
-
-
-
-
+    no_fly_obstacles(O_lin, row_size, col_size, N, T, lb, ub)
 
     # Variable types (continuous and binary)
-    ctype = ['C'] * ((1 + N*T) * row_size * col_size) + ['B'] * (N*T * row_size * col_size)
+    ctype = type_vars(row_size, col_size, N, T)
     
-    # ==============================
-    # Solve MILP using CPLEX
-    # ==============================
-    prob = cplex.Cplex()
-    prob.objective.set_sense(prob.objective.sense.minimize)
-    prob.variables.add(obj=Z1.tolist(), lb=lb.tolist(), ub=ub.tolist(), types=ctype)
-    
-    # Add inequality constraints
-    for i in range(Aineq.shape[0]):
-        prob.linear_constraints.add(
-            lin_expr=[cplex.SparsePair(ind=list(range(len(Aineq[i]))), val=Aineq[i].tolist())],
-            senses=["L"],
-            rhs=[bineq[i]]
-        )
-    
-    # Add equality constraints
-    for i in range(Aeq.shape[0]):
-        prob.linear_constraints.add(
-            lin_expr=[cplex.SparsePair(ind=list(range(len(Aeq[i]))), val=Aeq[i].tolist())],
-            senses=["E"],
-            rhs=[beq[i]]
-        )
-    
-    # Solver options
-    prob.parameters.mip.tolerances.mipgap.set(0)
-    prob.parameters.timelimit.set(18000)  # 5 hours
-    prob.parameters.mip.strategy.search.set(1)
-    
-    # Solve
-    start_time = time.time()
+    # Solve the MILP using CPLEX
     try:
-        prob.solve()
+        start_time = time.time()
+        Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V = cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq, ctype, row_size, col_size, N, T, Cmax)
+        end_time = time.time()
+        Cov_time = end_time - start_time
+        print(f"Coverage Percentage: {Cov_Percent:.2f}%")
+        print(f"Computation Time: {Cov_time:.2f} seconds")
+        print(f"Objective Function Value: {fval}")
     except CplexError as e:
-        print(f"CPLEX Error: {e}")
+        print(e)
         return None
     
-    Cov_time = time.time() - start_time
-    
-    # Extract solution
-    S = np.array(prob.solution.get_values())
-    fval = prob.solution.get_objective_value()
-    
-    # Result calculations
-    ss = np.round(S, 1)
-    c = np.where(ss > 0)[0]
-    path_loc = c[c > (1 + T*N) * row_size * col_size]
-    U = ss[path_loc]
-    V = np.column_stack((path_loc, U))
-    
-    # Route tracing
-    cov_path = np.zeros((N, row_size*col_size*T), dtype=int)
-    for n in range(N):
-        P1 = []
-        for t in range(T):
-            for i in range(len(path_loc)):
-                Rmin = (1 + T*N)*row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
-                Rmax = (1 + T*N)*row_size*col_size + row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
-                if (Rmax <= (1 + T*N + T*N)*row_size*col_size and 
-                    path_loc[i] > Rmin and path_loc[i] <= Rmax):
-                    c1 = path_loc[i]
-                    c2 = c1 - ((1 + T*N)*row_size*col_size + t*N*row_size*col_size + n*row_size*col_size)
-                    P1.append(c2)
-        
-        if len(P1) > 0:
-            cov_path[n, :len(P1)] = P1
-    
-    Cov_Percent = (-1) * (fval / Cmax) * 100
-    
-    # Display results
-    uav_paths, uav_covered_nodes, all_covered = display_results(
-        Cov_Percent,
-        Cov_time,
-        fval,
-        N,
-        row_size,
-        col_size,
-        T,
-        cov_path,
-        path_loc,
-        S,
-        sz,
-        G,
-        sensing_radius,
-        comm_radius,
-        O_lin,
-        sink
-    )
-    
 
-    # Visualization
-    plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, sensing_radius, comm_radius, row_size, col_size, O_lin)
 
     return {
         'S': S,
@@ -240,7 +134,12 @@ def coverage_optimize(
         'path_loc': path_loc,
         'V': V,
         'uav_paths': uav_paths,
-        'uav_covered_nodes': uav_covered_nodes
+        'uav_covered_nodes': uav_covered_nodes,
+        'sz': sz,
+        'G': G,
+        'O_lin': O_lin,
+        'sink': sink,
+        'aux_tensor': V  # <--- NEW
     }
 
 
@@ -269,7 +168,7 @@ if __name__ == "__main__":
         (3, 3),
         (5, 4)
     ]
-    result = coverage_optimize(
+    results = main(
         sensing_radius=sensing_radius, 
         comm_radius=comm_radius, 
         col_size=col_size, 
@@ -281,7 +180,32 @@ if __name__ == "__main__":
         coords_obs=coords_obs
     )
 
-    if result is not None:
+        # Display results
+    uav_paths, uav_covered_nodes, all_covered, battery_levels = display_results(
+        results["Cov_Percent"],
+        results["Solve_time"],
+        results["Objective_value"],
+        N,
+        row_size,
+        col_size,
+        T,
+        results["cov_path"],
+        results["active_indices"],
+        results["solution_vector"],
+        results["sz"],
+        results["G"],
+        sensing_radius,
+        comm_radius,
+        results["O_lin"],
+        results["sink"],
+        results["aux_tensor"]   # <--- NEW
+    )
+    G = results["G"]
+    O_lin = results["O_lin"]
+    sink = results["sink"]
+    # Visualization
+    plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, sensing_radius, comm_radius, row_size, col_size, O_lin)
+    if results is not None:
         print("Optimization completed successfully!")
     else:
         print("Optimization failed!")    
