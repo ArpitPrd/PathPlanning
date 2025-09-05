@@ -26,8 +26,15 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     # ---------- Extract battery levels if aux_tensor provided ----------
     battery_levels = {}
     if aux_tensor is not None:
-        for n in range(len(uav_paths)):
-            battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+        if aux_tensor.ndim == 3:
+            for n in range(len(uav_paths)):
+                battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+        else:
+            print("[!] aux_tensor is not 3D, skipping battery plot")
+            battery_levels = {n: [] for n in range(len(uav_paths))}
+    else:
+        battery_levels = {n: [] for n in range(len(uav_paths))}
+
 
     # ---------- Setup figure ----------
     uav_colors = ['red', 'blue', 'green', 'orange', 'purple', 'teal', 'magenta', 'brown']
@@ -62,11 +69,13 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
 
         if aux_tensor is not None:
             for n, levels in battery_levels.items():
-                color = uav_colors[n % len(uav_colors)]
-                ax_batt.plot(range(T), levels, '-o', color=color, label=f'UAV {n+1}')
-                # highlight current t
-                ax_batt.plot(t_idx, levels[t_idx], 's', color=color, markersize=10,
-                             markeredgecolor='black', markeredgewidth=1.3)
+                if len(levels) == T:   # ✅ only plot if length matches T
+                    color = uav_colors[n % len(uav_colors)]
+                    ax_batt.plot(range(T), levels, '-o', color=color, label=f'UAV {n+1}')
+                    # highlight current t
+                    ax_batt.plot(t_idx, levels[t_idx], 's', color=color, markersize=10,
+                                markeredgecolor='black', markeredgewidth=1.3)
+
 
             ax_batt.legend(loc='upper right', fontsize=9)
 

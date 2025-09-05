@@ -9,6 +9,17 @@ from matplotlib.widgets import Button
 from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths
 import argparse
+import json
+
+
+def load_config(json_path: str):
+    """Load optimization parameters from a JSON config file."""
+    with open(json_path, 'r') as f:
+        cfg = json.load(f)
+
+    return cfg
+
+
 
 def sz_to_XY(row_size, col_size):
     """
@@ -64,19 +75,19 @@ def pos_obs(coords_obs, sz=None):
     """
     return np.array(coords_obs).reshape(-1, len(coords_obs[0]))
 
-def setup_obj(G, P_sink, O_lin, N, T, row_size, col_size):
-    """
-    general purpose objective function definition
-    """
-    f = np.zeros((1 + 2*N*T) * row_size * col_size)
-    f[G] = 1
-    f[P_sink] = 0
+# def setup_obj(G, P_sink, O_lin, N, T, row_size, col_size):
+#     """
+#     general purpose objective function definition
+#     """
+#     f = np.zeros((1 + 2*N*T) * row_size * col_size)
+#     f[G] = 1
+#     f[P_sink] = 0
     
-    #set the reward function for the obstacle to zero
-    if O_lin.size > 0:
-        f[O_lin] = 0
+#     #set the reward function for the obstacle to zero
+#     if O_lin.size > 0:
+#         f[O_lin] = 0
     
-    return f
+#     return f
 
 def setup_obj(G, P_sink, O_lin, N, T, row_size, col_size,
               b_turn, b_mov, b_steady, b_full):
@@ -499,9 +510,15 @@ def display_results(
 
             # Battery analysis
             if aux_tensor is not None:
-                # assuming battery var is at offset 0 in each (t,n) block
-                battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
-                print(f"  Battery levels: {battery_levels[n]}")
+                if aux_tensor.ndim == 3:
+                    # expected format (T, N, vars_per_uav)
+                    battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+                else:
+                    print("  [!] aux_tensor is not 3D, skipping battery analysis")
+                    battery_levels[n] = []
+            else:
+                battery_levels[n] = []
+
 
         else:
             print(f"\nUAV {n+1}: No path assigned")
@@ -518,79 +535,66 @@ def display_results(
 
     return uav_paths, uav_covered_nodes, all_covered, battery_levels
 
-def cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq, ctype,
-                 row_size, col_size, N, T, Cmax, time_limit=18000):
+def cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq,
+                 ctype, row_size, col_size, N, T, Cmax,
+                 time_limit=18000, mipgap=0.0):
     """
-    Solve MILP with CPLEX using sparse constraints and structured result extraction.
-
-    Assumptions about variable layout (IMPORTANT — adapt if your layout differs):
-      - Total vars = (1 + 2*N*T) * row_size * col_size
-      - Block 0 (size Gsize = row_size*col_size): grid/coverage variables
-      - Block 1 (size pos_block_size = N*T*Gsize): position variables x_{t,n,p}
-         indexing: pos_idx(t,n,p) = block1_start + ((t*N + n) * Gsize) + p
-      - Block 2 (size aux_block_size = N*T*Gsize): auxiliary per-(t,n,p) variables
-         indexing: aux_idx(t,n,p) = block2_start + ((t*N + n) * Gsize) + p
-
-    Returns:
-      Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V, pos_tensor, aux_tensor
-    where:
-      - pos_tensor: shape (T, N, Gsize) with position variables for each t,n,p
-      - aux_tensor: shape (T, N, Gsize) with auxiliary variables
+    Solve MILP using CPLEX with safe type casting for all inputs.
     """
 
-    # ====== Setup ======
+    # ==============================
+    # Setup CPLEX problem
+    # ==============================
     prob = cplex.Cplex()
-    prob.objective.set_sense(prob.objective.sense.maximize)  # maximize updated objective
+    prob.objective.set_sense(prob.objective.sense.minimize)
 
-    num_vars = (1 + 2 * N * T) * row_size * col_size
+    # Convert vectors to Python floats
+    obj = [float(x) for x in Z1]
+    lb = [float(x) for x in lb]
+    ub = [float(x) for x in ub]
 
-    # Add variables (use lists for obj, lb, ub)
-    prob.variables.add(obj=Z1.tolist(), lb=lb.tolist(), ub=ub.tolist(), types=ctype)
+    prob.variables.add(obj=obj, lb=lb, ub=ub, types=ctype)
 
-    # ====== Add inequality constraints (sparse) ======
-    # Aineq is expected shape (m_ineq, num_vars)
+    # ==============================
+    # Add inequality constraints
+    # ==============================
     for i in range(Aineq.shape[0]):
-        row = Aineq[i]
-        nz = np.nonzero(row)[0]
-        if nz.size == 0:
-            # 0 <= bineq[i], still need to add constraint
-            prob.linear_constraints.add(
-                lin_expr=[cplex.SparsePair(ind=[], val=[])],
-                senses=["L"],
-                rhs=[bineq[i]]
-            )
-        else:
-            vals = row[nz].tolist()
-            prob.linear_constraints.add(
-                lin_expr=[cplex.SparsePair(ind=nz.tolist(), val=vals)],
-                senses=["L"],
-                rhs=[bineq[i]]
-            )
+        row = [float(x) for x in Aineq[i]]
+        rhs_val = float(bineq[i])
+        prob.linear_constraints.add(
+            lin_expr=[cplex.SparsePair(
+                ind=list(range(len(row))),
+                val=row
+            )],
+            senses=["L"],
+            rhs=[rhs_val]
+        )
 
-    # ====== Add equality constraints (sparse) ======
+    # ==============================
+    # Add equality constraints
+    # ==============================
     for i in range(Aeq.shape[0]):
-        row = Aeq[i]
-        nz = np.nonzero(row)[0]
-        if nz.size == 0:
-            prob.linear_constraints.add(
-                lin_expr=[cplex.SparsePair(ind=[], val=[])],
-                senses=["E"],
-                rhs=[beq[i]]
-            )
-        else:
-            vals = row[nz].tolist()
-            prob.linear_constraints.add(
-                lin_expr=[cplex.SparsePair(ind=nz.tolist(), val=vals)],
-                senses=["E"],
-                rhs=[beq[i]]
-            )
+        row = [float(x) for x in Aeq[i]]
+        rhs_val = float(beq[i])
+        prob.linear_constraints.add(
+            lin_expr=[cplex.SparsePair(
+                ind=list(range(len(row))),
+                val=row
+            )],
+            senses=["E"],
+            rhs=[rhs_val]
+        )
 
-    # ====== Solver options ======
-    prob.parameters.mip.tolerances.mipgap.set(0)
-    prob.parameters.timelimit.set(time_limit)
+    # ==============================
+    # Solver options
+    # ==============================
+    prob.parameters.mip.tolerances.mipgap.set(float(mipgap))
+    prob.parameters.timelimit.set(float(time_limit))  # seconds
     prob.parameters.mip.strategy.search.set(1)
 
-    # ====== Solve ======
+    # ==============================
+    # Solve
+    # ==============================
     start_time = time.time()
     try:
         prob.solve()
@@ -600,71 +604,38 @@ def cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq, ctype,
 
     Cov_time = time.time() - start_time
 
-    # ====== Extract solution ======
-    S = np.array(prob.solution.get_values())
-    fval = prob.solution.get_objective_value()
+    # ==============================
+    # Extract solution
+    # ==============================
+    S = np.array(prob.solution.get_values(), dtype=float)
+    fval = float(prob.solution.get_objective_value())
 
-    # Round for stability when reading binaries
-    ss = np.round(S, 6)
+    # Round solution
+    ss = np.round(S, 1)
+    c = np.where(ss > 0)[0]
+    path_loc = c[c > (1 + T*N) * row_size * col_size]
+    U = ss[path_loc]
+    V = np.column_stack((path_loc, U))
 
-    # ====== Compute indices / block boundaries ======
-    Gsize = row_size * col_size
-    block0_start = 0
-    block0_end = block0_start + Gsize
-
-    block1_start = block0_end
-    pos_block_size = N * T * Gsize
-    block1_end = block1_start + pos_block_size
-
-    block2_start = block1_end
-    aux_block_size = pos_block_size
-    block2_end = block2_start + aux_block_size
-
-    assert num_vars == block2_end, "Mismatch in expected variable count."
-
-    # ====== Which variable indices are 'active' (> 0) ======
-    active_idx = np.where(ss > 0)[0]
-
-    # ====== Path / coverage extraction (from position block only) ======
-    pos_flat = S[block1_start:block1_end]  # length pos_block_size
-    # reshape -> (T, N, Gsize) using order where index = (t*N + n)*Gsize + p
-    pos_tensor = pos_flat.reshape((T, N, Gsize))
-
-    # For convenience also reshape aux into (T, N, Gsize)
-    aux_flat = S[block2_start:block2_end]
-    aux_tensor = aux_flat.reshape((T, N, Gsize))
-
-    # Build cov_path: for each UAV n, list visited grid indices per time
-    cov_path = np.zeros((N, T * Gsize), dtype=int)  # store sequence of visited nodes per t
+    # Route tracing
+    cov_path = np.zeros((N, row_size*col_size*T), dtype=int)
     for n in range(N):
-        write_pos = 0
+        P1 = []
         for t in range(T):
-            # nodes where the pos variable > 0.5 (interpreting binary)
-            visited_nodes = np.where(pos_tensor[t, n, :] > 0.5)[0]
-            # If multiple nodes are active (shouldn't normally), record all in order
-            for p in visited_nodes:
-                if write_pos < cov_path.shape[1]:
-                    cov_path[n, write_pos] = p
-                    write_pos += 1
+            for i in range(len(path_loc)):
+                Rmin = (1 + T*N)*row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
+                Rmax = (1 + T*N)*row_size*col_size + row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
+                if (Rmax <= (1 + T*N + T*N)*row_size*col_size and
+                        path_loc[i] > Rmin and path_loc[i] <= Rmax):
+                    c1 = path_loc[i]
+                    c2 = c1 - ((1 + T*N)*row_size*col_size +
+                               t*N*row_size*col_size +
+                               n*row_size*col_size)
+                    P1.append(c2)
+        if len(P1) > 0:
+            cov_path[n, :len(P1)] = P1
 
-    # path_loc (indices in the flattened vector corresponding to active position+aux variables)
-    # We'll return active indices greater than block1_start to match older behavior, but user can inspect S directly.
-    path_loc = active_idx[active_idx >= block1_start]
+    # Coverage percentage (negate because objective is -coverage)
+    Cov_Percent = (-1) * (fval / Cmax) * 100.0
 
-    # Similar V (index + values) for active aux/presence vars
-    V = np.column_stack((path_loc, S[path_loc]))
-
-    # ====== Coverage percent ======
-    Cov_Percent = (fval / Cmax) * 100.0
-
-    return {
-        "Cov_Percent": Cov_Percent,
-        "Solve_time": Cov_time,
-        "Objective_value": fval,
-        "cov_path": cov_path,
-        "active_indices": active_idx,
-        "solution_vector": S,
-        "active_table": V,
-        "pos_tensor": pos_tensor,   # shape (T, N, Gsize)
-        "aux_tensor": aux_tensor    # shape (T, N, Gsize)
-    }
+    return Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V

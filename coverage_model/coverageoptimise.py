@@ -10,10 +10,11 @@ from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths
 import argparse
 from coverage_utils import *
+import json
 
 
 def main(
-        sensing_radius:int, 
+        sensing_radius:int,
         comm_radius:int,
         col_size:int,
         row_size:int,
@@ -21,110 +22,120 @@ def main(
         T:int,
         row_sink:int,
         col_sink:int,
-        coords_obs:list
+        coords_obs:list,
+        b_turn:float = 1.0,
+        b_mov:float = 2.0,
+        b_steady:float = 0.1,
+        b_full:float = 100.0,
+        initial_battery=None,   # scalar or list of length N
+        ebase:float = 0.0,
+        solver_time_limit:int = 18000,
+        solver_mipgap:float = 0.0
     ) -> dict:
     """
-    Main coverage optimization function - Python equivalent of the MATLAB code.
+    Main coverage optimization function.
     """
-    
 
     sz = (row_size, col_size)
-
     TG = make_grid(row_size, col_size)
-
     P_sink, sink = pos_sink(row_sink-1, col_sink-1, sz)
-    
-    # Obstacles (empty in this case)
+
+    # Obstacles
     obs = pos_obs(coords_obs, sz)
-    
-    if(obs.size > 0):
+    if obs.size > 0:
         O_lin = np.array([ij_to_i((r-1, c-1), sz) for r, c in obs], dtype=int)
     else:
-        O_lin = np.array([], dtype=int) 
+        O_lin = np.array([], dtype=int)
 
     if obs.size > 0:
         obs_pairs = set(map(tuple, obs.astype(int)))
         G_index = np.array([tuple(comm_radius) not in obs_pairs for comm_radius in TG])
         G = TG[G_index]
-        # Convert 1-based coordinates to 0-based linear indices
         G1 = np.array([ij_to_i((r-1, c-1), sz) for r, c in G])
         Cmax = row_size * col_size - len(obs) - 1
     else:
         G = TG
-        # Convert 1-based coordinates to 0-based linear indices
         G1 = np.array([ij_to_i((r-1, c-1), sz) for r, c in TG])
         Cmax = row_size * col_size - 1
-    
-    print("Target set G1:", G1)
-    
-    # Communicable grid points sets
-    Irc, Irc_sink = communicable_gpt(P_sink, G-1, sz, comm_radius, O_lin) 
-    
-    # Sensing grid points sets
-    L, Irs, Irs_sink = sensing_gpt(P_sink, G-1, sz, sensing_radius, O_lin) 
 
-    # Filtering out the obstacles from the neighbor sets
+    print("Target set G1:", G1)
+
+    # Communication & sensing sets
+    Irc, Irc_sink = communicable_gpt(P_sink, G-1, sz, comm_radius, O_lin)
+    L, Irs, Irs_sink = sensing_gpt(P_sink, G-1, sz, sensing_radius, O_lin)
+
+    # Remove obstacles from neighbor sets
     if O_lin.size > 0:
         Irc = [[q for q in Irc[p] if q not in O_lin] for p in range(len(G))]
         Irs = [[q for q in Irs[p] if q not in O_lin] for p in range(len(G))]
         Irc_sink = [q for q in Irc_sink if q not in O_lin]
 
-    # Objective function
-    f = setup_obj(G1, P_sink, O_lin, N, T, row_size, col_size)
-        
-        
-    
+    # Objective function (with battery params)
+    f = setup_obj(G1, P_sink, O_lin, N, T, row_size, col_size,
+                  b_turn, b_mov, b_steady, b_full)
+
     # ==============================
-    # Position Constraints
+    # Constraints
     # ==============================
-    # 1(a) one-UAV-at-single-point, equality constraint
     F, E = poisition_constraints(N, T, G, G1, L, P_sink, row_size, col_size)
-    
-    # 2a Sink, inequality constraint
     g = sink_connectivity_constraint(N, T, Irc_sink, row_size, col_size)
-    
-    # 2b Inter-UAV, inequality constraint
     H = interUAV_connectivity_constraint(N, T, Irc, row_size, col_size, G, G1, L)
-    
-    # 3 Mobility, inequality constraint
     I = mobility_constraint(N, T, Irc, row_size, col_size, G1, L)
-    
-    
-    # Cell coverage constraint variables, K equality constraint, J and Q inequality constraints
     K, J, Q = cell_coverage_constraints(N, T, row_size, col_size, G1, L, Irs)
-    
+
     # Inequality constraints
     Aineq, bineq = combine_constraints((E, 1), (g, -1), (H, 0), (I, 0), (J, 0), (Q, 0))
-    
+
     # Equality constraints
     Aeq, beq = combine_constraints((F, 1), (K, 0))
-    
-    # Optimization problem setup
-    Z1 = -f  # Objective function
-    
+
+    # Convert to float (important for CPLEX)
+    Aineq = np.asarray(Aineq, dtype=float)
+    bineq = np.asarray(bineq, dtype=float)
+    Aeq = np.asarray(Aeq, dtype=float)
+    beq = np.asarray(beq, dtype=float)
+
+    # Objective vector
+    Z1 = -f.astype(float)
+
     # Bounds
     lb, ub = bounds(row_size, col_size, N, T)
-    
-    no_fly_obstacles(O_lin, row_size, col_size, N, T, lb, ub)
+    lb = np.asarray(lb, dtype=float)
+    ub = np.asarray(ub, dtype=float)
 
-    # Variable types (continuous and binary)
+    no_fly_obstacles(O_lin, row_size, col_size, N, T, ub)
+
+    # Variable types
     ctype = type_vars(row_size, col_size, N, T)
-    
-    # Solve the MILP using CPLEX
+
+    # ==============================
+    # Solve MILP
+    # ==============================
     try:
         start_time = time.time()
-        Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V = cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq, ctype, row_size, col_size, N, T, Cmax)
+        Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V = cplex_solver(
+            Z1, lb, ub,
+            Aineq, bineq,
+            Aeq, beq,
+            ctype,
+            row_size, col_size, N, T, Cmax,
+            time_limit=solver_time_limit,
+            mipgap=solver_mipgap
+        )
         end_time = time.time()
         Cov_time = end_time - start_time
+
         print(f"Coverage Percentage: {Cov_Percent:.2f}%")
         print(f"Computation Time: {Cov_time:.2f} seconds")
         print(f"Objective Function Value: {fval}")
+
     except CplexError as e:
-        print(e)
+        print(f"CPLEX Error: {e}")
         return None
-    
 
-
+    # ==============================
+    # Return results
+    # ==============================
     return {
         'S': S,
         'fval': fval,
@@ -133,79 +144,105 @@ def main(
         'Cov_Percent': Cov_Percent,
         'path_loc': path_loc,
         'V': V,
-        'uav_paths': uav_paths,
-        'uav_covered_nodes': uav_covered_nodes,
         'sz': sz,
         'G': G,
         'O_lin': O_lin,
         'sink': sink,
-        'aux_tensor': V  # <--- NEW
+        'aux_tensor': V  # TODO: replace with real aux tensor for battery vars
     }
 
 
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Path Planning Args")
-    
-    parser.add_argument("--sensing-radius", type=int, help="sensing radius for every drone")
-    parser.add_argument("--comm-radius", type=int, help="communication radius for every drone")
-    parser.add_argument("--col-size", type=int, help="size of the col in grid area")
-    parser.add_argument("--row-size", type=int, help="size of the row in grid")
-    parser.add_argument("--N", type=int, help="number of drones")
-    parser.add_argument("--T", type=int, help="Time limit for the optimisations")
-    parser.add_argument("--row-sink", type=int, help="row location of sink")
-    parser.add_argument("--col-sink", type=int, help="col location of sink")
 
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--config", type=str, required=True, help="Path to JSON config file")
     args = parser.parse_args()
-    sensing_radius = args.sensing_radius
-    comm_radius=args.comm_radius
-    col_size = args.col_size
-    row_size = args.row_size
-    N = args.N
-    T = args.T
-    row_sink = args.row_sink
-    col_sink = args.col_sink
-    coords_obs = [
-        (3, 3),
-        (5, 4)
-    ]
+    json_path = args.config
+    cfg = load_config(json_path)
+
+    # Mandatory fields
+    sensing_radius = cfg["sensing_radius"]
+    comm_radius = cfg["comm_radius"]
+    col_size = cfg["col_size"]
+    row_size = cfg["row_size"]
+    N = cfg["N"]
+    T = cfg["T"]
+    row_sink = cfg["row_sink"]
+    col_sink = cfg["col_sink"]
+    coords_obs = cfg.get("coords_obs", [])
+
+    # Battery block (defaults if missing)
+    battery = cfg.get("battery", {})
+    b_turn = battery.get("b_turn", 1.0)
+    b_mov = battery.get("b_mov", 2.0)
+    b_steady = battery.get("b_steady", 0.1)
+    b_full = battery.get("b_full", 100.0)
+    initial_battery = battery.get("initial_battery", b_full)  # scalar or list
+    ebase = battery.get("ebase", 0.0)
+
+    # Solver options
+    solver_cfg = cfg.get("solver", {})
+    time_limit = solver_cfg.get("time_limit", 18000)
+    mipgap = solver_cfg.get("mipgap", 0)
+
+    # Call main
     results = main(
-        sensing_radius=sensing_radius, 
-        comm_radius=comm_radius, 
-        col_size=col_size, 
-        row_size=row_size, 
-        N=N, 
-        T=T, 
-        row_sink=row_sink, 
+        sensing_radius=sensing_radius,
+        comm_radius=comm_radius,
+        col_size=col_size,
+        row_size=row_size,
+        N=N,
+        T=T,
+        row_sink=row_sink,
         col_sink=col_sink,
-        coords_obs=coords_obs
+        coords_obs=coords_obs,
+        b_turn=b_turn,
+        b_mov=b_mov,
+        b_steady=b_steady,
+        b_full=b_full,
+        initial_battery=initial_battery,
+        ebase=ebase,
+        solver_time_limit=time_limit,
+        solver_mipgap=mipgap
     )
 
-        # Display results
-    uav_paths, uav_covered_nodes, all_covered, battery_levels = display_results(
-        results["Cov_Percent"],
-        results["Solve_time"],
-        results["Objective_value"],
-        N,
-        row_size,
-        col_size,
-        T,
-        results["cov_path"],
-        results["active_indices"],
-        results["solution_vector"],
-        results["sz"],
-        results["G"],
-        sensing_radius,
-        comm_radius,
-        results["O_lin"],
-        results["sink"],
-        results["aux_tensor"]   # <--- NEW
-    )
-    G = results["G"]
-    O_lin = results["O_lin"]
-    sink = results["sink"]
-    # Visualization
-    plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, sensing_radius, comm_radius, row_size, col_size, O_lin)
     if results is not None:
+        # Display results
+        uav_paths, uav_covered_nodes, all_covered, battery_levels = display_results(
+            results["Cov_Percent"],
+            results["Cov_time"],
+            results["fval"],
+            N,
+            row_size,
+            col_size,
+            T,
+            results["cov_path"],
+            results["path_loc"],
+            results["S"],
+            results["sz"],
+            results["G"],
+            sensing_radius,
+            comm_radius,
+            results["O_lin"],
+            results["sink"],
+            results["aux_tensor"]   # placeholder for battery vars
+        )
+
+        # Visualization
+        plot_interactive_paths(
+            results["G"],
+            uav_paths,
+            uav_covered_nodes,
+            results["sink"],
+            sensing_radius,
+            comm_radius,
+            row_size,
+            col_size,
+            results["O_lin"],
+            results["aux_tensor"]
+        )
+
         print("Optimization completed successfully!")
     else:
-        print("Optimization failed!")    
+        print("Optimization failed!")

@@ -1,0 +1,27 @@
+{
+  "sensing_radius": 1,
+  "comm_radius": 2,
+  "col_size": 6,
+  "row_size": 6,
+  "N": 2,
+  "T": 5,
+  "row_sink": 1,
+  "col_sink": 1,
+  "coords_obs": [
+    [3, 3],
+    [4, 2]
+  ],
+  "battery": {
+    "b_turn": 1.0,
+    "b_mov": 2.0,
+    "b_steady": 0.1,
+    "b_full": 100.0,
+    "initial_battery": 50.0,
+    "ebase": 5.0
+  },
+  "solver": {
+    "time_limit": 3600,
+    "mipgap": 0
+  }
+}
+
