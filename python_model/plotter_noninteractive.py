@@ -12,6 +12,8 @@ from pathplotter import plot_interactive_paths
 
 
 
+
+
 def plot_coverage_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Nx, Ny):
     """
     Plot the grid, UAV paths, and coverage areas.

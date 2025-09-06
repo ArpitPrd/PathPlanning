@@ -8,7 +8,7 @@ from matplotlib.colors import ListedColormap
 from matplotlib.widgets import Button
 from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths
-from battery_model import battery_next, compute_battery_for_paths
+from battery_model import battery_next, compute_battery_for_paths, print_battery_and_motion
 
 
 
@@ -21,7 +21,7 @@ def coverage_optimize():
     # User defined input
     # ==============================
     Rs = 1  # Sensing Radius
-    Rc = 2 * Rs  # Communication Radius
+    Rc = 4 * Rs  # Communication Radius
     
     # ==============================
     # Network Grid
@@ -411,7 +411,8 @@ def coverage_optimize():
     # ==============================
     battery_traces, position_traces = compute_battery_for_paths(
     uav_paths, sink, T, E0=100.0, battery_fn=battery_next, pad_mode="hold")
-    
+    print_battery_and_motion(battery_traces, position_traces)
+
     
     plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc, Nx, Ny, O_lin, battery_traces, position_traces)
 
