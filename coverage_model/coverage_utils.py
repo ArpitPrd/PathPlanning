@@ -2,640 +2,312 @@ import numpy as np
 import cplex
 from cplex.exceptions import CplexError
 import time
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.colors import ListedColormap
-from matplotlib.widgets import Button
-from Gpt import communicable_gpt, sensing_gpt
-from pathplotter import plot_interactive_paths
-import argparse
 import json
 
-
+# ==============================================================================
+# CONFIG AND GRID HELPERS (No changes)
+# ==============================================================================
 def load_config(json_path: str):
-    """Load optimization parameters from a JSON config file."""
     with open(json_path, 'r') as f:
-        cfg = json.load(f)
-
-    return cfg
-
-
-
-def sz_to_XY(row_size, col_size):
-    """
-    general purpose meshgrid maker
-
-    need a, b to be arrays
-    """
-    x = np.arange(1, row_size+1)  # 1:6
-    y = np.arange(1, col_size+1)  # 1:6
-    
-    return np.meshgrid(y, x)
+        return json.load(f)
 
 def i_to_ij(index, sz):
-    """
-    convert lin length to row, col
-    """
     return np.unravel_index(index, sz)
 
 def ij_to_i(cod, sz):
-    """
-    convert coordinates to lin length wrt sz
-    """
-    # TODO
     return np.ravel_multi_index(cod, sz)
 
-def XY_to_xy(A:np.array, B:np.array) -> np.array:
-    """
-    A, B must be obtained in the format from np.meshgrid to obtain all the coordis
-    """
-    return np.column_stack((A.flatten(), B.flatten()))
-
-def make_grid(row_size, col_size):
-    """
-    prepares complete meshgrid and returns the gird points
-
-    different from mesh grid because it returns XY
-    """
-    
-    A, B = sz_to_XY(row_size, col_size)
-    return XY_to_xy(A, B)
-
 def pos_sink(row_sink, col_sink, sz):
-    """
-    prepares the sink wrt to the grid
-    """
-    P_sink = ij_to_i((row_sink, col_sink), sz)
-    sink = np.array([row_sink + 1, col_sink + 1])
-    return P_sink, sink
+    p_sink = ij_to_i((row_sink, col_sink), sz)
+    sink_coord = np.array([row_sink, col_sink])
+    return p_sink, sink_coord
 
-def pos_obs(coords_obs, sz=None):
-    """
-    positions the obstructions in the grid wrt to the size
-    """
-    return np.array(coords_obs).reshape(-1, len(coords_obs[0]))
+def pos_obs(coords_obs):
+    if not coords_obs: return np.array([])
+    return np.array(coords_obs)
 
-# def setup_obj(G, P_sink, O_lin, N, T, row_size, col_size):
-#     """
-#     general purpose objective function definition
-#     """
-#     f = np.zeros((1 + 2*N*T) * row_size * col_size)
-#     f[G] = 1
-#     f[P_sink] = 0
-    
-#     #set the reward function for the obstacle to zero
-#     if O_lin.size > 0:
-#         f[O_lin] = 0
-    
-#     return f
+# ==============================================================================
+# VARIABLE INDEXING HELPER CLASS (No changes)
+# ==============================================================================
+class VarHelper:
+    """Manages indices of decision variables based on eq.pdf formulation."""
+    def __init__(self, N, T, row_size, col_size):
+        self.N, self.T = N, T
+        self.rs, self.cs = row_size, col_size
+        self.num_grid_cells = row_size * col_size
+        self.start_z = 0
+        self.start_c_i = self.start_z + self.num_grid_cells * N * T
+        self.start_c_in_k = self.start_c_i + self.num_grid_cells
+        self.start_m = self.start_c_in_k + self.num_grid_cells * N * T
+        self.start_x_charge = self.start_m + self.num_grid_cells**2 * N * (T - 1)
+        self.start_b = self.start_x_charge + N * T
+        self.total_vars = self.start_b + N * T
 
-def setup_obj(G, P_sink, O_lin, N, T, row_size, col_size,
-              b_turn, b_mov, b_steady, b_full):
-    """
-    Objective function with battery-aware terms.
-    """
-    num_vars = (1 + 2*N*T) * row_size * col_size
-    f = np.zeros(num_vars)
+    def z(self, t, n, i): return self.start_z + t*self.N*self.num_grid_cells + n*self.num_grid_cells + i
+    def c_i(self, i): return self.start_c_i + i
+    def c_in_k(self, t, n, i): return self.start_c_in_k + t*self.N*self.num_grid_cells + n*self.num_grid_cells + i
+    def m(self, t, n, i, j): return self.start_m + t*self.N*self.num_grid_cells**2 + n*self.num_grid_cells**2 + i*self.num_grid_cells + j
+    def x_charge(self, t, n): return self.start_x_charge + t * self.N + n
+    def b(self, t, n): return self.start_b + t * self.N + n
 
-    # --- (1) Coverage reward ---
-    f[G] = 1
-    f[P_sink] = 0
-    if O_lin.size > 0:
-        f[O_lin] = 0
-
-    # --- (2) Energy penalties & recharge ---
-    for t in range(T):
-        for n in range(N):
-            base_idx = row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size)
-
-            # indices for decision variables at this (t, n)
-            y_turn_idx     = base_idx      # example: first slot
-            y_move_idx     = base_idx + 1  # example: second slot
-            Y_noex_idx     = base_idx + 2
-            Y_ex_idx       = base_idx + 3
-            bkn_idx        = base_idx + 4
-
-            # penalties
-            f[y_turn_idx] -= b_turn
-            f[y_move_idx] -= b_mov
-            f[Y_noex_idx] -= b_steady
-
-            # recharge reward
-            f[Y_ex_idx]  += b_full
-            f[bkn_idx]   -= 1   # part of (b_full - b_kn)
-
+# ==============================================================================
+# OBJECTIVE AND CONSTRAINTS (Updated for Toggling)
+# ==============================================================================
+def setup_obj(vh):
+    f = np.zeros(vh.total_vars)
+    for i in range(vh.num_grid_cells):
+        f[vh.c_i(i)] = 1.0
     return f
 
-def battery_constraint(N, T, row_size, col_size,
-                       b_turn, b_mov, b_steady, b_full):
-    """
-    Construct linearized battery constraints for all UAVs across time.
-    """
-    num_vars = (1 + 2*N*T) * row_size * col_size
-    B = np.zeros(((T-1)*N, num_vars))
-    rhs = np.zeros((T-1)*N)
-
-    k = 0
-    for t in range(T-1):
-        for n in range(N):
-            h = np.zeros(num_vars)
-
-            # indices
-            base_idx_t   = row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size)
-            base_idx_t1  = row_size*col_size + (N*T*row_size*col_size) + ((t+1)*N*row_size*col_size) + (n*row_size*col_size)
-
-            b_kn_idx   = base_idx_t + 4
-            b_k1n_idx  = base_idx_t1 + 4
-            y_turn_idx = base_idx_t
-            y_move_idx = base_idx_t + 1
-            Y_noex_idx = base_idx_t + 2
-            Y_ex_idx   = base_idx_t + 3
-
-            # Row encodes:
-            # b_{t+1,n} - b_{t,n} + b_turn*y_turn + b_mov*y_move
-            # + b_steady*(1 - y_turn - y_move)*Y_noex - b_full*Y_ex = 0
-            h[b_k1n_idx] =  1
-            h[b_kn_idx]  = -1
-            h[y_turn_idx] = b_turn
-            h[y_move_idx] = b_mov
-            h[Y_noex_idx] = b_steady
-            h[Y_ex_idx]   = -b_full
-
-            B[k, :] = h
-            rhs[k] = 0
-            k += 1
-
-    return B, rhs
-
-def filter_obs(O_lin, Irc, Irs, Irc_sink, G):
-    if O_lin.size > 0:
-        Irc = [[q for q in Irc[p] if q not in O_lin] for p in range(len(G))]
-        Irs = [[q for q in Irs[p] if q not in O_lin] for p in range(len(G))]
-        Irc_sink = [q for q in Irc_sink if q not in O_lin]
-
-    return Irc, Irs, Irc_sink
-
-def poisition_constraints(N, T, G, G1, L, P_sink, row_size, col_size):
-    # ==============================
-    # Position Constraints
-    # ==============================
-    # 1(a) one-UAV-at-single-point
-    F = np.zeros((N*T, (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        for n in range(N):
-            f1 = np.zeros((1 + 2*N*T)*row_size*col_size)
-            f1[G1 + (1 + T*N)*row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size)] = 1
-            f1[(1 + T*N)*row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + P_sink] = 0
-            F[k, :] = f1
-            k += 1
+def position_and_collision_constraints(vh, P_sink, enable_collision_avoidance=True):
+    # Eq 2: Unique position (non-toggleable, fundamental to the model)
+    eq2_rows = []
+    for t in range(vh.T):
+        for n in range(vh.N):
+            row = np.zeros(vh.total_vars)
+            for i in range(vh.num_grid_cells):
+                row[vh.z(t, n, i)] = 1
+            eq2_rows.append(row)
     
-    # 1(b) single-UAV-at-one-pt
-    E = np.zeros((T*len(G), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        for p in range(len(G)):
-            f2 = np.zeros((1 + 2*N*T)*row_size*col_size)
-            if p != L:
-                for n in range(N):
-                    f2[(1 + T*N)*row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[p]] = 1
-            E[k, :] = f2
-            k += 1
-    return F, E
+    # Eq 3: Collision avoidance (toggleable)
+    eq3_rows = []
+    if enable_collision_avoidance:
+        for t in range(vh.T):
+            for i in range(vh.num_grid_cells):
+                if i == P_sink: continue
+                row = np.zeros(vh.total_vars)
+                for n in range(vh.N):
+                    row[vh.z(t, n, i)] = 1
+                eq3_rows.append(row)
+            
+    return np.array(eq2_rows), np.array(eq3_rows)
 
-def sink_connectivity_constraint(N, T, Irc_sink, row_size, col_size):
-    g = np.zeros((T, (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        g1 = np.zeros((1 + 2*N*T)*row_size*col_size)
-        for n in range(N):
-            for i in range(len(Irc_sink)):
-                g1[row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size) + Irc_sink[i]] = -1
-        g[k, :] = g1
-        k += 1
-    return g
+def connectivity_constraints(vh, Irc, Irc_sink, P_sink, enable_connectivity=True):
+    if not enable_connectivity:
+        empty = np.empty((0, vh.total_vars))
+        return empty, empty
 
-def interUAV_connectivity_constraint(N, T, Irc, row_size, col_size, G, G1, L):
-    H = np.zeros((T*(N-1)*len(G), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        for n in range(1, N):  # n=2:N in MATLAB becomes n=1:N-1 in Python
-            for p in range(len(G)):
-                h11 = np.zeros((1 + 2*N*T)*row_size*col_size)
-                if p != L:
-                    h11[row_size*col_size + T*N*row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[p]] = 1
-                    for i in range(len(Irc[p])):
-                        h11[row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + ((n-1)*row_size*col_size) + Irc[p][i]] = -1
-                H[k, :] = h11
-                k += 1
-    return H
+    # Eq 4: Sink connectivity
+    eq4_rows = []
+    for t in range(vh.T):
+        row = np.zeros(vh.total_vars)
+        for n in range(vh.N):
+            for p in Irc_sink:
+                row[vh.z(t, n, p)] = 1
+        eq4_rows.append(row)
 
-def mobility_constraint(N, T, Irc, row_size, col_size, G1, L):
-    I = np.zeros(((T-1)*N*len(G1), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T-1):
-        for n in range(N):
-            for p in range(len(G1)):
-                h12 = np.zeros((1 + 2*N*T)*row_size*col_size)
-                if p != L:
-                    h12[row_size*col_size + (N*T*row_size*col_size) + ((t+1)*N*row_size*col_size) + (n*row_size*col_size) + G1[p]] = 1
-                    for i in range(len(Irc[p])):
-                        h12[row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size) + Irc[p][i]] = -1
-                I[k, :] = h12
-                k += 1
-    return I
+    # Eq 5: Inter-UAV link
+    eq5_rows = []
+    for t in range(vh.T):
+        for n in range(1, vh.N):
+            for i in range(vh.num_grid_cells):
+                row = np.zeros(vh.total_vars)
+                row[vh.z(t, n, i)] = 1
+                for p in Irc[i]:
+                    row[vh.z(t, n - 1, p)] = -1
+                eq5_rows.append(row)
 
-def battery_constraint(N, T, row_size, col_size, b_turn, b_mov, b_steady, b_full, G1, L):
-    """
-    Construct battery update constraints (equation 11 in PDF).
+    return np.array(eq4_rows), np.array(eq5_rows)
 
-    Parameters
-    ----------
-    N : int
-        Number of agents
-    T : int
-        Number of time steps
-    row_size, col_size : int
-        Grid dimensions
-    b_turn, b_mov, b_steady, b_full : float
-        Battery parameters
-    G1 : list
-        Node indices
-    L : int
-        Special index to exclude (like in mobility_constraint)
+def movement_and_mobility_constraints(vh, Irc, enable_mobility=True, enable_battery=True):
+    # Eq 6: Mobility rule (toggleable)
+    eq6_rows = []
+    if enable_mobility:
+        for t in range(vh.T - 1):
+            for n in range(vh.N):
+                for i in range(vh.num_grid_cells):
+                    row = np.zeros(vh.total_vars)
+                    row[vh.z(t + 1, n, i)] = 1
+                    for p in set(Irc[i] + [i]):
+                        row[vh.z(t, n, p)] = -1
+                    eq6_rows.append(row)
 
-    Returns
-    -------
-    B : np.ndarray
-        Battery constraint matrix
-    rhs : np.ndarray
-        RHS vector
-    """
-    num_vars = (1 + 2*N*T) * row_size * col_size
-    B = np.zeros(((T-1)*N, num_vars))  # one constraint per agent per step
-    rhs = np.zeros((T-1)*N)
-
-    k = 0
-    for t in range(T-1):
-        for n in range(N):
-            h = np.zeros(num_vars)
-
-            # Indexing battery variable b_{k,n} and b_{k+1,n}
-            b_kn_idx  = (t*N + n) * row_size * col_size
-            b_k1n_idx = ((t+1)*N + n) * row_size * col_size
-
-            # Add coefficients for b_{k+1,n} - b_{k,n}
-            h[b_k1n_idx] = 1
-            h[b_kn_idx]  = -1
-
-            # Subtract turn, move, idle costs (only when no-exchange = 1)
-            # These will link with y_turn, y_move, Y_noexchange, Y_exchange variables
-            # Placeholders for where you'd index those variables:
-            #   h[y_turn_idx]       = -b_turn
-            #   h[y_move_idx]       = -b_mov
-            #   h[idle_expr_idx]    = -b_steady
-            #   h[Y_exchange_idx]   = b_full
-
-            B[k, :] = h
-            rhs[k] = 0
-            k += 1
-
-    return B, rhs
-
-
-def cell_coverage_constraints(N, T, row_size, col_size, G1, L, Irs):
-    # 4(a)
-    K = np.zeros((T*N*len(G1), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        for n in range(N):
-            for p in range(len(G1)):
-                h1 = np.zeros((1 + 2*N*T)*row_size*col_size)
-                if p != L:
-                    h1[row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[p]] = 1
-                    for i in range(len(Irs[p])):
-                        h1[row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size) + Irs[p][i]] = -1
-                K[k, :] = h1
-                k += 1
+    # Eqs 7a, 7b, 7c: Movement definition (required for battery, so tied to it)
+    eq7a, eq7b, eq7c = [], [], []
+    if enable_battery:
+        for t in range(vh.T - 1):
+            for n in range(vh.N):
+                for i in range(vh.num_grid_cells):
+                    for j in range(vh.num_grid_cells):
+                        r7a = np.zeros(vh.total_vars); r7a[vh.m(t,n,i,j)]=1; r7a[vh.z(t,n,i)]=-1; eq7a.append(r7a)
+                        r7b = np.zeros(vh.total_vars); r7b[vh.m(t,n,i,j)]=1; r7b[vh.z(t+1,n,j)]=-1; eq7b.append(r7b)
+                        r7c = np.zeros(vh.total_vars); r7c[vh.m(t,n,i,j)]=-1; r7c[vh.z(t,n,i)]=1; r7c[vh.z(t+1,n,j)]=1; eq7c.append(r7c)
     
-    # 4(b)
-    J = np.zeros((N*T*len(G1), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for t in range(T):
-        for n in range(N):
-            for q in range(len(G1)):
-                h2 = np.zeros((1 + 2*N*T)*row_size*col_size)
-                h2[G1[q]] = -1
-                h2[G1[L]] = 0
-                h2[row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[q]] = 1
-                h2[row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[L]] = 0
-                J[k, :] = h2
-                k += 1
+    return np.array(eq6_rows), np.array(eq7a), np.array(eq7b), np.array(eq7c)
+
+def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, enable_battery=True):
+    if not enable_battery:
+        empty = np.empty((0, vh.total_vars))
+        return {
+            'charge_loc': empty, 'discharge_leq': empty, 'discharge_geq': empty,
+            'charge_leq': empty, 'rhs_charge_leq': np.array([]),
+            'charge_geq': empty, 'rhs_charge_geq': np.array([]),
+            'initial': empty, 'rhs_initial': np.array([])
+        }
     
-    # 4(c)
-    Q = np.zeros((len(G1), (1 + 2*N*T)*row_size*col_size))
-    k = 0
-    for q in range(len(G1)):
-        h3 = np.zeros((1 + 2*N*T)*row_size*col_size)
-        h3[G1[q]] = 1
-        h3[G1[L]] = 0
-        for t in range(T):
-            for n in range(N):
-                h3[row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[q]] = -1
-                h3[row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + G1[L]] = 0
-        Q[k, :] = h3
-        k += 1
-    return K, J, Q
+    M = b_full
+    eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
+    for t in range(vh.T - 1):
+        for n in range(vh.N):
+            # Eq 8: Charging location
+            row8 = np.zeros(vh.total_vars); row8[vh.x_charge(t,n)]=1; row8[vh.z(t,n,P_sink)]=-1; eq8.append(row8)
+            
+            energy_consumed = np.zeros(vh.total_vars)
+            for i in range(vh.num_grid_cells):
+                for j in range(vh.num_grid_cells):
+                    cost = b_steady if i == j else b_mov
+                    energy_consumed[vh.m(t, n, i, j)] = cost
+            
+            r9a = -np.copy(energy_consumed); r9a[vh.b(t+1,n)]=1; r9a[vh.b(t,n)]=-1; r9a[vh.x_charge(t,n)]=-M; eq9a.append(r9a)
+            r9b = np.copy(energy_consumed); r9b[vh.b(t+1,n)]=-1; r9b[vh.b(t,n)]=1; r9b[vh.x_charge(t,n)]=-M; eq9b.append(r9b)
+            r10a = np.zeros(vh.total_vars); r10a[vh.b(t+1,n)]=1; r10a[vh.x_charge(t,n)]=M; eq10a.append(r10a)
+            r10b = np.zeros(vh.total_vars); r10b[vh.b(t+1,n)]=-1; r10b[vh.x_charge(t,n)]=M; eq10b.append(r10b)
 
-def inequality_constraints(E, g, H, I, J, Q):
-    """
-    combines all the inequality constraints into one matrix
-    """
-    return np.vstack([E, g, H, I, J, Q]), np.hstack([
-        np.ones(E.shape[0]),
-        -np.ones(g.shape[0]),
-        np.zeros(H.shape[0]),
-        np.zeros(I.shape[0]),
-        np.zeros(J.shape[0]),
-        np.zeros(Q.shape[0])
-    ])
+    B_initial = np.zeros((vh.N, vh.total_vars))
+    rhs_initial = np.full(vh.N, initial_battery)
+    for n in range(vh.N): B_initial[n, vh.b(0, n)] = 1
+            
+    return {
+        'charge_loc': np.array(eq8), 'discharge_leq': np.array(eq9a), 'discharge_geq': np.array(eq9b),
+        'charge_leq': np.array(eq10a), 'rhs_charge_leq': np.full(len(eq10a), b_full + M),
+        'charge_geq': np.array(eq10b), 'rhs_charge_geq': np.full(len(eq10b), -b_full + M),
+        'initial': B_initial, 'rhs_initial': rhs_initial
+    }
 
-import numpy as np
+def cell_coverage_constraints(vh, Irs, enable_coverage=True):
+    if not enable_coverage:
+        empty = np.empty((0, vh.total_vars))
+        return empty, empty, empty
 
-def combine_constraints(*blocks):
-    """
-    Combine multiple constraint blocks (equality or inequality) into one big matrix.
+    eq13 = []
+    for t in range(vh.T):
+        for n in range(vh.N):
+            for i in range(vh.num_grid_cells):
+                row = np.zeros(vh.total_vars)
+                row[vh.c_in_k(t, n, i)] = 1
+                for p in Irs[i]:
+                    row[vh.z(t, n, p)] = -1
+                eq13.append(row)
 
-    Parameters
-    ----------
-    *blocks : list of (np.ndarray, rhs)
-        Each block is a tuple:
-          - constraint matrix (np.ndarray)
-          - rhs values:
-              - scalar (applied to all rows of the block)
-              - array matching row count
-              - None → defaults to zeros
+    eq14, eq15 = [], []
+    for i in range(vh.num_grid_cells):
+        r15 = np.zeros(vh.total_vars); r15[vh.c_i(i)] = 1
+        for t in range(vh.T):
+            for n in range(vh.N):
+                r14 = np.zeros(vh.total_vars); r14[vh.c_in_k(t,n,i)]=1; r14[vh.c_i(i)]=-1; eq14.append(r14)
+                r15[vh.c_in_k(t, n, i)] = -1
+        eq15.append(r15)
+        
+    return np.array(eq13), np.array(eq14), np.array(eq15)
 
-    Returns
-    -------
-    A : np.ndarray
-        Combined constraint matrix (stacked vertically).
-    b : np.ndarray
-        Combined RHS vector (stacked horizontally).
-    """
-    matrices = []
-    rhs_list = []
+# ==============================================================================
+# CPLEX SOLVER and COMBINER (No changes needed)
+# ==============================================================================
+def combine_constraints(eq_blocks, leq_blocks, geq_blocks):
+    """Combines multiple constraint blocks into final matrices."""
+    def vstack_if_any(blocks):
+        blocks = [b for b in blocks if b.shape[0] > 0]
+        return np.vstack(blocks) if blocks else np.empty((0, blocks[0].shape[1] if blocks else 0))
 
-    for matrix, rhs in blocks:
-        matrices.append(matrix)
+    A_eq = vstack_if_any([b for b, _ in eq_blocks])
+    b_eq = np.hstack([r for b, r in eq_blocks if b.shape[0] > 0])
+    
+    A_leq = vstack_if_any([b for b, _ in leq_blocks])
+    b_leq = np.hstack([r for b, r in leq_blocks if b.shape[0] > 0])
+    
+    A_geq = vstack_if_any([b for b, _ in geq_blocks])
+    b_geq = np.hstack([r for b, r in geq_blocks if b.shape[0] > 0])
+    
+    A_ineq_list = [A_leq, A_geq]
+    b_ineq_list = [b_leq, b_geq]
+    senses = 'L' * A_leq.shape[0] + 'G' * A_geq.shape[0]
+    
+    A_ineq = vstack_if_any(A_ineq_list)
+    b_ineq = np.hstack(b_ineq_list) if any(b.size > 0 for b in b_ineq_list) else np.array([])
+    
+    return A_eq, b_eq, A_ineq, b_ineq, senses
 
-        if rhs is None:
-            rhs_vals = np.zeros(matrix.shape[0])
-        elif np.isscalar(rhs):
-            rhs_vals = np.full(matrix.shape[0], rhs)
-        else:
-            rhs = np.asarray(rhs)
-            assert rhs.shape[0] == matrix.shape[0], \
-                f"RHS length {rhs.shape[0]} does not match rows {matrix.shape[0]}"
-            rhs_vals = rhs
-
-        rhs_list.append(rhs_vals)
-
-    A = np.vstack(matrices)
-    b = np.hstack(rhs_list)
-    return A, b
-
-
-
-
-def bounds(row_size, col_size, N, T):
-    """
-    sets up the bounds for the optimization variables
-    """
-    lb = np.zeros((row_size*col_size) + 2*N*T*row_size*col_size)
-    ub = np.ones((row_size*col_size) + 2*N*T*row_size*col_size)
-    return lb, ub
-
-def type_vars(row_size, col_size, N, T):
-    """
-    sets up the variable types for the optimization problem
-    """
-    vartype = ['C'] * (row_size*col_size) + ['B'] * (2*N*T*row_size*col_size)
-    return vartype
-
-def no_fly_obstacles(O_lin, row_size, col_size, N, T, ub):
-    # -------- NO-FLY OBSTACLE BOUNDS --------
-    # Helper indexers for the 3 blocks in your variable vector
-    def idx_y(q):                      # Block A (selection), size row_size*col_size
-        return q
-
-    def idx_a(t, n, q):                # Block B (coverage assign), size N*T*row_size*col_size
-        # offset_A = row_size*col_size
-        return row_size*col_size + (t*N*row_size*col_size) + (n*row_size*col_size) + q
-
-    def idx_x(t, n, q):                # Block C (positions), size N*T*row_size*col_size (binary)
-        # offset_A = row_size*col_size; offset_B = N*T*row_size*col_size
-        return row_size*col_size + (N*T*row_size*col_size) + (t*N*row_size*col_size) + (n*row_size*col_size) + q
-
-    if O_lin.size > 0:
-        for q in O_lin:
-            # Never select obstacle cells
-            ub[idx_y(q)] = 0.0
-            # Never assign coverage to obstacle cells
-            for t in range(T):
-                for n in range(N):
-                    ub[idx_a(t, n, q)] = 0.0
-                    # Never occupy obstacle cells (NO-FLY)
-                    ub[idx_x(t, n, q)] = 0.0
-
-    # -------- END NO-FLY OBSTACLE BOUNDS --------
-
-def display_results(
-        Cov_Percent,
-        Cov_time,
-        fval,
-        N,
-        row_size,
-        col_size,
-        T,
-        cov_path,
-        active_indices,
-        S,
-        sz,
-        G,
-        sensing_radius,
-        comm_radius,
-        O_lin,
-        sink,
-        aux_tensor=None  # new argument
-    ):
-    print(f"Coverage Percentage: {Cov_Percent:.2f}%")
-    print(f"Optimization Time: {Cov_time:.2f} seconds")
-    print(f"Objective Value: {fval:.4f}")
-    print("\n" + "="*50)
-    print("UAV PATHS, COVERAGE, AND BATTERY ANALYSIS")
-    print("="*50)
-
-    # Extract and display paths for each UAV
-    uav_paths = {}
-    uav_covered_nodes = {}
-    battery_levels = {}
-
-    for n in range(N):
-        non_zero = cov_path[n, cov_path[n] != 0]
-        if len(non_zero) > 0:
-            # Convert linear indices to 2D coordinates
-            path_coords = []
-            for idx in non_zero:
-                row, col = np.unravel_index(idx, sz)
-                path_coords.append((row+1, col+1))  # 1-based for display
-            uav_paths[n] = path_coords
-
-            # Coverage analysis
-            covered_nodes = set()
-            for t in range(T):
-                if t < len(path_coords):
-                    current_pos = path_coords[t]
-                    for node in G:
-                        dist = np.sqrt((current_pos[0] - node[0])**2 +
-                                       (current_pos[1] - node[1])**2)
-                        if dist <= sensing_radius:
-                            covered_nodes.add(tuple(node))
-            uav_covered_nodes[n] = list(covered_nodes)
-
-            print(f"\nUAV {n+1}:")
-            print(f"  Path: {path_coords}")
-            print(f"  Nodes covered: {sorted(uav_covered_nodes[n])}")
-            print(f"  Total nodes covered: {len(uav_covered_nodes[n])}")
-
-            # Battery analysis
-            if aux_tensor is not None:
-                if aux_tensor.ndim == 3:
-                    # expected format (T, N, vars_per_uav)
-                    battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
-                else:
-                    print("  [!] aux_tensor is not 3D, skipping battery analysis")
-                    battery_levels[n] = []
-            else:
-                battery_levels[n] = []
-
-
-        else:
-            print(f"\nUAV {n+1}: No path assigned")
-            uav_paths[n] = []
-            uav_covered_nodes[n] = []
-            battery_levels[n] = []
-
-    # Total coverage
-    all_covered = set()
-    for nodes in uav_covered_nodes.values():
-        all_covered.update(nodes)
-    print(f"\nTotal unique nodes covered: {len(all_covered)}")
-    print(f"All covered nodes: {sorted(list(all_covered))}")
-
-    return uav_paths, uav_covered_nodes, all_covered, battery_levels
-
-def cplex_solver(Z1, lb, ub, Aineq, bineq, Aeq, beq,
-                 ctype, row_size, col_size, N, T, Cmax,
-                 time_limit=18000, mipgap=0.0):
-    """
-    Solve MILP using CPLEX with safe type casting for all inputs.
-    """
-
-    # ==============================
-    # Setup CPLEX problem
-    # ==============================
+def cplex_solver(prob_name, objective, lb, ub, ctype, A_eq, b_eq, A_ineq, b_ineq, senses, time_limit, mipgap):
     prob = cplex.Cplex()
-    prob.objective.set_sense(prob.objective.sense.minimize)
+    prob.set_problem_name(prob_name)
+    prob.objective.set_sense(prob.objective.sense.maximize)
+    prob.variables.add(obj=objective, lb=lb, ub=ub, types=ctype, names=[f"var_{i}" for i in range(len(objective))])
 
-    # Convert vectors to Python floats
-    obj = [float(x) for x in Z1]
-    lb = [float(x) for x in lb]
-    ub = [float(x) for x in ub]
-
-    prob.variables.add(obj=obj, lb=lb, ub=ub, types=ctype)
-
-    # ==============================
-    # Add inequality constraints
-    # ==============================
-    for i in range(Aineq.shape[0]):
-        row = [float(x) for x in Aineq[i]]
-        rhs_val = float(bineq[i])
+    if A_eq.shape[0] > 0:
         prob.linear_constraints.add(
-            lin_expr=[cplex.SparsePair(
-                ind=list(range(len(row))),
-                val=row
-            )],
-            senses=["L"],
-            rhs=[rhs_val]
+            lin_expr=[cplex.SparsePair(ind=r.nonzero()[0].tolist(), val=r[r.nonzero()].tolist()) for r in A_eq],
+            senses=['E'] * A_eq.shape[0], rhs=b_eq.tolist(),
+            names=[f"eq_{i}" for i in range(A_eq.shape[0])]
+        )
+    if A_ineq.shape[0] > 0:
+         prob.linear_constraints.add(
+            lin_expr=[cplex.SparsePair(ind=r.nonzero()[0].tolist(), val=r[r.nonzero()].tolist()) for r in A_ineq],
+            senses=senses, rhs=b_ineq.tolist(),
+            names=[f"ineq_{i}" for i in range(A_ineq.shape[0])]
         )
 
-    # ==============================
-    # Add equality constraints
-    # ==============================
-    for i in range(Aeq.shape[0]):
-        row = [float(x) for x in Aeq[i]]
-        rhs_val = float(beq[i])
-        prob.linear_constraints.add(
-            lin_expr=[cplex.SparsePair(
-                ind=list(range(len(row))),
-                val=row
-            )],
-            senses=["E"],
-            rhs=[rhs_val]
-        )
+    prob.parameters.mip.tolerances.mipgap.set(mipgap)
+    prob.parameters.timelimit.set(time_limit)
+    prob.parameters.threads.set(4)
+    prob.set_log_stream(None); prob.set_error_stream(None); prob.set_warning_stream(None); prob.set_results_stream(None)
 
-    # ==============================
-    # Solver options
-    # ==============================
-    prob.parameters.mip.tolerances.mipgap.set(float(mipgap))
-    prob.parameters.timelimit.set(float(time_limit))  # seconds
-    prob.parameters.mip.strategy.search.set(1)
-
-    # ==============================
-    # Solve
-    # ==============================
+    print(f"Starting CPLEX solver (timelimit: {time_limit}s, mipgap: {mipgap})...")
     start_time = time.time()
-    try:
-        prob.solve()
-    except CplexError as e:
-        print(f"CPLEX Error: {e}")
-        return None
+    try: prob.solve()
+    except CplexError as e: return None, None, None, f"CPLEX Error: {e}"
+    
+    solve_time = time.time() - start_time
+    print(f"Solver finished in {solve_time:.2f} seconds.")
+    
+    status_string = prob.solution.get_status_string()
+    if prob.solution.get_status() in [101, 102]:
+        return np.array(prob.solution.get_values()), prob.solution.get_objective_value(), solve_time, status_string
+    else:
+        if 'infeasible' in status_string:
+            print("Solver status is infeasible. Attempting to find conflicting constraints...")
+            try:
+                all_constraints_to_check = []
+                for i in range(prob.linear_constraints.get_num()):
+                    all_constraints_to_check.append((prob.conflict.constraint_type.linear, i))
+                for i in range(prob.variables.get_num()):
+                    all_constraints_to_check.append((prob.conflict.constraint_type.upper_bound, i))
+                    all_constraints_to_check.append((prob.conflict.constraint_type.lower_bound, i))
 
-    Cov_time = time.time() - start_time
+                prob.conflict.refine((1.0, all_constraints_to_check))
+                
+                print("\n--- CONFLICT REPORT ---")
+                
+                # --- START: FINAL WORKING REPORTING LOGIC ---
+                
+                conflict_groups = prob.conflict.get_groups()
+                
+                if not conflict_groups:
+                    print("No conflicts found by the refiner.")
+                
+                for i, group in enumerate(conflict_groups):
+                    print(f"Conflict Group {i+1}:")
+                    # The members are at index 1 of the group tuple
+                    group_members = group[1]
 
-    # ==============================
-    # Extract solution
-    # ==============================
-    S = np.array(prob.solution.get_values(), dtype=float)
-    fval = float(prob.solution.get_objective_value())
-
-    # Round solution
-    ss = np.round(S, 1)
-    c = np.where(ss > 0)[0]
-    path_loc = c[c > (1 + T*N) * row_size * col_size]
-    U = ss[path_loc]
-    V = np.column_stack((path_loc, U))
-
-    # Route tracing
-    cov_path = np.zeros((N, row_size*col_size*T), dtype=int)
-    for n in range(N):
-        P1 = []
-        for t in range(T):
-            for i in range(len(path_loc)):
-                Rmin = (1 + T*N)*row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
-                Rmax = (1 + T*N)*row_size*col_size + row_size*col_size + t*N*row_size*col_size + n*row_size*col_size
-                if (Rmax <= (1 + T*N + T*N)*row_size*col_size and
-                        path_loc[i] > Rmin and path_loc[i] <= Rmax):
-                    c1 = path_loc[i]
-                    c2 = c1 - ((1 + T*N)*row_size*col_size +
-                               t*N*row_size*col_size +
-                               n*row_size*col_size)
-                    P1.append(c2)
-        if len(P1) > 0:
-            cov_path[n, :len(P1)] = P1
-
-    # Coverage percentage (negate because objective is -coverage)
-    Cov_Percent = (-1) * (fval / Cmax) * 100.0
-
-    return Cov_Percent, Cov_time, fval, cov_path, path_loc, S, V
+                    for conflict_member in group_members:
+                        constraint_type = conflict_member[0]
+                        constraint_index = conflict_member[1]
+                        
+                        if constraint_type == prob.conflict.constraint_type.linear:
+                            name = prob.linear_constraints.get_names(constraint_index)
+                            print(f"  - Conflicting Linear Constraint: {name}")
+                        elif constraint_type == prob.conflict.constraint_type.lower_bound:
+                            name = prob.variables.get_names(constraint_index)
+                            val = prob.variables.get_lower_bounds(constraint_index)
+                            print(f"  - Conflicting Lower Bound: {name} >= {val}")
+                        elif constraint_type == prob.conflict.constraint_type.upper_bound:
+                            name = prob.variables.get_names(constraint_index)
+                            val = prob.variables.get_upper_bounds(constraint_index)
+                            print(f"  - Conflicting Upper Bound: {name} <= {val}")
+                
+                # --- END: FINAL WORKING REPORTING LOGIC ---
+                
+                print("-----------------------\n")
+            except Exception as conf_e:
+                print(f"Could not run conflict refiner: {conf_e}")
+        return None, None, solve_time, status_string

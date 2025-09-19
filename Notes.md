@@ -167,3 +167,8 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 - scipy does milp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.milp.html
 - cvxpy docs: https://www.cvxpy.org/ (seems useful since targetted specifically towards this)
 - MILP with GA: https://github.com/pdimh/mi-lxpm
+
+## Coding Practices
+
+- so the constraint may look like this: [0] * (T-1) * N * Number of Grid Points, this is the row size
+- the total number of deciision varibles int he model this is the col size 

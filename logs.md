@@ -58,3 +58,7 @@
 ## Day 7
 
 - continue refractor
+
+## Day 8
+
+- try to get the code working with correct logic

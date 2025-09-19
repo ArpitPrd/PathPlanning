@@ -1,18 +1,14 @@
 {
   "sensing_radius": 1,
   "comm_radius": 2,
-  "col_size": 6,
-  "row_size": 6,
-  "N": 2,
-  "T": 5,
+  "col_size": 4,
+  "row_size": 4,
+  "N": 1,
+  "T": 3,
   "row_sink": 1,
   "col_sink": 1,
-  "coords_obs": [
-    [3, 3],
-    [4, 2]
-  ],
+  "coords_obs": [],
   "battery": {
-    "b_turn": 1.0,
     "b_mov": 2.0,
     "b_steady": 0.1,
     "b_full": 100.0,
@@ -20,8 +16,14 @@
     "ebase": 5.0
   },
   "solver": {
-    "time_limit": 3600,
-    "mipgap": 0
+    "time_limit": 600,
+    "mipgap": 0.01
+  },
+  "constraints": {
+    "enable_collision_avoidance": true,
+    "enable_connectivity": true,
+    "enable_mobility": true,
+    "enable_battery": false,
+    "enable_coverage": true
   }
 }
-
