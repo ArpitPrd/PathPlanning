@@ -51,7 +51,7 @@ class VarHelper:
     def b(self, t, n): return self.start_b + t * self.N + n
 
 # ==============================================================================
-# OBJECTIVE AND CONSTRAINTS (Updated for Toggling)
+# OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
 # ==============================================================================
 def setup_obj(vh):
     f = np.zeros(vh.total_vars)
@@ -62,7 +62,7 @@ def setup_obj(vh):
 def position_and_collision_constraints(vh, P_sink, cfg):
     # Eq 2: Unique position
     eq2_rows = []
-    if cfg.get("eq2_unique_position", True):
+    if cfg.get("eq2", True):
         for t in range(vh.T):
             for n in range(vh.N):
                 row = np.zeros(vh.total_vars)
@@ -72,7 +72,7 @@ def position_and_collision_constraints(vh, P_sink, cfg):
     
     # Eq 3: Collision avoidance
     eq3_rows = []
-    if cfg.get("eq3_collision_avoidance", True):
+    if cfg.get("eq3", True):
         for t in range(vh.T):
             for i in range(vh.num_grid_cells):
                 if i == P_sink: continue
@@ -86,7 +86,7 @@ def position_and_collision_constraints(vh, P_sink, cfg):
 def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
     # Eq 4: Sink connectivity
     eq4_rows = []
-    if cfg.get("eq4_sink_connectivity", True):
+    if cfg.get("eq4", True):
         for t in range(vh.T):
             row = np.zeros(vh.total_vars)
             for n in range(vh.N):
@@ -96,7 +96,7 @@ def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
 
     # Eq 5: Inter-UAV link
     eq5_rows = []
-    if cfg.get("eq5_inter_uav_link", True):
+    if cfg.get("eq5", True):
         for t in range(vh.T):
             for n in range(1, vh.N):
                 for i in range(vh.num_grid_cells):
@@ -111,7 +111,7 @@ def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
 def movement_and_mobility_constraints(vh, Irc, cfg):
     # Eq 6: Mobility rule
     eq6_rows = []
-    if cfg.get("eq6_mobility_rule", True):
+    if cfg.get("eq6", True):
         for t in range(vh.T - 1):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
@@ -121,25 +121,24 @@ def movement_and_mobility_constraints(vh, Irc, cfg):
                         row[vh.z(t, n, p)] = -1
                     eq6_rows.append(row)
 
-    # Eqs 7a, 7b, 7c: Movement definition (required for battery)
+    # Eq 7a, 7b, 7c: Movement definition
     eq7a, eq7b, eq7c = [], [], []
-    if cfg.get("eq7_movement_definition", False):
+    if cfg.get("eq7", False):
         for t in range(vh.T - 1):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
+                        # 7a: m <= z(t)
                         r7a = np.zeros(vh.total_vars); r7a[vh.m(t,n,i,j)]=1; r7a[vh.z(t,n,i)]=-1; eq7a.append(r7a)
+                        # 7b: m <= z(t+1)
                         r7b = np.zeros(vh.total_vars); r7b[vh.m(t,n,i,j)]=1; r7b[vh.z(t+1,n,j)]=-1; eq7b.append(r7b)
+                        # 7c: m >= z(t) + z(t+1) - 1
                         r7c = np.zeros(vh.total_vars); r7c[vh.m(t,n,i,j)]=-1; r7c[vh.z(t,n,i)]=1; r7c[vh.z(t+1,n,j)]=1; eq7c.append(r7c)
     
     return np.array(eq6_rows), np.array(eq7a), np.array(eq7b), np.array(eq7c)
 
 def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cfg):
-    any_battery_logic = (
-        cfg.get("eq8_charging_location", False) or
-        cfg.get("eq9_battery_discharge", False) or
-        cfg.get("eq10_battery_charge", False)
-    )
+    any_battery_logic = any(cfg.get(k, False) for k in ["eq8", "eq9", "eq10"])
     
     empty = np.empty((0, vh.total_vars))
     results = {
@@ -157,24 +156,28 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
 
     for t in range(vh.T - 1):
         for n in range(vh.N):
-            # Eq 8: Charging location
-            if cfg.get("eq8_charging_location", False):
+            # Eq 8: Charging location: x <= z_sink
+            if cfg.get("eq8", False):
                 row8 = np.zeros(vh.total_vars); row8[vh.x_charge(t,n)]=1; row8[vh.z(t,n,P_sink)]=-1; eq8.append(row8)
             
             # Eq 9: Battery discharge
-            if cfg.get("eq9_battery_discharge", False):
+            if cfg.get("eq9", False):
                 energy_consumed = np.zeros(vh.total_vars)
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
                         cost = b_steady if i == j else b_mov
                         energy_consumed[vh.m(t, n, i, j)] = cost
-                r9a = -np.copy(energy_consumed); r9a[vh.b(t+1,n)]=1; r9a[vh.b(t,n)]=-1; r9a[vh.x_charge(t,n)]=-M; eq9a.append(r9a)
-                r9b = np.copy(energy_consumed); r9b[vh.b(t+1,n)]=-1; r9b[vh.b(t,n)]=1; r9b[vh.x_charge(t,n)]=-M; eq9b.append(r9b)
-            
+                # Eq 9a: b(t+1) <= b(t) - E_consumed + M*x  -->  b(t+1) - b(t) + E_consumed - M*x <= 0
+                r9a = np.copy(energy_consumed); r9a[vh.b(t+1,n)]=1; r9a[vh.b(t,n)]=-1; r9a[vh.x_charge(t,n)]=-M; eq9a.append(r9a)
+                # Eq 9b: b(t+1) >= b(t) - E_consumed - M*x  -->  b(t+1) - b(t) + E_consumed + M*x >= 0
+                r9b = np.copy(energy_consumed); r9b[vh.b(t+1,n)]=1; r9b[vh.b(t,n)]=-1; r9b[vh.x_charge(t,n)]=M; eq9b.append(r9b)
+
             # Eq 10: Battery charge
-            if cfg.get("eq10_battery_charge", False):
+            if cfg.get("eq10", False):
+                # Eq 10a: b(t+1) <= b_full + M(1-x) --> b(t+1) + M*x <= b_full + M
                 r10a = np.zeros(vh.total_vars); r10a[vh.b(t+1,n)]=1; r10a[vh.x_charge(t,n)]=M; eq10a.append(r10a)
-                r10b = np.zeros(vh.total_vars); r10b[vh.b(t+1,n)]=-1; r10b[vh.x_charge(t,n)]=M; eq10b.append(r10b)
+                # Eq 10b: b(t+1) >= b_full - M(1-x) --> b(t+1) - M*x >= b_full - M
+                r10b = np.zeros(vh.total_vars); r10b[vh.b(t+1,n)]=1; r10b[vh.x_charge(t,n)]=-M; eq10b.append(r10b)
 
     results['charge_loc'] = np.array(eq8)
     results['discharge_leq'] = np.array(eq9a)
@@ -182,7 +185,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     results['charge_leq'] = np.array(eq10a)
     results['rhs_charge_leq'] = np.full(len(eq10a), b_full + M)
     results['charge_geq'] = np.array(eq10b)
-    results['rhs_charge_geq'] = np.full(len(eq10b), -b_full + M)
+    results['rhs_charge_geq'] = np.full(len(eq10b), b_full - M)
 
     # Initial battery state is mandatory if any other battery constraint is active
     B_initial = np.zeros((vh.N, vh.total_vars))
@@ -196,7 +199,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
 def cell_coverage_constraints(vh, Irs, cfg):
     # Eq 13: Local coverage definition
     eq13 = []
-    if cfg.get("eq13_local_coverage", True):
+    if cfg.get("eq13", True):
         for t in range(vh.T):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
@@ -210,17 +213,19 @@ def cell_coverage_constraints(vh, Irs, cfg):
     eq14, eq15 = [], []
     for i in range(vh.num_grid_cells):
         r15 = np.zeros(vh.total_vars)
-        if cfg.get("eq15_global_coverage", True):
+        if cfg.get("eq15", True):
             r15[vh.c_i(i)] = 1
             
         for t in range(vh.T):
             for n in range(vh.N):
-                if cfg.get("eq14_global_mapping", True):
+                if cfg.get("eq14", True):
+                    # c_in_k - c_i <= 0
                     r14 = np.zeros(vh.total_vars); r14[vh.c_in_k(t,n,i)]=1; r14[vh.c_i(i)]=-1; eq14.append(r14)
-                if cfg.get("eq15_global_coverage", True):
+                if cfg.get("eq15", True):
+                    # Used to build: c_i - sum(c_in_k) <= 0
                     r15[vh.c_in_k(t, n, i)] = -1
         
-        if cfg.get("eq15_global_coverage", True):
+        if cfg.get("eq15", True):
             eq15.append(r15)
         
     return np.array(eq13), np.array(eq14), np.array(eq15)

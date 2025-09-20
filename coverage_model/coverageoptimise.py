@@ -97,21 +97,23 @@ def main(cfg: dict):
     lb = np.zeros(vh.total_vars); ub = np.ones(vh.total_vars); ctype = ['B'] * vh.total_vars
 
     any_battery_enabled = any(constraints_cfg.get(k, False) for k in [
-        "eq8_charging_location", "eq9_battery_discharge", "eq10_battery_charge", "eq12_min_battery_level"
+        "eq8", "eq9", "eq10", "eq11", "eq12"
     ])
 
     if any_battery_enabled:
         print("Battery constraints are active. Setting battery variable types and bounds.")
         for t in range(T):
             for n in range(N):
-                # Set battery variables to be continuous
                 ctype[vh.b(t, n)] = 'C'
-                # Set default bounds: 0 to full capacity
                 lb[vh.b(t, n)] = 0.0
-                ub[vh.b(t, n)] = b_full
+                ub[vh.b(t, n)] = b_full # Default max, can be overridden by eq11
         
-        # Apply the minimum battery level constraint if toggled
-        if constraints_cfg.get("eq12_min_battery_level", False):
+        if constraints_cfg.get("eq11", False):
+             for t in range(T):
+                for n in range(N):
+                    ub[vh.b(t, n)] = b_full
+        
+        if constraints_cfg.get("eq12", False):
             for t in range(T):
                 for n in range(N):
                     lb[vh.b(t, n)] = e_base
@@ -123,7 +125,7 @@ def main(cfg: dict):
 
     # Coverage variables are continuous [0,1]
     any_coverage_enabled = any(constraints_cfg.get(k, False) for k in [
-        "eq13_local_coverage", "eq14_global_mapping", "eq15_global_coverage"
+        "eq13", "eq14", "eq15"
     ])
     if any_coverage_enabled:
         for i in range(vh.num_grid_cells):
