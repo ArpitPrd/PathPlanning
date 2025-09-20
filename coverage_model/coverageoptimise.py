@@ -1,9 +1,9 @@
 import numpy as np
 import argparse
 from coverage_utils import (
-    load_config, VarHelper, setup_obj, pos_sink, pos_obs, ij_to_i, i_to_ij,
+    load_config, VarHelper, setup_objective_and_sense, pos_sink, pos_obs, ij_to_i, i_to_ij,
     position_and_collision_constraints, connectivity_constraints, movement_and_mobility_constraints,
-    cell_coverage_constraints, battery_constraints, combine_constraints, cplex_solver
+    cell_coverage_constraints, battery_constraints, model_specific_constraints, combine_constraints, cplex_solver
 )
 from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths
@@ -57,9 +57,11 @@ def main(cfg: dict):
     initial_battery = battery.get("initial_battery", b_full)
     
     solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 600), solver_cfg.get("mipgap", 0.01)
-
-    # --- Read Constraint Toggles from Config ---
+    
+    # --- Read Model and Constraint Toggles from Config ---
+    model_cfg = cfg.get("model", {"name": "maximize_coverage"}) # Defaults to model 1
     constraints_cfg = cfg.get("constraints", {})
+    print(f"Using optimization model: {model_cfg.get('name')}")
     print("Constraints config:", constraints_cfg)
 
     sz = (row_size, col_size); P_sink, _ = pos_sink(row_sink - 1, col_sink - 1, sz)
@@ -70,7 +72,7 @@ def main(cfg: dict):
     # ==============================
     print("2. Initializing variable helper and objective function...")
     vh = VarHelper(N, T, row_size, col_size)
-    objective = setup_obj(vh)
+    objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady)
 
     # ==============================
     # 3. COMPUTE NEIGHBORHOOD SETS
@@ -83,12 +85,15 @@ def main(cfg: dict):
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
     # ==============================
-    print("4. Building constraint matrices with toggles...")
+    print("4. Building common constraint matrices with toggles...")
     C2, C3 = position_and_collision_constraints(vh, P_sink, constraints_cfg)
     C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, constraints_cfg)
     C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
     battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
     C13, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
+    
+    print("4a. Building model-specific constraints...")
+    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady)
 
     # ==============================
     # 5. DEFINE BOUNDS AND TYPES
@@ -157,6 +162,9 @@ def main(cfg: dict):
         (battery_blocks['charge_geq'], battery_blocks['rhs_charge_geq'])
     ]
 
+    if leq_model_block: leq_blocks.append(leq_model_block)
+    if geq_model_block: geq_blocks.append(geq_model_block)
+
     A_eq, b_eq, A_ineq, b_ineq, senses = combine_constraints(eq_blocks, leq_blocks, geq_blocks)
 
     # ==============================
@@ -164,7 +172,7 @@ def main(cfg: dict):
     # ==============================
     print("7. Handing off to CPLEX solver...")
     solution, fval, _, status = cplex_solver(
-        "CoverageOptimization", objective, lb, ub, "".join(ctype),
+        "CoverageOptimization", objective, objective_sense, lb, ub, "".join(ctype),
         A_eq, b_eq, A_ineq, b_ineq, senses, time_limit, mipgap
     )
 

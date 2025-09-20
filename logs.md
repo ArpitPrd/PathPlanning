@@ -62,3 +62,10 @@
 ## Day 8
 
 - try to get the code working with correct logic
+
+## Day 9
+
+- getting this entire battery management thing to life
+- battery system is working, added two classes of equations to support different types of optimisation
+- need to figure out one to one correspondence of the equations and the model.
+- need to verify the code matches what we intend to do.

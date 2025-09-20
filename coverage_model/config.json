@@ -19,6 +19,11 @@
     "time_limit": 600,
     "mipgap": 0.01
   },
+  "model": {
+    "name": "minimize_energy", 
+    "B_max": 100.0,
+    "C_min": 5
+  },
   "constraints": {
     "eq2": 1,
     "eq3": 1,

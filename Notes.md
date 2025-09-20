@@ -172,3 +172,32 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 
 - so the constraint may look like this: [0] * (T-1) * N * Number of Grid Points, this is the row size
 - the total number of deciision varibles int he model this is the col size 
+
+## Points for the Presentation (Mid-Sem)
+
+- Write the random benchmark (what we plan to meet)
+
+## Docs for config.json file
+
+- Supports the following toggling mechanism
+    - Toggle all the equations (turn them on/ off as per req)
+    - toggle the maximisation function 
+        - Maximise Coverage with bound of battery consumption 
+        - Minimise battery consumption with a min bound on the coverage area
+
+- model name has two values possible as of now: maximize_coverage, minimize_battery
+
+- maximize coverage:
+    - worked at battery level B_max = 80
+- minimize battery consumption:
+    - worked at C_min = 5 (because on an average the consumption was 7)
+
+
+## @GodShahid please help me in this
+
+- 1: please help verify the equations if they make sense to you (I have verified the maximise coevrage with battery consumption upper bound, you just have to do the other)
+- 2: please help verify each equation with the code, if they are coherent
+- 3: please see if the maximisation equations are correctly coded
+- 4: Please add your ideas further from here
+
+Till then I will start with the PPT

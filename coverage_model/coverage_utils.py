@@ -53,11 +53,29 @@ class VarHelper:
 # ==============================================================================
 # OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
 # ==============================================================================
-def setup_obj(vh):
+def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
+    """Sets up the objective vector and optimization sense based on the model config."""
+    model_name = model_cfg.get("name", "maximize_coverage")
     f = np.zeros(vh.total_vars)
-    for i in range(vh.num_grid_cells):
-        f[vh.c_i(i)] = 1.0
-    return f
+    
+    if model_name == "maximize_coverage":
+        # Model 1: Maximize sum(c_i)
+        for i in range(vh.num_grid_cells):
+            f[vh.c_i(i)] = 1.0
+        return f, cplex.Cplex().objective.sense.maximize
+    
+    elif model_name == "minimize_energy":
+        # Model 2: Minimize total energy consumption
+        for t in range(vh.T - 1):
+            for n in range(vh.N):
+                for i in range(vh.num_grid_cells):
+                    for j in range(vh.num_grid_cells):
+                        cost = b_steady if i == j else b_mov
+                        f[vh.m(t, n, i, j)] = cost
+        return f, cplex.Cplex().objective.sense.minimize
+        
+    else:
+        raise ValueError(f"Unknown model name in config: {model_name}")
 
 def position_and_collision_constraints(vh, P_sink, cfg):
     # Eq 2: Unique position
@@ -230,6 +248,38 @@ def cell_coverage_constraints(vh, Irs, cfg):
         
     return np.array(eq13), np.array(eq14), np.array(eq15)
 
+def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
+    """Builds the single constraint unique to each optimization model."""
+    model_name = model_cfg.get("name")
+
+    if model_name == "maximize_coverage":
+        B_max = model_cfg.get("B_max")
+        if B_max is None: raise ValueError("B_max must be set for 'maximize_coverage' model.")
+        
+        # Eq 16: Total energy budget: sum(energy) <= B_max
+        row = np.zeros(vh.total_vars)
+        for t in range(vh.T - 1):
+            for n in range(vh.N):
+                for i in range(vh.num_grid_cells):
+                    for j in range(vh.num_grid_cells):
+                        cost = b_steady if i == j else b_mov
+                        row[vh.m(t, n, i, j)] = cost
+        
+        return (np.array([row]), np.array([B_max])), None
+
+    elif model_name == "minimize_energy":
+        C_min = model_cfg.get("C_min")
+        if C_min is None: raise ValueError("C_min must be set for 'minimize_energy' model.")
+            
+        # Eq 17: Minimum coverage: sum(c_i) >= C_min
+        row = np.zeros(vh.total_vars)
+        for i in range(vh.num_grid_cells):
+            row[vh.c_i(i)] = 1
+            
+        return None, (np.array([row]), np.array([C_min]))
+    
+    return None, None # No constraints for unknown or unspecified models
+
 # ==============================================================================
 # CPLEX SOLVER and COMBINER (No changes needed)
 # ==============================================================================
@@ -257,10 +307,10 @@ def combine_constraints(eq_blocks, leq_blocks, geq_blocks):
     
     return A_eq, b_eq, A_ineq, b_ineq, senses
 
-def cplex_solver(prob_name, objective, lb, ub, ctype, A_eq, b_eq, A_ineq, b_ineq, senses, time_limit, mipgap):
+def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_eq, A_ineq, b_ineq, senses, time_limit, mipgap):
     prob = cplex.Cplex()
     prob.set_problem_name(prob_name)
-    prob.objective.set_sense(prob.objective.sense.maximize)
+    prob.objective.set_sense(objective_sense)
     prob.variables.add(obj=objective, lb=lb, ub=ub, types=ctype, names=[f"var_{i}" for i in range(len(objective))])
 
     if A_eq.shape[0] > 0:
