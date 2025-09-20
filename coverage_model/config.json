@@ -4,7 +4,7 @@
   "col_size": 4,
   "row_size": 4,
   "N": 1,
-  "T": 3,
+  "T": 2,
   "row_sink": 1,
   "col_sink": 1,
   "coords_obs": [],
@@ -12,18 +12,26 @@
     "b_mov": 2.0,
     "b_steady": 0.1,
     "b_full": 100.0,
-    "initial_battery": 50.0,
-    "ebase": 5.0
+    "initial_battery": 100.0,
+    "ebase": 0.0
   },
   "solver": {
     "time_limit": 600,
     "mipgap": 0.01
   },
   "constraints": {
-    "enable_collision_avoidance": true,
-    "enable_connectivity": true,
-    "enable_mobility": true,
-    "enable_battery": false,
-    "enable_coverage": true
+    "eq2_unique_position": 1,
+    "eq3_collision_avoidance": 1,
+    "eq4_sink_connectivity": 1,
+    "eq5_inter_uav_link": 1,
+    "eq6_mobility_rule": 1,
+    "eq7_movement_definition": 1,
+    "eq8_charging_location": 1,
+    "eq9_battery_discharge": 1,
+    "eq10_battery_charge": 1,
+    "eq12_min_battery_level": 1,
+    "eq13_local_coverage": 1,
+    "eq14_global_mapping": 1,
+    "eq15_global_coverage": 1
   }
 }

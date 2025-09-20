@@ -60,12 +60,7 @@ def main(cfg: dict):
 
     # --- Read Constraint Toggles from Config ---
     constraints_cfg = cfg.get("constraints", {})
-    enable_collision = constraints_cfg.get("enable_collision_avoidance", True)
-    enable_connectivity = constraints_cfg.get("enable_connectivity", True)
-    enable_mobility = constraints_cfg.get("enable_mobility", True)
-    enable_battery = constraints_cfg.get("enable_battery", True)
-    enable_coverage = constraints_cfg.get("enable_coverage", True)
-    print("Constraints enabled:", constraints_cfg)
+    print("Constraints config:", constraints_cfg)
 
     sz = (row_size, col_size); P_sink, _ = pos_sink(row_sink - 1, col_sink - 1, sz)
     obs = pos_obs(coords_obs); O_lin = {ij_to_i((r - 1, c - 1), sz) for r, c in obs} if obs.size > 0 else set()
@@ -89,11 +84,11 @@ def main(cfg: dict):
     # 4. BUILD CONSTRAINT MATRICES
     # ==============================
     print("4. Building constraint matrices with toggles...")
-    C2, C3 = position_and_collision_constraints(vh, P_sink, enable_collision)
-    C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, enable_connectivity)
-    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, enable_mobility, enable_battery)
-    battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, enable_battery)
-    C13, C14, C15 = cell_coverage_constraints(vh, Irs, enable_coverage)
+    C2, C3 = position_and_collision_constraints(vh, P_sink, constraints_cfg)
+    C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, constraints_cfg)
+    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
+    battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
+    C13, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
 
     # ==============================
     # 5. DEFINE BOUNDS AND TYPES
@@ -101,18 +96,36 @@ def main(cfg: dict):
     print("5. Defining variable bounds and types...")
     lb = np.zeros(vh.total_vars); ub = np.ones(vh.total_vars); ctype = ['B'] * vh.total_vars
 
-    if enable_battery:
+    any_battery_enabled = any(constraints_cfg.get(k, False) for k in [
+        "eq8_charging_location", "eq9_battery_discharge", "eq10_battery_charge", "eq12_min_battery_level"
+    ])
+
+    if any_battery_enabled:
+        print("Battery constraints are active. Setting battery variable types and bounds.")
         for t in range(T):
             for n in range(N):
-                lb[vh.b(t, n)] = e_base
-                ub[vh.b(t, n)] = b_full
+                # Set battery variables to be continuous
                 ctype[vh.b(t, n)] = 'C'
+                # Set default bounds: 0 to full capacity
+                lb[vh.b(t, n)] = 0.0
+                ub[vh.b(t, n)] = b_full
+        
+        # Apply the minimum battery level constraint if toggled
+        if constraints_cfg.get("eq12_min_battery_level", False):
+            for t in range(T):
+                for n in range(N):
+                    lb[vh.b(t, n)] = e_base
 
+    # Obstacle constraints
     for q_obs in O_lin:
         for t in range(T):
             for n in range(N): ub[vh.z(t, n, q_obs)] = 0
 
-    if enable_coverage:
+    # Coverage variables are continuous [0,1]
+    any_coverage_enabled = any(constraints_cfg.get(k, False) for k in [
+        "eq13_local_coverage", "eq14_global_mapping", "eq15_global_coverage"
+    ])
+    if any_coverage_enabled:
         for i in range(vh.num_grid_cells):
             ctype[vh.c_i(i)] = 'C'
             for t in range(T):
@@ -162,11 +175,16 @@ def main(cfg: dict):
     
     if solution is not None:
         uav_paths, covered_cells_idx, uav_covered_nodes = process_results(solution, vh, Irs, sz)
-        battery_levels = {n: [solution[vh.b(t, n)] for t in range(vh.T)] for n in range(vh.N)}
+        
+        battery_levels = {}
+        if any_battery_enabled:
+             battery_levels = {n: [solution[vh.b(t, n)] for t in range(vh.T)] for n in range(vh.N)}
 
         display_results(vh, uav_paths, covered_cells_idx, battery_levels)
         
-        aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
+        aux_tensor = None
+        if battery_levels:
+            aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
 
         plot_interactive_paths(
             G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
@@ -182,11 +200,11 @@ if __name__ == "__main__":
     parser.add_argument("--config", type=str, default="config.json", help="Path to JSON config file.")
     args = parser.parse_args()
     
-    # try:
-    config = load_config(args.config)
-    main(config)
-    print("\nOptimization script finished.")
-    # except FileNotFoundError:
-    #     print(f"Error: Config file not found at {args.config}")
-    # except Exception as e:
-    #     print(f"An unexpected error occurred: {e}")
+    try:
+        config = load_config(args.config)
+        main(config)
+        print("\nOptimization script finished.")
+    except FileNotFoundError:
+        print(f"Error: Config file not found at {args.config}")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
