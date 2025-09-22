@@ -55,6 +55,8 @@ To find the areas that cannot be visited
 6 | Reinforcement Learning for Autonomous navigation of UAVs, papers: [link](https://arxiv.org/abs/1801.05086), [link](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) | Not Available | RL for indoor environments, paper 1 has PID controller
 7 | [Multi-objective path planning for multi-UAV connectivity and area coverage](https://www.sciencedirect.com/science/article/pii/S1570870524001318?via%3Dihub) | Not Available | uses NSGA-II to optimise both on coverage and time
 8 | [Throughput Maximization in Multi-UAV](https://ieeexplore.ieee.org/document/8476567) | NA | used for maximising the throughput of communication, seems interesting, does power + througput 
+9 | [Adaptive UAV-Trajectory Optimization Under Quality of Service Constraints: A Model-Free Solution](https://ieeexplore.ieee.org/document/9114970) |  Check | Update
+
 
 
 ## Drone type vs battery life vs costs
@@ -176,6 +178,11 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 ## Points for the Presentation (Mid-Sem)
 
 - Write the random benchmark (what we plan to meet)
+- why are we not using any other technique such as ML or DL etc..
+- what is your contributions to this project going to look like
+- why is this an important problem 
+- where can you improve
+- how can you improve
 
 ## Docs for config.json file
 

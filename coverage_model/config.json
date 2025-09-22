@@ -20,7 +20,7 @@
     "mipgap": 0.01
   },
   "model": {
-    "name": "minimize_energy", 
+    "name": "maximize_coverage", 
     "B_max": 100.0,
     "C_min": 5
   },
