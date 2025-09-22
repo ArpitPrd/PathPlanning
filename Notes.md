@@ -56,6 +56,7 @@ To find the areas that cannot be visited
 7 | [Multi-objective path planning for multi-UAV connectivity and area coverage](https://www.sciencedirect.com/science/article/pii/S1570870524001318?via%3Dihub) | Not Available | uses NSGA-II to optimise both on coverage and time
 8 | [Throughput Maximization in Multi-UAV](https://ieeexplore.ieee.org/document/8476567) | NA | used for maximising the throughput of communication, seems interesting, does power + througput 
 9 | [Adaptive UAV-Trajectory Optimization Under Quality of Service Constraints: A Model-Free Solution](https://ieeexplore.ieee.org/document/9114970) |  Check | Update
+10 | [Path Planning for Fully Autonomous UAVs—A Taxonomic Review and Future Perspectives](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=10840190) | Check | Update
 
 
 
