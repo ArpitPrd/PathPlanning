@@ -21,7 +21,7 @@ def coverage_optimize():
     # User defined input
     # ==============================
     Rs = 1  # Sensing Radius
-    Rc = 4 * Rs  # Communication Radius
+    Rc = 2 * Rs  # Communication Radius
     
     # ==============================
     # Network Grid
@@ -45,7 +45,9 @@ def coverage_optimize():
     sink = np.array([row + 1, col + 1])  # Convert to 1-based for consistency with TG
     
     # Obstacles (empty in this case)
-    Obs = np.array([(3,3), (5,3)]).reshape(-1, 2)  # Empty obstacles with proper shape
+    # Obs = np.array([(3,3), (5,3)]).reshape(-1, 2)  # Empty obstacles with proper shape
+    Obs = np.array([]).reshape(-1, 2)  # Empty obstacles with proper shape
+    
     
     
     if(Obs.size > 0):

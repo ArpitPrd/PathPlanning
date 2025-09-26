@@ -3,7 +3,7 @@ import cplex
 from cplex.exceptions import CplexError
 import time
 import json
-
+import sys
 # ==============================================================================
 # CONFIG AND GRID HELPERS (No changes)
 # ==============================================================================
@@ -329,7 +329,7 @@ def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_e
     prob.parameters.mip.tolerances.mipgap.set(mipgap)
     prob.parameters.timelimit.set(time_limit)
     prob.parameters.threads.set(4)
-    prob.set_log_stream(None); prob.set_error_stream(None); prob.set_warning_stream(None); prob.set_results_stream(None)
+    prob.set_log_stream(sys.stdout); prob.set_error_stream(sys.stdout); prob.set_warning_stream(None); prob.set_results_stream(sys.stdout)
 
     print(f"Starting CPLEX solver (timelimit: {time_limit}s, mipgap: {mipgap})...")
     start_time = time.time()

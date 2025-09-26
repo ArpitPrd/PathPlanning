@@ -1,15 +1,15 @@
 {
-  "sensing_radius": 1,
-  "comm_radius": 2,
-  "col_size": 4,
-  "row_size": 4,
-  "N": 1,
-  "T": 2,
+  "sensing_radius": 1.415,
+  "comm_radius": 3,
+  "col_size": 7,
+  "row_size": 7,
+  "N": 2,
+  "T": 5,
   "row_sink": 1,
   "col_sink": 1,
-  "coords_obs": [],
+  "coords_obs": [[2,3],[5,5]],
   "battery": {
-    "b_mov": 2.0,
+    "b_mov": 2,
     "b_steady": 0.1,
     "b_full": 100.0,
     "initial_battery": 100.0,
@@ -20,7 +20,7 @@
     "mipgap": 0.01
   },
   "model": {
-    "name": "minimize_energy", 
+    "name": "maximize_coverage", 
     "B_max": 100.0,
     "C_min": 5
   },

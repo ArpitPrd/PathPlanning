@@ -5,9 +5,14 @@ from coverage_utils import (
     position_and_collision_constraints, connectivity_constraints, movement_and_mobility_constraints,
     cell_coverage_constraints, battery_constraints, model_specific_constraints, combine_constraints, cplex_solver
 )
-from Gpt import communicable_gpt, sensing_gpt
-from pathplotter import plot_interactive_paths
+from Gpt_1 import communicable_gpt, sensing_gpt
+from pathplotter_1 import plot_interactive_paths, animate_paths
+import sys
 
+import matplotlib.pyplot as plt
+from matplotlib import patches
+from matplotlib.widgets import Button
+from matplotlib import animation
 def process_results(solution, vh, Irs, sz):
     uav_paths = {n: [] for n in range(vh.N)}
     uav_covered_nodes = {n: [] for n in range(vh.N)}
@@ -196,11 +201,20 @@ def main(cfg: dict):
         if battery_levels:
             aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
 
-        plot_interactive_paths(
-            G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
-            sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
-            Nx=col_size, Ny=row_size, O_lin=list(O_lin), aux_tensor=aux_tensor
-        )
+        # render_at_t, T = plot_interactive_paths(
+        #     G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
+        #     sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
+        #     Nx=col_size, Ny=row_size, O_lin=list(O_lin), aux_tensor=aux_tensor
+        # )
+        animate_paths(G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes, sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
+              Nx=col_size, Ny=row_size, O_lin=O_lin, aux_tensor=aux_tensor,
+              filename="coverage.mp4", fps=1)
+
+        # fig = plt.figure(figsize=(16, 8))
+        # # (setup axes as before)
+
+        # ani = animation.FuncAnimation(fig, lambda t: render_at_t(t), frames=T, interval=500)
+        # ani.save("uav_simulation.mp4", writer="ffmpeg", fps=2)
     else:
         print("Optimization failed to find a feasible solution.")
 
