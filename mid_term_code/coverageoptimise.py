@@ -7,6 +7,7 @@ from coverage_utils import (
 )
 from Gpt_1 import communicable_gpt, sensing_gpt
 from pathplotter_1 import plot_interactive_paths, animate_paths
+from memory import get_total_size
 import sys
 
 import matplotlib.pyplot as plt
@@ -86,7 +87,10 @@ def main(cfg: dict):
     all_coords = np.array([i_to_ij(i, sz) for i in range(row_size * col_size)])
     Irc, Irc_sink = communicable_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
     _, Irs, _ = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
-
+    print("Memory usage after computing neighborhoods:")
+    get_total_size(Irc, verbose=True)
+    get_total_size(Irc_sink, verbose=True)
+    get_total_size(Irs, verbose=True)
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
     # ==============================
@@ -143,6 +147,19 @@ def main(cfg: dict):
             for t in range(T):
                 for n in range(N): ctype[vh.c_in_k(t,n,i)] = 'C'
 
+    print("\nMemory usage after building constraints:")
+    get_total_size(C2, verbose=True)
+    get_total_size(C3, verbose=True)
+    get_total_size(C4, verbose=True)
+    get_total_size(C5, verbose=True)
+    get_total_size(C6, verbose=True)
+    get_total_size(C7a, verbose=True)
+    get_total_size(C7b, verbose=True)
+    get_total_size(C7c, verbose=True)
+    get_total_size(battery_blocks, verbose=True)
+    get_total_size(C13, verbose=True)
+    get_total_size(C14, verbose=True)
+    get_total_size(C15, verbose=True)
     # ==============================
     # 6. COMBINE CONSTRAINTS
     # ==============================
@@ -171,7 +188,11 @@ def main(cfg: dict):
     if geq_model_block: geq_blocks.append(geq_model_block)
 
     A_eq, b_eq, A_ineq, b_ineq, senses = combine_constraints(eq_blocks, leq_blocks, geq_blocks)
-
+    print("\nMemory usage after combining constraints:")
+    get_total_size(A_eq, verbose=True)
+    get_total_size(b_eq, verbose=True)
+    get_total_size(A_ineq, verbose=True)
+    get_total_size(b_ineq, verbose=True)
     # ==============================
     # 7. SOLVE MILP
     # ==============================
@@ -201,14 +222,14 @@ def main(cfg: dict):
         if battery_levels:
             aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
 
-        # render_at_t, T = plot_interactive_paths(
-        #     G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
-        #     sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
-        #     Nx=col_size, Ny=row_size, O_lin=list(O_lin), aux_tensor=aux_tensor
-        # )
-        animate_paths(G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes, sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
-              Nx=col_size, Ny=row_size, O_lin=O_lin, aux_tensor=aux_tensor,
-              filename="coverage.mp4", fps=1)
+        render_at_t, T = plot_interactive_paths(
+            G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
+            sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
+            Nx=col_size, Ny=row_size, O_lin=list(O_lin), aux_tensor=aux_tensor
+        )
+        # animate_paths(G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes, sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
+        #       Nx=col_size, Ny=row_size, O_lin=O_lin, aux_tensor=aux_tensor,
+        #       filename="coverage.mp4", fps=1)
 
         # fig = plt.figure(figsize=(16, 8))
         # # (setup axes as before)
