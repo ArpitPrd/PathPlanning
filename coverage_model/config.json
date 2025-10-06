@@ -3,8 +3,8 @@
   "comm_radius": 2,
   "col_size": 4,
   "row_size": 4,
-  "N": 1,
-  "T": 2,
+  "N": 4,
+  "T": 1,
   "row_sink": 1,
   "col_sink": 1,
   "coords_obs": [],
@@ -20,9 +20,9 @@
     "mipgap": 0.01
   },
   "model": {
-    "name": "maximize_coverage", 
-    "B_max": 100.0,
-    "C_min": 5
+    "name": "minimize_energy", 
+    "B_max": 80.0,
+    "C_min": 6
   },
   "constraints": {
     "eq2": 1,

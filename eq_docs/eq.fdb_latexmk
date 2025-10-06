@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1758386850.75967 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" "eq.pdf" "eq" 1758386850.97165 0
+["pdflatex"] 1759745358.51171 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" "eq.pdf" "eq" 1759745358.74682 0
   "/home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1757357335.9656 96713 7ab18899c2ea864bf23a03acef9370b6 ""
   "/home/arpit/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1756723162.90785 11548 e75a29bd56f6661bc942eaef3a0d6a52 ""
   "/home/arpit/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1755100822.55062 13252391 fb469f35341a3ce44cf4e6a1e5ca927b ""
@@ -42,9 +42,9 @@
   "/home/arpit/.miktex/texmfs/install/tex/latex/geometry/geometry.sty" 1754929376.08777 42759 e63af52ccddba7489ac0e17d6a3344bd ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/graphics/keyval.sty" 1754929364.76534 2671 d9941f4bf4750e9b0603c9a2ec54693b ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def" 1754929655.7344 30351 a2b09edc6c93a742566b222c33d0278e ""
-  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" 1758386850.19449 5426 5cd7dfa69e2fff71625f0478cb10507e ""
-  "eq.aux" 1758386850.9067 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "eq.tex" 1758386850.19449 5426 5cd7dfa69e2fff71625f0478cb10507e ""
+  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" 1759745358.00355 5426 3e6502e03c5f45dd61b7260c97c0480c ""
+  "eq.aux" 1759745358.67797 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
+  "eq.tex" 1759745358.00355 5426 3e6502e03c5f45dd61b7260c97c0480c ""
   (generated)
   "eq.aux"
   "eq.log"
