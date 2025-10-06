@@ -27,3 +27,17 @@ https://or.stackexchange.com/questions/13239/solving-a-large-scale-milp-problem-
 This talks about some big M constraints-> can we optimise it? Does sound like a pretty laborious task to me.
 https://public.dhe.ibm.com/software/products/Decision_Optimization/docs/pdf/paramcplex.pdf
 
+
+*cplex would require either admin permission, or else we'll need to ask them to get cplex installed for us*
+
+
+
+
+pt2. Half of the modelling is done for the stations, charging and discharging equations, now, there has to be different stations, so the boolean variable has to be one for only one drone at a time, or let us say each station has a capacity for k drones. 
+
+1. Should we relax the collision constraints -> Depends on if we want to ??
+2. Should we go for modelling obstacles more extensively? 
+- Blocking LOS?
+- Only centre or peripheries
+
+3. Model for different stations has been made
