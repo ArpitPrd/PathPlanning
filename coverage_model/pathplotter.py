@@ -109,4 +109,4 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     fig.canvas.mpl_connect('key_press_event', on_key)
     render_at_t(0)
     plt.tight_layout(rect=[0, 0.1, 1, 1])
-    plt.show()
+    plt.savefig('plot.png')
