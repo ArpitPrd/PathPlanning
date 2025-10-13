@@ -1,0 +1,174 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\begin{document}
+
+\section*{MILP Formulation for UAV Path Planning}
+
+\subsection*{Variable and Parameter Descriptions}
+\textbf{Sets and Indices}
+\begin{itemize}
+    \item $i, j \in G$: Set of all grid points[cite: 4].
+    \item $n \in N$: Set of all UAVs[cite: 5].
+    \item $k \in K$: Set of all time steps[cite: 6].
+    \item $s \in G$: Location of the base station (sink)[cite: 7].
+    \item $C_i \subset G$: Set of grid points in communication range of point $i$[cite: 8].
+    \item $S_i \subset G$: Set of grid points in sensing range of point $i$[cite: 9].
+\end{itemize}
+
+\textbf{Parameters}
+\begin{itemize}
+    \item $b_{mov}$: Energy consumed for moving one grid step[cite: 11].
+    \item $b_{steady}$: Energy consumed while idle for one time step[cite: 11].
+    \item $b_{full}$: Maximum battery capacity for a single UAV[cite: 12].
+    \item $e_{base}$: Minimum required battery level for a single UAV[cite: 13].
+    \item $M$: A large constant for Big-M method (e.g., $b_{full}$)[cite: 14].
+    \item $B_{\max}$: Maximum allowable total energy consumption for the entire fleet[cite: 15].
+    \item $C_{\min}$: Minimum number of grid points that must be covered[cite: 16].
+\end{itemize}
+
+\textbf{Decision Variables}
+\begin{itemize}
+    \item $z_{i,n}^{k} \in \{0,1\}$: 1 if UAV $n$ is at grid point $i$ at time $k$[cite: 17].
+    \item $c_{i} \in [0,1]$: 1 if grid point $i$ is covered at any time[cite: 18].
+    \item $c_{i,n}^{k} \in [0,1]$: 1 if grid point $i$ is covered by UAV $n$ at time $k$[cite: 19].
+    \item $m_{i,j,n}^{k} \in \{0,1\}$: 1 if UAV $n$ moves from $i$ to $j$ between $k$ and $k+1$[cite: 20].
+    \item $x_{n}^{k} \in \{0,1\}$: 1 if UAV $n$ is charging at time $k$[cite: 21].
+    \item $b_{n}^{k} \in \mathbb{R}^+$: Battery level of UAV $n$ at time $k$[cite: 22].
+\end{itemize}
+
+\section*{Multi-Objective Formulations}
+Below are two distinct models for optimizing the UAV path planning based on different mission priorities. The common constraints applicable to both models are listed in the subsequent section.
+
+\subsection*{Model 1: Maximize Coverage with a Battery Consumption Threshold}
+This model aims to achieve the maximum possible area coverage without exceeding a total energy budget for the fleet[cite: 27].
+
+\textbf{Objective Function}
+\begin{align}
+    \max \sum_{i \in G} c_i \quad &\text{Maximize coverage} \tag{1}
+\end{align}
+
+\textbf{Additional Constraint}
+\begin{align}
+    \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G} m_{i,i,n}^{k} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{16}
+\end{align}
+
+\subsection*{Model 2: Minimize Battery Consumption with a Coverage Threshold}
+This model aims to find the most energy-efficient flight paths while ensuring a minimum required area is surveyed[cite: 37].
+
+\textbf{Objective Function}
+\begin{align}
+    \min \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G} m_{i,i,n}^{k} \right) \quad &\text{Minimize total energy} \tag{2}
+\end{align}
+
+\textbf{Additional Constraint}
+\begin{align}
+    \sum_{i \in G} c_{i} \ge C_{\min} \quad &\text{Minimum coverage} \tag{17}
+\end{align}
+
+\subsection*{Common Constraints}
+The following constraints are applicable to both models presented above[cite: 45].
+\begin{align}
+    \sum_{i \in G} z_{i,n}^{k} &= 1 \quad \forall n, k \quad &\text{Unique position} \tag{2} \\
+    \sum_{n \in N} z_{i,n}^{k} &\le 1 \quad \forall i \neq s, k \quad &\text{Collision avoidance} \tag{3} \\
+    \sum_{n \in N} \sum_{p \in C_s} z_{p,n}^{k} &\ge 1 \quad \forall k \quad &\text{Sink connectivity} \tag{4} \\
+    z_{i,n}^{k} &\le \sum_{p \in C_i} z_{p, n-1}^{k} \quad \forall i, n>1, k \quad &\text{Inter-UAV link} \tag{5} \\
+    z_{i,n}^{k+1} &\le \sum_{p \in C_i} z_{p,n}^{k} \quad \forall i, n, k < K_{max} \quad &\text{Mobility rule} \tag{6} \\
+    \nonumber \\
+    m_{i,j,n}^{k} &\le z_{i,n}^{k} \quad \forall i, j, n, k \quad &\text{Movement definition} \tag{7a} \\
+    m_{i,j,n}^{k} &\le z_{j,n}^{k+1} \quad \forall i, j, n, k \quad &\text{Movement definition} \tag{7b} \\
+    m_{i,j,n}^{k} &\ge z_{i,n}^{k} + z_{j,n}^{k+1} - 1 \quad \forall i, j, n, k \quad &\text{Movement definition} \tag{7c} \\
+    \nonumber \\
+    x_{n}^{k} &\le z_{s,n}^{k} \quad \forall n, k \quad &\text{Charging location} \tag{8} \\
+    b_{n}^{k+1} &\le b_{n}^{k} - \sum_{i,j, i \ne j} m_{i,j,n}^{k} b_{mov} - \sum_{i} m_{i,i,n}^{k} b_{steady} + M \cdot x_{n}^{k} \quad &\text{Battery discharge} \tag{9a} \\
+    b_{n}^{k+1} &\ge b_{n}^{k} - \sum_{i,j, i \ne j} m_{i,j,n}^{k} b_{mov} - \sum_{i} m_{i,i,n}^{k} b_{steady} \quad &\text{Battery discharge} \tag{9b} \\
+    b_{n}^{k+1} &\le b_{full} + M \cdot (1 - x_{n}^{k}) \quad \forall n, k \quad &\text{Battery charge} \tag{10a} \\
+    b_{n}^{k+1} &\ge b_{full} - M \cdot (1 - x_{n}^{k}) \quad \forall n, k \quad &\text{Battery charge} \tag{10b} \\
+    b_{n}^{k} &\le b_{full} \quad \forall n, k \quad &\text{Max battery} \tag{11} \\
+    b_{n}^{k} &\ge e_{base} \quad \forall n, k \quad &\text{Min battery} \tag{12} \\
+    \nonumber \\
+    c_{i,n}^{k} &= \sum_{p \in S_i} z_{p,n}^{k} \quad \forall i, n, k \quad &\text{Local coverage} \tag{13} \\
+    c_{i,n}^{k} &\le c_i \quad \forall i, n, k \quad &\text{Global mapping} \tag{14} \\
+    c_i &\le \sum_{n \in N} \sum_{k \in K} c_{i,n}^{k} \quad \forall i \quad &\text{Global coverage} \tag{15}
+\end{align}
+
+\newpage
+
+\section*{Hierarchical Decomposition for Scalability}
+To address the scalability issues of the unified MILP, we decompose the problem into a two-stage hierarchical structure: a high-level Master Problem for coarse-grained regional assignment and a low-level Subproblem for fine-grained path planning within each region.
+
+\subsection*{Stage 1: The Master Problem MILP Formulation}
+This problem operates on a coarse grid of regions, assigning UAVs to sequences of these regions over large time intervals.
+
+\textbf{Sets and Indices}
+\begin{itemize}
+    \item $n \in N$: Set of all UAVs.
+    \item $p, q \in R$: Set of disjoint regions that partition the main grid $G$.
+    \item $t \in T$: Set of coarse time intervals.
+    \item $R_s \in R$: The region containing the base station $s$.
+\end{itemize}
+
+\textbf{Parameters}
+\begin{itemize}
+    \item $C_p^{est}$: Estimated maximum coverage value in region $p$.
+    \item $E_p^{fly}$: Estimated energy for a UAV to operate in region $p$ for one interval $t$.
+    \item $E_{pq}^{travel}$: Estimated energy for a UAV to travel from region $p$ to adjacent region $q$.
+    \item $B_{\max}$: Maximum total energy consumption for the fleet.
+\end{itemize}
+
+\textbf{Decision Variables}
+\begin{itemize}
+    \item $A_{n,p,t} \in \{0,1\}$: 1 if UAV $n$ is assigned to region $p$ during interval $t$.
+    \item $Y_{n,p,q,t} \in \{0,1\}$: 1 if UAV $n$ travels from region $p$ to $q$ at the end of interval $t$.
+\end{itemize}
+
+\textbf{Objective Function}
+\begin{align}
+    \max \sum_{t \in T} \sum_{p \in R} \sum_{n \in N} C_p^{est} \cdot A_{n,p,t} \quad &\text{Maximize total potential coverage}
+\end{align}
+
+\textbf{Constraints}
+\begin{align}
+    \sum_{p \in R} A_{n,p,t} &= 1 \quad \forall n \in N, t \in T \quad &\text{UAV Assignment} \\
+    A_{n,p,t} + A_{n,q,t+1} - 1 &\le Y_{n,p,q,t} \quad \forall n, t<|T|, \text{adj } p,q \quad &\text{Transition Logic} \\
+    \sum_{t,p,n} E_p^{fly} \cdot A_{n,p,t} + \sum_{t,n,p,q} E_{pq}^{travel} \cdot Y_{n,p,q,t} &\le B_{\max} \quad &\text{Total Energy Budget} \\
+    A_{n,R_s,1} &= 1 \quad \forall n \in N \quad &\text{Initial Location}
+\end{align}
+
+\subsection*{Stage 2: The Subproblem MILP Formulation}
+For each assignment $(n, p, t)$ from the Master Problem, a path-planning subproblem is solved within the specific region $R_p$ for a specific UAV $n$ over a set of fine-grained time steps $K_p$.
+
+\textbf{Inputs from Master Problem}
+\begin{itemize}
+    \item Region: $R_p \subset G$.
+    \item UAV: $n \in N$.
+    \item Time Horizon: $K_p \subset K$.
+    \item Initial State: Entry location $i_{entry}$ at time $k_{start}$ (Note this is an arbitrary entry).
+    \item Terminal State: Exit location $i_{exit}$ at time $k_{end}$ (Note this is the corresponding exit to the arbitrary entry).
+    \item Allocated Budget: $B_{n,p,t}^{alloc}$.
+\end{itemize}
+
+\textbf{Objective Function}
+\begin{align}
+    \max \sum_{i \in R_p} c_i \quad &\text{Maximize regional coverage [cf. eq. (1)]}
+\end{align}
+
+\textbf{Constraints}
+The constraints are adapted from the original formulation, scoped to the smaller domain of region $R_p$.
+\begin{align}
+    \sum_{k \in K_p}\left( b_{\text{mov}}\sum_{\substack{i,j \in R_p \\ i \ne j}}m_{i,j,n}^{k}+b_{\text{steady}}\sum_{i \in R_p}m_{i,i,n}^{k}\right) &\le B_{n,p,t}^{alloc} \quad &\text{Regional Energy Budget} \\
+    \nonumber \\
+    z_{i_{entry}, n}^{k_{start}} &= 1 \quad &\text{Entry Constraint} \\
+    z_{i_{exit}, n}^{k_{end}} &= 1 \quad &\text{Exit Constraint} \\
+    b_{n}^{k_{start}} &= b_{entry} \quad &\text{Initial Battery} \\
+    \nonumber \\
+    \sum_{i \in R_p} z_{i,n}^{k} &= 1 \quad \forall k \in K_p \quad &\text{Adapted Unique position} \\
+    z_{i,n}^{k+1} &\le \sum_{j \in C_i \cap R_p} z_{j,n}^{k} \quad \forall i \in R_p, k<k_{end} \quad &\text{Adapted Mobility rule}
+\end{align}
+All other common constraints (3-5, 7a-15) from the above formulation are also applied, but are restricted to the sets $i,j \in R_p$, the single UAV $n$, and time steps $k \in K_p$. The charging constraint (8) is only active if the base station $s$ is within the current region ($s \in R_p$).
+
+\end{document}

@@ -209,3 +209,15 @@ z(k, i, n) denotes the kth time instant, ith grid point, nth drone
 - 4: Please add your ideas further from here
 
 Till then I will start with the PPT
+
+
+## Activating the Env on the HPC
+```
+export http_proxy="http://proxy22.iitd.ac.in:3128"
+export https_proxy="http://proxy22.iitd.ac.in:3128"
+
+unset PYTHONPATH
+unset PYTHONHOME
+conda activate /home/ee/btech/ee1221163/cplex_env
+```
+now you can pip install
