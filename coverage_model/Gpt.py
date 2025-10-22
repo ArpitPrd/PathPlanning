@@ -76,3 +76,8 @@ def sensing_gpt(P_sink, G, sz, Rs, O_lin=None):
     L = P_sink # The index of the sink is its linear index
     Irs, Irs_sink = _get_neighbors(G, sz, Rs, O_lin_set, P_sink)
     return L, Irs, Irs_sink
+
+
+if __name__ == "__main__":
+
+    print(f"the sensing gpt is: {sensing_gpt()}")
