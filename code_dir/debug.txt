@@ -1,0 +1,2301 @@
+1. Setting up grid and parameters...
+Using optimization model: minimize_energy
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 1, 'eq8': 1, 'eq9': 1, 'eq10': 1, 'eq11': 1, 'eq12': 1, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper and objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Memory usage after computing neighborhoods:
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 288.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 288.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'list'> total size: 5.81 KB
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 224.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'list'> total size: 2.53 KB
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+Battery constraints are active. Setting battery variable types and bounds.
+
+Memory usage after building constraints:
+Array of shape (12, 2984), dtype=float64: 279.75 KB
+Array of shape (90, 2984), dtype=float64: 2.05 MB
+Array of shape (6, 2984), dtype=float64: 139.88 KB
+Array of shape (96, 2984), dtype=float64: 2.19 MB
+Array of shape (160, 2984), dtype=float64: 3.64 MB
+Array of shape (2560, 2984), dtype=float64: 58.28 MB
+Array of shape (2560, 2984), dtype=float64: 58.28 MB
+Array of shape (2560, 2984), dtype=float64: 58.28 MB
+<class 'str'>: 59.00 
+Array of shape (10, 2984), dtype=float64: 233.12 KB
+<class 'str'>: 62.00 
+Array of shape (10, 2984), dtype=float64: 233.12 KB
+<class 'str'>: 62.00 
+Array of shape (10, 2984), dtype=float64: 233.12 KB
+<class 'str'>: 59.00 
+Array of shape (10, 2984), dtype=float64: 233.12 KB
+<class 'str'>: 63.00 
+Array of shape (10,), dtype=float64: 80.00 
+<class 'str'>: 59.00 
+Array of shape (10, 2984), dtype=float64: 233.12 KB
+<class 'str'>: 63.00 
+Array of shape (10,), dtype=float64: 80.00 
+<class 'str'>: 56.00 
+Array of shape (2, 2984), dtype=float64: 46.62 KB
+<class 'str'>: 60.00 
+Array of shape (2,), dtype=float64: 16.00 
+dict total size: 1.18 MB
+Array of shape (192, 2984), dtype=float64: 4.37 MB
+Array of shape (192, 2984), dtype=float64: 4.37 MB
+Array of shape (16, 2984), dtype=float64: 373.00 KB
+
+Running feasibility diagnostics before combining constraints...
+
+=== QUICK CHECKS ===
+Grid cells (G): 16
+UAV-time slots (N*T): 12
+Cells with non-empty Irs (coverable): 16
+Coverable cell indices (first 20): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+Requested C_min: 14.4
+Trivial upper bound on coverage: 12
+>>> TRIVIAL INFEASIBLE: C_min exceeds obvious upper bound.
+====================
+
+=== Irs / Irc INSPECTION ===
+Cells with empty Irs: 0 []
+Invalid indices in Irc (if any): []
+===========================
+
+=== c_i variable bounds / types ===
+Unique lower bounds for c_i: [np.float64(0.0)]
+Unique upper bounds for c_i: [np.float64(1.0)]
+Example c_i lb/ub/type for first 20:
+  c_0: idx=192, lb=0.0, ub=1.0, type=C
+  c_1: idx=193, lb=0.0, ub=1.0, type=C
+  c_2: idx=194, lb=0.0, ub=1.0, type=C
+  c_3: idx=195, lb=0.0, ub=1.0, type=C
+  c_4: idx=196, lb=0.0, ub=1.0, type=C
+  c_5: idx=197, lb=0.0, ub=1.0, type=C
+  c_6: idx=198, lb=0.0, ub=1.0, type=C
+  c_7: idx=199, lb=0.0, ub=1.0, type=C
+  c_8: idx=200, lb=0.0, ub=1.0, type=C
+  c_9: idx=201, lb=0.0, ub=1.0, type=C
+  c_10: idx=202, lb=0.0, ub=1.0, type=C
+  c_11: idx=203, lb=0.0, ub=1.0, type=C
+  c_12: idx=204, lb=0.0, ub=1.0, type=C
+  c_13: idx=205, lb=0.0, ub=1.0, type=C
+  c_14: idx=206, lb=0.0, ub=1.0, type=C
+  c_15: idx=207, lb=0.0, ub=1.0, type=C
+===================================
+
+b_full: 100.0
+max single m(i,j) cost: 1.3
+sum of all m(i,j) costs (per UAV-step if your formulation sums them): 328.0000000000015
+If M < any of these relevant energy sums, big-M modeling may be invalid.
+
+Computing LP relaxation (max coverage)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_TimeLimit                               30
+Found incumbent of value 0.000000 after 0.00 sec. (0.11 ticks)
+Found incumbent of value 16.000000 after 0.00 sec. (0.16 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.20 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.20 ticks)
+LP-relax max coverage (without constraints): 16.0, status: integer optimal solution
+
+6. Combining all constraints...
+
+Memory usage after combining constraints:
+Array of shape (206, 2984), dtype=float64: 4.69 MB
+Array of shape (206,), dtype=float64: 1.61 KB
+Array of shape (8291, 2984), dtype=float64: 188.75 MB
+Array of shape (8291,), dtype=float64: 64.77 KB
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 2 times.
+MIP Presolve eliminated 22 rows and 4 columns.
+MIP Presolve modified 20 coefficients.
+Aggregator did 192 substitutions.
+Reduced MIP has 8283 rows, 2788 columns, and 26600 nonzeros.
+Reduced MIP has 2762 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (37.07 ticks)
+Found incumbent of value 12.700000 after 0.04 sec. (68.83 ticks)
+Probing fixed 611 vars, tightened 0 bounds.
+Probing changed sense of 5 constraints.
+Probing time = 0.08 sec. (135.81 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 1720 rows and 618 columns.
+MIP Presolve modified 422 coefficients.
+Aggregator did 8 substitutions.
+Reduced MIP has 6555 rows, 2162 columns, and 22016 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (45.19 ticks)
+Probing time = 0.01 sec. (5.83 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 6555 rows, 2162 columns, and 22016 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (22.66 ticks)
+Probing time = 0.00 sec. (5.54 ticks)
+Clique table members: 14276.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.01 sec. (12.19 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           12.7000        0.0000           100.00%
+*     0+    0                           11.5000        0.0000           100.00%
+      0     0        0.0000    27       11.5000        0.0000       98  100.00%
+*     0+    0                           11.2000        0.0000           100.00%
+      0     0        0.0000    33       11.2000      Cuts: 63      134  100.00%
+      0     0        0.0000    37       11.2000      Cuts: 87      180  100.00%
+*     0+    0                           10.6000        0.0000           100.00%
+      0     2        0.0000    37       10.6000        0.0000      180  100.00%
+Elapsed time = 0.32 sec. (631.60 ticks, tree = 0.02 MB, solutions = 4)
+    292   262        9.8000     8       10.6000        0.0000     3833  100.00%
+    701   568        9.5000    14       10.6000        0.0000     7079  100.00%
+   1158   956        9.5000    12       10.6000        0.0000    10547  100.00%
+
+Performing restart 1
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 231 rows and 0 columns.
+MIP Presolve modified 3846 coefficients.
+Reduced MIP has 6324 rows, 2162 columns, and 19274 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (25.17 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 5 rows and 0 columns.
+MIP Presolve modified 80 coefficients.
+Reduced MIP has 6319 rows, 2162 columns, and 19194 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (22.83 ticks)
+Represolve time = 0.08 sec. (158.51 ticks)
+   1313     0        0.0000    25       10.6000      Cuts: 40    13086  100.00%
+   1313     0        0.0000    24       10.6000      Cuts: 34    13127  100.00%
+   1313     0        0.0000    36       10.6000      Cuts: 28    13151  100.00%
+   1313     0        0.0000    33       10.6000      Cuts: 27    13182  100.00%
+   1313     2        0.0000    32       10.6000        0.0000    13182  100.00%
+   1345    29        2.3000    22       10.6000        0.0000    13681  100.00%
+   1467   120        2.3000    22       10.6000        0.0000    14806  100.00%
+   1647   287        5.3750    20       10.6000        0.0000    17109  100.00%
+   1833   409        6.2000    27       10.6000        1.0000    18360   90.57%
+   2035   598        8.5000    15       10.6000        2.0000    20093   81.13%
+   2758  1206        7.6000    10       10.6000        2.0929    25761   80.26%
+Elapsed time = 2.15 sec. (4403.13 ticks, tree = 11.51 MB, solutions = 4)
+   3670  2038        6.9900    35       10.6000        2.3000    33430   78.30%
+   5439  3496        7.0606    28       10.6000        2.3000    47358   78.30%
+   7649  5216        5.6000    12       10.6000        2.3000    62629   78.30%
+  10254  7569        3.6000    21       10.6000        2.3000    85158   78.30%
+  12845  9697        5.0950    47       10.6000        2.6000   102836   75.47%
+* 13551 10326      integral     0       10.3000        2.6000   107528   74.76%
+  15317 11112        9.9000    12       10.3000        3.0600   123663   70.29%
+  17696 13340        9.6375    12       10.3000        3.3000   148442   67.96%
+  20271 15294        3.3273    31       10.3000        3.3200   163675   67.77%
+  22982 17521        9.9467    11       10.3000        3.3231   181844   67.74%
+  25248 19331        9.9525    10       10.3000        3.3429   199732   67.55%
+Elapsed time = 6.34 sec. (13942.25 ticks, tree = 41.59 MB, solutions = 5)
+  27467 21464        7.9500    21       10.3000        3.6000   220777   65.05%
+  30042 23042        9.0500     8       10.3000        3.6000   236755   65.05%
+  32367 24947        cutoff             10.3000        3.6000   254818   65.05%
+  33807 26710        7.9375    20       10.3000        3.6000   271252   65.05%
+  35998 28165        cutoff             10.3000        3.6000   285932   65.05%
+  38353 29936        9.9273    15       10.3000        3.6000   303916   65.05%
+  40805 31949        5.6000    15       10.3000        3.6000   324964   65.05%
+  43077 33835        5.7722    42       10.3000        3.6000   343027   65.05%
+  45480 35797        5.6523    47       10.3000        3.6000   359493   65.05%
+  47878 38010        6.6000    17       10.3000        4.0200   377051   60.97%
+Elapsed time = 10.09 sec. (23483.13 ticks, tree = 73.77 MB, solutions = 5)
+
+Performing restart 2
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve modified 1 coefficients.
+Reduced MIP has 6319 rows, 2162 columns, and 22172 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (29.62 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 6319 rows, 2162 columns, and 22172 nonzeros.
+Reduced MIP has 2146 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (23.96 ticks)
+Represolve time = 0.11 sec. (168.16 ticks)
+  48644     0        0.0000    24       10.3000      Cuts: 55   384908   60.94%
+  48644     0        0.0000    36       10.3000      Cuts: 30   384941   60.94%
+  48644     0        0.0000    27       10.3000       Cuts: 9   384962   60.94%
+  48644     0        0.0000    27       10.3000      Cuts: 68   384993   60.94%
+  48644     0        0.0000    31       10.3000      Cuts: 63   385034   60.94%
+  48644     0        0.0000    33       10.3000      Cuts: 54   385075   60.94%
+  48644     0        0.0000    32       10.3000      Cuts: 67   385104   60.94%
+  48644     0        0.0000    24       10.3000      Cuts: 15   385115   60.94%
+  48644     0        0.0000    37       10.3000      Cuts: 40   385151   60.94%
+  48644     2        0.0000    26       10.3000        4.0231   385151   60.94%
+  48818   161        9.2000    14       10.3000        4.0231   387127   60.94%
+  49275   438        9.9300    14       10.3000        4.0231   390192   60.94%
+  49679   829        cutoff             10.3000        4.0231   393388   60.94%
+  50460  1442        3.3333    30       10.3000        4.0231   399263   60.94%
+  51317  2106       10.2000     7       10.3000        4.0231   405746   60.94%
+  52244  2817        5.0800    30       10.3000        4.0231   413315   60.94%
+  53495  3790        6.4615    39       10.3000        4.0231   423201   60.94%
+  54821  4729        5.6000    22       10.3000        4.0231   433274   60.94%
+  55993  5916        8.9600    24       10.3000        4.0231   443476   60.94%
+Elapsed time = 15.79 sec. (37328.36 ticks, tree = 9.99 MB, solutions = 5)
+  56650  6487        cutoff             10.3000        4.0231   450689   60.94%
+  57360  7008        6.5250    25       10.3000        4.0231   458229   60.94%
+  58173  7586        6.3629    34       10.3000        4.0231   467247   60.94%
+  58942  8266        4.2416    71       10.3000        4.0231   478054   60.94%
+  59726  8814        6.3800    32       10.3000        4.0231   485790   60.94%
+  60599  9609        4.3814    41       10.3000        4.0231   495223   60.94%
+  61521 10462        6.3950    33       10.3000        4.0231   506557   60.94%
+  62448 11042        6.5100    25       10.3000        4.0231   513469   60.94%
+  63407 11931        4.3429    32       10.3000        4.0231   523428   60.94%
+  64450 12796        4.3231    30       10.3000        4.0231   536935   60.94%
+Elapsed time = 19.34 sec. (46876.86 ticks, tree = 21.66 MB, solutions = 5)
+  65329 13593        4.3300    38       10.3000        4.0231   546821   60.94%
+  66192 14039        5.6000    12       10.3000        4.0231   550910   60.94%
+  66785 14698       10.2000    14       10.3000        4.0231   559572   60.94%
+  67648 15594        5.3000    12       10.3000        4.0231   568895   60.94%
+  68596 16374        5.7500    18       10.3000        4.0231   578499   60.94%
+  69526 16947        8.9231    24       10.3000        4.0231   585467   60.94%
+  70381 17808        4.6000    19       10.3000        4.0231   596768   60.94%
+  71299 18392        7.3300    40       10.3000        4.0231   604436   60.94%
+  72363 19350        7.6500    20       10.3000        4.0231   617685   60.94%
+  73464 20195        7.6600    14       10.3000        4.0231   630530   60.94%
+Elapsed time = 23.01 sec. (56422.64 ticks, tree = 34.69 MB, solutions = 5)
+  74611 21039        7.6500    20       10.3000        4.0231   643816   60.94%
+  75864 22033        7.3933    26       10.3000        4.0231   659096   60.94%
+  76985 22706        7.9750    12       10.3000        4.0231   669059   60.94%
+  78240 23815        5.6000    15       10.3000        4.0231   685404   60.94%
+  79329 24729        7.6750    12       10.3000        4.0231   699423   60.94%
+  80167 25485        4.6300    36       10.3000        4.0231   709870   60.94%
+  80895 26259        5.6000    13       10.3000        4.0231   720846   60.94%
+  81866 26714        8.3250    28       10.3000        4.0231   727732   60.94%
+  82765 27611        6.6000    27       10.3000        4.0231   740679   60.94%
+  83780 28360        9.6382    28       10.3000        4.0500   751465   60.68%
+Elapsed time = 26.80 sec. (65967.08 ticks, tree = 48.49 MB, solutions = 5)
+  84806 29331        8.4036    33       10.3000        4.0591   765639   60.59%
+  85894 29832    infeasible             10.3000        4.0690   772252   60.50%
+  87072 30875        6.4714    30       10.3000        4.0981   788797   60.21%
+  88232 31887        8.6300    24       10.3000        4.1625   806003   59.59%
+  89430 32249        8.6222    32       10.3000        4.1750   812253   59.47%
+  90473 33439        cutoff             10.3000        4.2147   833717   59.08%
+  91762 33817        6.6881    50       10.3000        4.3000   838509   58.25%
+  93063 35259        8.9600    22       10.3000        4.3000   857713   58.25%
+  93973 35913        6.4000    22       10.3000        4.3000   865873   58.25%
+  95235 36905        6.4000    21       10.3000        4.3000   877938   58.25%
+Elapsed time = 30.55 sec. (75513.05 ticks, tree = 64.28 MB, solutions = 5)
+  96445 37598        6.4429    31       10.3000        4.3000   887423   58.25%
+  97705 38850        9.0000    16       10.3000        4.3000   905564   58.25%
+  98871 39830        6.4429    29       10.3000        4.3000   918508   58.25%
+ 100123 40358        9.0500    23       10.3000        4.3000   926789   58.25%
+ 101402 41636        8.6231    25       10.3000        4.3000   946588   58.25%
+ 102675 42438        6.9000    16       10.3000        4.3000   959742   58.25%
+ 103761 43538        6.4148    47       10.3000        4.3000   976022   58.25%
+ 104713 44088        8.7375    22       10.3000        4.3000   983444   58.25%
+ 105884 45132    infeasible             10.3000        4.3200   997504   58.06%
+ 106992 45527       10.2000    18       10.3000        4.3200  1002775   58.06%
+Elapsed time = 34.41 sec. (85056.36 ticks, tree = 78.80 MB, solutions = 5)
+ 108169 46499        9.9840    12       10.3000        4.3205  1016208   58.05%
+ 109296 47696        5.6000    12       10.3000        4.3214  1033418   58.04%
+ 110511 48665        6.4750    26       10.3000        4.3220  1046309   58.04%
+ 111671 49514        5.6000    13       10.3000        4.3231  1057559   58.03%
+ 112520 50310        8.6523    31       10.3000        4.3231  1066723   58.03%
+ 113206 50821        6.3550    40       10.3000        4.3231  1073396   58.03%
+ 114262 51519        7.9000    16       10.3000        4.3231  1083198   58.03%
+ 115094 52333    infeasible             10.3000        4.3231  1095943   58.03%
+ 116054 52847        9.0375    24       10.3000        4.3250  1103708   58.01%
+ 120246 56258        6.3643    42       10.3000        4.3254  1155399   58.01%
+Elapsed time = 39.87 sec. (97462.75 ticks, tree = 96.88 MB, solutions = 5)
+ 124586 59568        6.3905    49       10.3000        4.3300  1204045   57.96%
+ 128396 62389        8.6857    29       10.3000        4.3333  1243418   57.93%
+ 132147 65409        6.5100    24       10.3000        4.3375  1284899   57.89%
+ 136605 68943        6.3882    33       10.3000        4.3429  1333138   57.84%
+ 140244 71610        8.7731    25       10.3000        4.3429  1368237   57.84%
+ 144385 74910        6.4548    42       10.3000        4.3500  1413271   57.77%
+ 148532 78158        6.3679    40       10.3000        4.3583  1472099   57.69%
+ 153203 81220        9.9000    16       10.3000        4.3750  1522415   57.52%
+ 157235 84339        8.9769    35       10.3000        4.4800  1589214   56.50%
+ 161114 86728        6.9000    24       10.3000        4.6000  1631114   55.34%
+Elapsed time = 55.73 sec. (135622.95 ticks, tree = 151.13 MB, solutions = 5)
+ 165810 90629        8.9333    21       10.3000        4.6000  1688525   55.34%
+ 170077 93630        6.9300    30       10.3000        4.6000  1731000   55.34%
+ 174205 96841        6.6200    34       10.3000        4.6000  1786271   55.34%
+ 178241 99636        7.2000    31       10.3000        4.6000  1831796   55.34%
+ 183071 103413        5.6000    13       10.3000        4.6000  1897512   55.34%
+ 187519 106407        6.9000    24       10.3000        4.6000  1948708   55.34%
+ 191730 109702        9.0000    25       10.3000        4.6214  2004117   55.13%
+ 195781 112305        8.7773    23       10.3000        4.6250  2041696   55.10%
+ 200170 116193        cutoff             10.3000        4.6333  2099870   55.02%
+ 204571 118792        6.9000    18       10.3000        4.7500  2155551   53.88%
+Elapsed time = 459.81 sec. (173783.62 ticks, tree = 205.46 MB, solutions = 5)
+ 208822 122005        5.9000    12       10.3000        4.9000  2211429   52.43%
+ 213441 124928       10.0050    12       10.3000        4.9750  2267779   51.70%
+ 217980 128175        9.6273    15       10.3000        5.3000  2340661   48.54%
+ 222404 131099        9.9900    23       10.3000        5.3000  2406968   48.54%
+ 226969 134104        9.6375    12       10.3000        5.3000  2468860   48.54%
+ 231606 137651        8.6214    28       10.3000        5.3000  2538543   48.54%
+ 235499 140251        7.6773    27       10.3000        5.3734  2593490   47.83%
+ 240642 142984       10.2000     8       10.3000        5.6000  2656956   45.63%
+ 245281 145837    infeasible             10.3000        5.6000  2717954   45.63%
+ 250260 148939       10.2000    14       10.3000        5.6000  2787554   45.63%
+Elapsed time = 850.96 sec. (211937.19 ticks, tree = 259.71 MB, solutions = 5)
+ 255700 152496        7.6750    12       10.3000        5.6000  2866638   45.63%
+ 260084 155603        7.6273    25       10.3000        5.6000  2937775   45.63%
+ 265097 158454        7.6500    14       10.3000        5.6000  2994884   45.63%
+ 269868 161377        7.9000    19       10.3000        5.6000  3058962   45.63%
+ 274498 164347        9.6214    18       10.3000        5.6000  3126328   45.63%
+ 279368 167881        7.6214    28       10.3000        5.6000  3197176   45.63%
+ 284405 170845        7.6429    15       10.3000        5.6000  3251980   45.63%
+ 289486 174622        7.6273    25       10.3000        5.6000  3320828   45.63%
+ 294125 177702        7.7000    17       10.3000        5.6000  3385758   45.63%
+ 299094 181121        7.9500    28       10.3000        5.6000  3450379   45.63%
+Elapsed time = 887.99 sec. (250092.74 ticks, tree = 316.12 MB, solutions = 5)
+ 303918 184155        7.9429    25       10.3000        5.6000  3518069   45.63%
+ 308724 186718        7.9000    10       10.3000        5.6000  3581680   45.63%
+ 313293 189467        9.9000     7       10.3000        5.6000  3651188   45.63%
+ 318353 192442        cutoff             10.3000        5.6000  3736118   45.63%
+ 322888 194858        6.6800    28       10.3000        5.6000  3788486   45.63%
+ 327126 197930        7.9000    16       10.3000        5.6500  3847579   45.15%
+ 331820 199809        8.1731    31       10.3000        5.7500  3951469   44.17%
+ 336864 202241        8.2000    10       10.3000        5.7500  4035645   44.17%
+ 341899 204898        8.3500    14       10.3000        5.9000  4095703   42.72%
+ 346087 207867        8.0500    10       10.3000        5.9000  4157006   42.72%
+Elapsed time = 968.59 sec. (288247.36 ticks, tree = 363.79 MB, solutions = 5)
+ 350962 210187        8.0464    44       10.3000        5.9000  4221706   42.72%
+ 356112 213309        7.9429    21       10.3000        5.9000  4311345   42.72%
+ 360870 215309        cutoff             10.3000        5.9000  4392325   42.72%
+ 364832 216835        8.2273    23       10.3000        5.9000  4452008   42.72%
+ 369621 220223        8.3250    32       10.3000        5.9375  4530211   42.35%
+ 374887 223546        7.2000    19       10.3000        6.0675  4569860   41.09%
+ 380082 227142        8.4023    27       10.3000        6.2000  4641280   39.81%
+ 384580 230473        8.6231    25       10.3000        6.3273  4692999   38.57%
+ 390154 234267        7.6250    27       10.3000        6.3464  4718354   38.38%
+ 395570 237958        8.7273    25       10.3000        6.3480  4747300   38.37%
+Elapsed time = 1031.60 sec. (326398.92 ticks, tree = 417.47 MB, solutions = 5)
+ 401011 242408        8.7231    27       10.3000        6.3500  4792389   38.35%
+ 405532 246203        9.9000     6       10.3000        6.3514  4822355   38.34%
+ 410467 249343        cutoff             10.3000        6.3523  4858508   38.33%
+ 415689 252884        8.6273    25       10.3000        6.3548  4903009   38.30%
+ 421146 256617        8.9273    23       10.3000        6.3573  4940610   38.28%
+ 426491 260117        9.9300    14       10.3000        6.3583  4976588   38.27%
+ 431407 264376        9.0000    16       10.3000        6.3600  5030763   38.25%
+ 436694 267803        9.9429    11       10.3000        6.3625  5069601   38.23%
+ 442700 271827        8.6750    38       10.3000        6.3648  5106505   38.21%
+ 448378 276336        9.9333    13       10.3000        6.3648  5158644   38.21%
+Elapsed time = 1069.66 sec. (364552.12 ticks, tree = 485.60 MB, solutions = 5)
+ 452886 279121        8.7429    21       10.3000        6.3675  5192986   38.18%
+ 458269 282836        8.6300    31       10.3000        6.3686  5242085   38.17%
+ 463680 286058        8.9429    32       10.3000        6.3708  5289316   38.15%
+ 469228 289906        8.6214    40       10.3000        6.3750  5341547   38.11%
+ 474225 293647        8.6222    40       10.3000        6.3804  5396477   38.05%
+ 479540 296270        8.7773    23       10.3000        6.3950  5451916   37.91%
+ 484629 299352        7.9000    18       10.3000        6.4250  5530412   37.62%
+ 489019 301268        8.4833    21       10.3000        6.4714  5579339   37.17%
+ 494364 304647        9.0929    19       10.3000        6.5625  5633189   36.29%
+ 499992 307652        8.9300    28       10.3000        6.6000  5672591   35.92%
+Elapsed time = 1131.09 sec. (402707.36 ticks, tree = 538.88 MB, solutions = 5)
+ 505557 311567        9.6300    14       10.3000        6.6000  5726445   35.92%
+ 510427 314712        8.6231    27       10.3000        6.6000  5776100   35.92%
+ 516118 317951        8.5000    18       10.3000        6.6000  5829847   35.92%
+ 521221 321322        8.6500    22       10.3000        6.6000  5889359   35.92%
+ 526749 324829        8.9000    16       10.3000        6.6000  5962306   35.92%
+ 531277 327403        8.9300    32       10.3000        6.6000  6016802   35.92%
+ 536898 330022        9.0000    16       10.3000        6.6000  6075777   35.92%
+ 541655 332768        8.7400    22       10.3000        6.6000  6134013   35.92%
+ 546791 336069        9.6450    11       10.3000        6.6000  6198661   35.92%
+ 551225 339076        8.9000    15       10.3000        6.6000  6258940   35.92%
+Elapsed time = 1176.08 sec. (440858.06 ticks, tree = 595.86 MB, solutions = 5)
+ 555286 341836       10.2000     8       10.3000        6.6000  6309038   35.92%
+ 559936 344297        8.6606    43       10.3000        6.6200  6341787   35.73%
+ 564661 348030        8.9214    24       10.3000        6.6200  6402374   35.73%
+ 569683 350643        8.7731    25       10.3000        6.6214  6442335   35.71%
+ 574852 353815        8.9333    27       10.3000        6.6231  6496756   35.70%
+ 580155 357613        9.9000    11       10.3000        6.6250  6577039   35.68%
+ 585434 360582       10.2000     6       10.3000        6.6250  6636835   35.68%
+ 589788 362835        9.9375    12       10.3000        6.6273  6676268   35.66%
+ 595013 366143        7.6382    35       10.3000        6.6300  6735113   35.63%
+ 600135 369937       10.2000     7       10.3000        6.6300  6798507   35.63%
+Elapsed time = 1212.51 sec. (479010.12 ticks, tree = 648.37 MB, solutions = 5)
+ 605586 372621        8.6804    36       10.3000        6.6309  6839571   35.62%
+ 610608 376150        cutoff             10.3000        6.6333  6892957   35.60%
+ 615274 379482        8.6900    28       10.3000        6.6333  6959177   35.60%
+ 620988 382180        8.7125    24       10.3000        6.6333  6998084   35.60%
+ 626198 386194        8.9273    33       10.3000        6.6375  7060005   35.56%
+ 630370 388654        8.7929    19       10.3000        6.6375  7105674   35.56%
+ 635112 391280        8.6773    37       10.3000        6.6375  7160120   35.56%
+ 640281 393992       10.0000    13       10.3000        6.6375  7224490   35.56%
+ 645237 396796        8.9600    22       10.3000        6.6375  7276713   35.56%
+ 650658 399832        8.6975    33       10.3000        6.6429  7330978   35.51%
+Elapsed time = 1250.37 sec. (517162.81 ticks, tree = 703.38 MB, solutions = 5)
+ 654933 402134        8.7300    24       10.3000        6.6429  7374358   35.51%
+ 659726 405477        9.0500    14       10.3000        6.6429  7451030   35.51%
+ 664364 407577        8.9708    39       10.3000        6.6429  7505210   35.51%
+ 669269 410913        8.9708    39       10.3000        6.6429  7568493   35.51%
+ 674465 413375        8.7808    28       10.3000        6.6481  7623911   35.46%
+ 679894 415872        9.0500    14       10.3000        6.6500  7685254   35.44%
+ 683695 418295        9.0000    18       10.3000        6.6500  7748621   35.44%
+ 688691 420955        7.9785    35       10.3000        6.6500  7797230   35.44%
+ 694189 423449        8.9750    18       10.3000        6.6522  7843852   35.42%
+ 698864 425988        9.9500    10       10.3000        6.6600  7895738   35.34%
+Elapsed time = 1291.81 sec. (555314.18 ticks, tree = 747.85 MB, solutions = 5)
+ 703756 428598        cutoff             10.3000        6.6606  7938818   35.33%
+ 708070 431592        8.9831    31       10.3000        6.6649  7982503   35.29%
+ 713396 433780        8.9750    18       10.3000        6.6714  8023248   35.23%
+ 718200 436284        9.9273    15       10.3000        6.6731  8086315   35.21%
+ 723567 439076        8.7250    28       10.3000        6.6750  8148237   35.19%
+ 728504 441712        9.0500    14       10.3000        6.6789  8199642   35.16%
+ 733542 444236        8.7375    22       10.3000        6.6875  8260734   35.07%
+ 737159 445416        8.7181    23       10.3000        6.7000  8323303   34.95%
+ 741800 446399        9.0000    16       10.3000        6.7375  8406041   34.59%
+ 746437 448325        9.2000    33       10.3000        6.7500  8480199   34.47%
+Elapsed time = 1328.34 sec. (593470.01 ticks, tree = 786.03 MB, solutions = 5)
+ 751959 451756       10.2000     6       10.3000        6.9000  8555106   33.01%
+ 757609 454226        8.9200    27       10.3000        6.9000  8608274   33.01%
+ 760842 457358        8.9375    27       10.3000        6.9000  8672912   33.01%
+ 765443 459644        8.9273    25       10.3000        6.9000  8728608   33.01%
+ 770046 461444        8.9231    23       10.3000        6.9000  8773770   33.01%
+ 774739 464387    infeasible             10.3000        6.9000  8846372   33.01%
+ 779563 466463        cutoff             10.3000        6.9000  8897868   33.01%
+ 784335 469286        8.9273    39       10.3000        6.9000  8966981   33.01%
+ 789374 471856        9.0125    24       10.3000        6.9000  9026532   33.01%
+ 794214 474478        7.9000    10       10.3000        6.9000  9086617   33.01%
+Elapsed time = 1373.08 sec. (631625.70 ticks, tree = 835.67 MB, solutions = 5)
+ 798090 477313        9.1250    16       10.3000        6.9000  9147145   33.01%
+ 802655 479092        8.9333    29       10.3000        6.9000  9188896   33.01%
+ 807665 481979       10.2000     7       10.3000        6.9000  9254447   33.01%
+ 812359 484550        8.9500    30       10.3000        6.9000  9315421   33.01%
+ 817392 487308        8.9500    28       10.3000        6.9000  9382324   33.01%
+ 821258 489870        9.0179    32       10.3000        6.9000  9450905   33.01%
+ 825874 492067        9.5000    14       10.3000        6.9000  9508001   33.01%
+ 830205 494662        cutoff             10.3000        6.9000  9579305   33.01%
+ 834706 496166        8.2000    17       10.3000        6.9000  9626798   33.01%
+ 838821 498902        8.9200    25       10.3000        6.9000  9723552   33.01%
+Elapsed time = 1410.29 sec. (669781.30 ticks, tree = 877.35 MB, solutions = 5)
+ 843247 500509        8.9850    31       10.3000        6.9000  9768340   33.01%
+ 847679 502923        9.9300    14       10.3000        6.9200  9835657   32.82%
+ 852432 504994        8.9500    26       10.3000        6.9204  9893532   32.81%
+ 857255 507517        7.9273    26       10.3000        6.9214  9963048   32.80%
+ 861962 509373        8.9429    19       10.3000        6.9231 10010413   32.79%
+ 867158 512132        8.9804    30       10.3000        6.9273 10073853   32.74%
+ 871977 514425       10.2000     7       10.3000        6.9300 10133356   32.72%
+ 877969 516700        9.2750    38       10.3000        6.9333 10194400   32.69%
+ 881992 518995        9.7000     7       10.3000        6.9429 10272769   32.59%
+ 886886 519945        8.0500    17       10.3000        6.9600 10346669   32.43%
+Elapsed time = 1446.90 sec. (707934.44 ticks, tree = 913.34 MB, solutions = 5)
+ 891094 520647        9.2000     8       10.3000        7.0000 10446676   32.04%
+ 895593 521071        8.9000    26       10.3000        7.0500 10508537   31.55%
+ 901028 522178        9.3542    16       10.3000        7.2000 10595455   30.10%
+ 904168 523219        cutoff             10.3000        7.2000 10683735   30.10%
+ 909014 523901        9.9000    16       10.3000        7.2000 10756258   30.10%
+ 912989 524758        cutoff             10.3000        7.3000 10846544   29.13%
+ 917112 525283       10.1100    18       10.3000        7.3273 10906875   28.86%
+ 922637 526004        9.9333    13       10.3000        7.3375 11052384   28.76%
+ 925698 526038        9.6000     7       10.3000        7.4500 11143050   27.67%
+ 931180 526163       10.2000    13       10.3000        7.6000 11266436   26.21%
+Elapsed time = 1579.57 sec. (746088.27 ticks, tree = 923.99 MB, solutions = 5)
+ 935047 526290        9.6273    15       10.3000        7.6000 11359674   26.21%
+ 939443 525964        9.9700    11       10.3000        7.6000 11437962   26.21%
+ 944817 526326       10.2000     8       10.3000        7.6000 11555532   26.21%
+ 947584 526715        9.9412    14       10.3000        7.6000 11660568   26.21%
+ 952973 527368        8.6900    34       10.3000        7.6000 11787690   26.21%
+ 956644 527932        9.9000     6       10.3000        7.6000 11848308   26.21%
+ 960856 528253    infeasible             10.3000        7.6000 11916153   26.21%
+ 966358 529105       10.2000    14       10.3000        7.6000 12020151   26.21%
+ 970475 529807        7.6273    27       10.3000        7.6000 12129773   26.21%
+ 975174 530006        9.9000    18       10.3000        7.6214 12194234   26.01%
+Elapsed time = 2166.55 sec. (784243.10 ticks, tree = 930.67 MB, solutions = 5)
+ 980086 530574       10.2000    12       10.3000        7.6250 12293797   25.97%
+ 983346 531008       10.0440    10       10.3000        7.6273 12378154   25.95%
+ 989012 531324    infeasible             10.3000        7.6273 12461787   25.95%
+ 993841 531501    infeasible             10.3000        7.6273 12534961   25.95%
+ 997734 531558        9.6333    13       10.3000        7.6300 12602451   25.92%
+ 1003899 531893       10.1400    11       10.3000        7.6300 12735390   25.92%
+ 1007492 532123        9.9000    24       10.3000        7.6333 12822496   25.89%
+ 1011886 532149        cutoff             10.3000        7.6333 12846249   25.89%
+ 1017659 532774        8.9429    13       10.3000        7.6375 12941930   25.85%
+ 1020800 534020        9.9750    12       10.3000        7.6429 13031205   25.80%
+Elapsed time = 2204.36 sec. (822399.04 ticks, tree = 937.60 MB, solutions = 5)
+ 1026334 534260        cutoff             10.3000        7.6500 13086756   25.73%
+ 1030656 533691        9.9600    14       10.3000        7.6750 13224382   25.49%
+ 1034955 532978       10.2000    24       10.3000        7.7200 13287413   25.05%
+ 1040145 532254        9.9800     8       10.3000        7.7700 13392157   24.56%
+ 1043019 531100       10.2000    20       10.3000        7.9000 13504769   23.30%
+ 1049135 530244       10.2000     6       10.3000        7.9000 13605001   23.30%
+ 1053187 529422        9.9382    12       10.3000        7.9000 13735934   23.30%
+ 1057722 528839        9.9525    16       10.3000        7.9000 13782516   23.30%
+ 1063160 528090        cutoff             10.3000        7.9000 13902457   23.30%
+ 1066061 526976        7.9000    19       10.3000        7.9000 14043137   23.30%
+Elapsed time = 3696.04 sec. (860553.41 ticks, tree = 925.72 MB, solutions = 5)
+ 1071825 526189        8.9375    14       10.3000        7.9000 14143212   23.30%
+ 1077048 525578        9.9800     8       10.3000        7.9000 14234814   23.30%
+ 1079948 524752        9.9214    18       10.3000        7.9000 14342354   23.30%
+ 1085844 524162       10.2000     6       10.3000        7.9000 14411554   23.30%
+ 1089676 523149        cutoff             10.3000        7.9000 14565452   23.30%
+ 1094301 522410        9.9000     6       10.3000        7.9000 14642200   23.30%
+ 1100127 521689        cutoff             10.3000        7.9000 14784383   23.30%
+ 1102868 520968    infeasible             10.3000        7.9000 14901907   23.30%
+ 1108313 520412        9.9333    13       10.3000        7.9000 14960448   23.30%
+ 1113387 519479        cutoff             10.3000        7.9000 15110086   23.30%
+Elapsed time = 3732.71 sec. (898707.65 ticks, tree = 913.09 MB, solutions = 5)
+ 1116477 518425        9.0500     8       10.3000        7.9000 15221096   23.30%
+ 1122244 517613        cutoff             10.3000        7.9000 15318793   23.30%
+ 1125146 516742        cutoff             10.3000        7.9000 15434864   23.30%
+ 1129867 515818        7.9000    16       10.3000        7.9000 15517865   23.30%
+ 1135314 515260    infeasible             10.3000        7.9000 15603485   23.30%
+ 1138152 514373        9.9700     9       10.3000        7.9000 15722423   23.30%
+ 1144331 514093        cutoff             10.3000        7.9000 15784240   23.30%
+ 1147759 513460        9.9000     8       10.3000        7.9000 15899942   23.30%
+ 1151558 512605        cutoff             10.3000        7.9000 15992727   23.30%
+ 1157223 512232       10.2000     8       10.3000        7.9000 16074282   23.30%
+Elapsed time = 3786.58 sec. (936865.80 ticks, tree = 900.90 MB, solutions = 5)
+ 1159918 511347        9.9323    14       10.3000        7.9000 16218356   23.30%
+ 1165380 510887        cutoff             10.3000        7.9000 16278910   23.30%
+ 1170472 510297        9.6375    12       10.3000        7.9000 16406716   23.30%
+ 1172882 509456        cutoff             10.3000        7.9000 16509788   23.30%
+ 1178527 509070       10.2000    10       10.3000        7.9000 16582725   23.30%
+ 1182707 508503        9.9300    14       10.3000        7.9000 16731507   23.30%
+ 1186050 508140       10.2000     8       10.3000        7.9000 16791426   23.30%
+ 1191751 507869       10.2000    10       10.3000        7.9000 16876857   23.30%
+ 1195148 507857        9.9236    29       10.3000        7.9000 16989163   23.30%
+ 1198540 507919    infeasible             10.3000        7.9000 17079243   23.30%
+Elapsed time = 3824.53 sec. (975027.02 ticks, tree = 893.76 MB, solutions = 5)
+ 1204049 508134       10.2000     7       10.3000        7.9000 17172449   23.30%
+ 1207020 507922       10.2000     6       10.3000        7.9000 17307598   23.30%
+ 1211196 507047        9.9214    18       10.3000        7.9000 17392608   23.30%
+ 1217239 505934       10.2000    12       10.3000        7.9000 17509198   23.30%
+ 1221680 505243        cutoff             10.3000        7.9000 17607678   23.30%
+ 1224800 504561        cutoff             10.3000        7.9200 17690977   23.11%
+ 1230769 503892        cutoff             10.3000        7.9214 17751856   23.09%
+ 1236000 502542        cutoff             10.3000        7.9220 17904346   23.09%
+ 1238770 501489       10.2000    14       10.3000        7.9236 18001929   23.07%
+ 1244646 500445        cutoff             10.3000        7.9250 18098993   23.06%
+Elapsed time = 3858.57 sec. (1013182.51 ticks, tree = 881.11 MB, solutions = 5)
+ 1250607 499496       10.2000     8       10.3000        7.9273 18179405   23.04%
+ 1253341 498251        cutoff             10.3000        7.9300 18282452   23.01%
+ 1258642 497748       10.0500    10       10.3000        7.9300 18354902   23.01%
+ 1263671 497744        9.0500     8       10.3000        7.9333 18444100   22.98%
+ 1266891 497286        9.0000     9       10.3000        7.9375 18521339   22.94%
+ 1271161 496474        cutoff             10.3000        7.9500 18589959   22.82%
+ 1275621 494199       10.2000    10       10.3000        7.9600 18695829   22.72%
+ 1278310 491794        cutoff             10.3000        8.0500 18798317   21.84%
+ 1281720 490223       10.2000     6       10.3000        8.1000 18864065   21.36%
+ 1287413 488807       10.2000    12       10.3000        8.2000 18941605   20.39%
+Elapsed time = 3895.88 sec. (1051336.47 ticks, tree = 861.26 MB, solutions = 5)
+ 1290680 487205        cutoff             10.3000        8.2000 19049992   20.39%
+ 1293723 485218       10.2000     6       10.3000        8.2000 19134253   20.39%
+ 1299869 484346        cutoff             10.3000        8.2000 19199731   20.39%
+ 1303126 482193       10.2000     8       10.3000        8.2000 19360004   20.39%
+ 1306409 481021       10.2000     6       10.3000        8.2000 19424672   20.39%
+ 1311511 480340        cutoff             10.3000        8.2000 19469576   20.39%
+ 1314003 478018        cutoff             10.3000        8.2000 19638052   20.39%
+ 1316407 475697        cutoff             10.3000        8.2000 19747363   20.39%
+ 1320197 474505    infeasible             10.3000        8.2000 19806064   20.39%
+ 1325440 474405        9.6525    10       10.3000        8.2000 19832669   20.39%
+Elapsed time = 3935.63 sec. (1089499.48 ticks, tree = 836.75 MB, solutions = 5)
+ 1328136 474437    infeasible             10.3000        8.2000 19956881   20.39%
+ 1333440 474867        8.4125    24       10.3000        8.2231 20007254   20.16%
+ 1339250 475430        8.5070    20       10.3000        8.2464 20062812   19.94%
+ 1343462 474966        cutoff             10.3000        8.3273 20178209   19.15%
+ 1346773 474017    infeasible             10.3000        8.3675 20235665   18.76%
+ 1352709 473846    infeasible             10.3000        8.4100 20269451   18.35%
+ 1356553 473944    infeasible             10.3000        8.4800 20346000   17.67%
+ 1360402 473522        8.6231    25       10.3000        8.5000 20436485   17.48%
+ 1366080 473444        cutoff             10.3000        8.6000 20505017   16.50%
+ 1371532 473460       10.0440    16       10.3000        8.6000 20594858   16.50%
+Elapsed time = 3969.44 sec. (1127655.65 ticks, tree = 835.26 MB, solutions = 5)
+ 1375812 473509        cutoff             10.3000        8.6000 20665318   16.50%
+ 1380006 473413       10.2000     8       10.3000        8.6200 20725187   16.31%
+ 1386185 473479        9.9240    23       10.3000        8.6214 20810184   16.30%
+ 1392560 473477    infeasible             10.3000        8.6221 20856024   16.29%
+ 1396647 473506        9.6273    18       10.3000        8.6231 20938728   16.28%
+ 1400892 473481        9.9261    18       10.3000        8.6231 21005663   16.28%
+ 1407352 473652    infeasible             10.3000        8.6231 21084501   16.28%
+ 1413642 473832       10.2000    16       10.3000        8.6250 21142940   16.26%
+ 1417300 473820        9.9273    15       10.3000        8.6250 21190893   16.26%
+ 1421798 473685        cutoff             10.3000        8.6250 21249765   16.26%
+Elapsed time = 4040.23 sec. (1165811.24 ticks, tree = 835.89 MB, solutions = 5)
+ 1428078 473700        cutoff             10.3000        8.6250 21307369   16.26%
+ 1434307 473956        9.9300    14       10.3000        8.6273 21385174   16.24%
+ 1437598 473968        8.6300    24       10.3000        8.6273 21464197   16.24%
+ 1442585 473501        cutoff             10.3000        8.6273 21542700   16.24%
+ 1448973 473527        9.6382    12       10.3000        8.6273 21570945   16.24%
+ 1454577 473572        8.6933    27       10.3000        8.6286 21651811   16.23%
+ 1457820 473515        cutoff             10.3000        8.6300 21740677   16.21%
+ 1463340 473385        cutoff             10.3000        8.6300 21788263   16.21%
+ 1469615 473525        9.9375    12       10.3000        8.6300 21844349   16.21%
+ 1474591 473356        9.9382    12       10.3000        8.6333 21899275   16.18%
+Elapsed time = 4098.42 sec. (1203964.17 ticks, tree = 835.59 MB, solutions = 5)
+ 1477700 472947        9.9800    11       10.3000        8.6333 21969433   16.18%
+ 1484468 472805        9.9554    10       10.3000        8.6333 22002385   16.18%
+ 1491066 472648        cutoff             10.3000        8.6375 22085711   16.14%
+ 1495123 472174        cutoff             10.3000        8.6375 22179417   16.14%
+ 1499305 471983        9.9429    19       10.3000        8.6375 22199604   16.14%
+ 1505914 471903       10.2000     8       10.3000        8.6375 22289246   16.14%
+ 1512203 471932        cutoff             10.3000        8.6375 22330952   16.14%
+ 1515600 472178        8.6850    30       10.3000        8.6429 22413785   16.09%
+ 1520412 472478        9.9375    26       10.3000        8.6429 22431519   16.09%
+ 1526814 473403        8.6675    41       10.3000        8.6429 22471797   16.09%
+Elapsed time = 4123.44 sec. (1242120.34 ticks, tree = 835.96 MB, solutions = 5)
+ 1532165 474921        8.6708    34       10.3000        8.6462 22544125   16.06%
+ 1538144 476277        cutoff             10.3000        8.6500 22586932   16.02%
+ 1542536 478782        8.6648    35       10.3000        8.6554 22678702   15.97%
+ 1547239 479312        8.9429    19       10.3000        8.6600 22696245   15.92%
+ 1553424 481141        9.9525    16       10.3000        8.6612 22741660   15.91%
+ 1559687 483184        9.9429    11       10.3000        8.6686 22811315   15.84%
+ 1564243 484740        8.6873    31       10.3000        8.6745 22862097   15.78%
+ 1568373 485582        9.9273    15       10.3000        8.6762 22896329   15.77%
+ 1574954 486601        cutoff             10.3000        8.6800 22941213   15.73%
+ 1580974 487919        9.9375    12       10.3000        8.6833 23034420   15.70%
+Elapsed time = 4209.53 sec. (1280277.10 ticks, tree = 861.14 MB, solutions = 5)
+ 1584690 488437        9.9273    15       10.3000        8.6875 23075076   15.66%
+ 1589124 488510        cutoff             10.3000        8.6927 23100449   15.60%
+ 1595686 488470        8.7250    22       10.3000        8.6948 23155871   15.58%
+ 1600941 488672        cutoff             10.3000        8.7000 23257093   15.53%
+ 1604014 488433       10.0200     7       10.3000        8.7023 23298855   15.51%
+ 1609051 487947    infeasible             10.3000        8.7058 23329302   15.48%
+ 1615335 487491        cutoff             10.3000        8.7100 23373974   15.44%
+ 1619055 486817        cutoff             10.3000        8.7167 23426897   15.37%
+ 1622566 485848        cutoff             10.3000        8.7273 23497458   15.27%
+ 1628654 484865        cutoff             10.3000        8.7333 23552592   15.21%
+Elapsed time = 4242.23 sec. (1318431.94 ticks, tree = 856.07 MB, solutions = 5)
+ 1633759 484082        cutoff             10.3000        8.7382 23594811   15.16%
+ 1636735 482566        cutoff             10.3000        8.7500 23678163   15.05%
+ 1640994 480880        9.9000    17       10.3000        8.7750 23736900   14.81%
+ 1647330 479430    infeasible             10.3000        8.7833 23805271   14.72%
+ 1651095 478888        9.9000     6       10.3000        8.7880 23845859   14.68%
+ 1654354 477929       10.2000     8       10.3000        8.8229 23937049   14.34%
+ 1659631 477551        9.9600    14       10.3000        8.8862 23958308   13.73%
+ 1665874 477340        9.9000     6       10.3000        8.9000 24022325   13.59%
+ 1669703 477174       10.2000    13       10.3000        8.9000 24091537   13.59%
+ 1673360 476637        9.9000     6       10.3000        8.9000 24157747   13.59%
+Elapsed time = 4355.01 sec. (1356585.18 ticks, tree = 842.11 MB, solutions = 5)
+ 1679610 476418        8.9000    18       10.3000        8.9000 24183113   13.59%
+ 1686227 476536        cutoff             10.3000        8.9000 24264516   13.59%
+ 1690248 476570        9.9000    10       10.3000        8.9000 24321516   13.59%
+ 1694033 476526        9.0980    22       10.3000        8.9000 24401009   13.59%
+ 1700359 476171       10.2000    10       10.3000        8.9000 24438821   13.59%
+ 1706923 476570        cutoff             10.3000        8.9000 24502684   13.59%
+ 1711035 476920       10.2000     8       10.3000        8.9000 24577947   13.59%
+ 1713889 476938    infeasible             10.3000        8.9000 24642385   13.59%
+ 1719166 476488        cutoff             10.3000        8.9000 24683249   13.59%
+ 1725665 476738       10.1040    14       10.3000        8.9000 24745823   13.59%
+Elapsed time = 4786.93 sec. (1394740.72 ticks, tree = 842.63 MB, solutions = 5)
+ 1731160 477209        9.9000    10       10.3000        8.9000 24843564   13.59%
+ 1734173 477062       10.2000    10       10.3000        8.9000 24934686   13.59%
+ 1739003 476755    infeasible             10.3000        8.9000 24964434   13.59%
+ 1745492 477304       10.2000     6       10.3000        8.9000 25051288   13.59%
+ 1751258 477588        8.9600    22       10.3000        8.9000 25091829   13.59%
+ 1754828 478088        9.9000    14       10.3000        8.9000 25200423   13.59%
+ 1757937 478023        cutoff             10.3000        8.9000 25216029   13.59%
+ 1763992 477987        8.9600    28       10.3000        8.9000 25268282   13.59%
+ 1770551 478584        cutoff             10.3000        8.9000 25325295   13.59%
+ 1775499 478935    infeasible             10.3000        8.9000 25403507   13.59%
+Elapsed time = 4804.37 sec. (1432898.75 ticks, tree = 846.76 MB, solutions = 5)
+ 1778672 478139    infeasible             10.3000        8.9000 25476029   13.59%
+ 1784045 477354        9.9250    16       10.3000        8.9000 25504632   13.59%
+ 1790424 476564        9.9214    18       10.3000        8.9000 25547530   13.59%
+ 1796358 475372        9.9233    17       10.3000        8.9000 25628096   13.59%
+ 1799572 474520        cutoff             10.3000        8.9092 25684326   13.50%
+ 1804331 473330        9.9450    11       10.3000        8.9200 25758342   13.40%
+ 1810945 471619    infeasible             10.3000        8.9200 25853059   13.40%
+ 1817199 471217       10.2000    14       10.3000        8.9214 25881432   13.38%
+ 1821765 469829        9.9231    17       10.3000        8.9214 25978103   13.38%
+ 1824954 468898        9.9600    16       10.3000        8.9214 26015051   13.38%
+Elapsed time = 4820.01 sec. (1471051.44 ticks, tree = 829.76 MB, solutions = 5)
+ 1831462 467993       10.2000     6       10.3000        8.9214 26047714   13.38%
+ 1838296 466712        cutoff             10.3000        8.9218 26119923   13.38%
+ 1842866 464068        cutoff             10.3000        8.9231 26281704   13.37%
+ 1845744 463859        9.9375    12       10.3000        8.9231 26286540   13.37%
+ 1852429 462256       10.2000     8       10.3000        8.9231 26341996   13.37%
+1. Setting up grid and parameters...
+Using optimization model: minimize_energy
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 1, 'eq8': 1, 'eq9': 1, 'eq10': 1, 'eq11': 1, 'eq12': 1, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper and objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Memory usage after computing neighborhoods:
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 288.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 352.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 288.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'list'> total size: 5.81 KB
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 224.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'list'> total size: 2.53 KB
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+Battery constraints are active. Setting battery variable types and bounds.
+
+Memory usage after building constraints:
+Array of shape (6, 1244), dtype=float64: 58.31 KB
+Array of shape (45, 1244), dtype=float64: 437.34 KB
+Array of shape (3, 1244), dtype=float64: 29.16 KB
+Array of shape (48, 1244), dtype=float64: 466.50 KB
+Array of shape (64, 1244), dtype=float64: 622.00 KB
+Array of shape (1024, 1244), dtype=float64: 9.72 MB
+Array of shape (1024, 1244), dtype=float64: 9.72 MB
+Array of shape (1024, 1244), dtype=float64: 9.72 MB
+<class 'str'>: 59.00 
+Array of shape (4, 1244), dtype=float64: 38.88 KB
+<class 'str'>: 62.00 
+Array of shape (4, 1244), dtype=float64: 38.88 KB
+<class 'str'>: 62.00 
+Array of shape (4, 1244), dtype=float64: 38.88 KB
+<class 'str'>: 59.00 
+Array of shape (4, 1244), dtype=float64: 38.88 KB
+<class 'str'>: 63.00 
+Array of shape (4,), dtype=float64: 32.00 
+<class 'str'>: 59.00 
+Array of shape (4, 1244), dtype=float64: 38.88 KB
+<class 'str'>: 63.00 
+Array of shape (4,), dtype=float64: 32.00 
+<class 'str'>: 56.00 
+Array of shape (2, 1244), dtype=float64: 19.44 KB
+<class 'str'>: 60.00 
+Array of shape (2,), dtype=float64: 16.00 
+dict total size: 214.42 KB
+Array of shape (96, 1244), dtype=float64: 933.00 KB
+Array of shape (96, 1244), dtype=float64: 933.00 KB
+Array of shape (16, 1244), dtype=float64: 155.50 KB
+
+Running feasibility diagnostics before combining constraints...
+
+=== QUICK CHECKS ===
+Grid cells (G): 16
+UAV-time slots (N*T): 6
+Cells with non-empty Irs (coverable): 16
+Coverable cell indices (first 20): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+Requested C_min: 14.4
+Trivial upper bound on coverage: 6
+>>> TRIVIAL INFEASIBLE: C_min exceeds obvious upper bound.
+====================
+
+=== Irs / Irc INSPECTION ===
+Cells with empty Irs: 0 []
+Invalid indices in Irc (if any): []
+===========================
+
+=== c_i variable bounds / types ===
+Unique lower bounds for c_i: [np.float64(0.0)]
+Unique upper bounds for c_i: [np.float64(1.0)]
+Example c_i lb/ub/type for first 20:
+  c_0: idx=96, lb=0.0, ub=1.0, type=C
+  c_1: idx=97, lb=0.0, ub=1.0, type=C
+  c_2: idx=98, lb=0.0, ub=1.0, type=C
+  c_3: idx=99, lb=0.0, ub=1.0, type=C
+  c_4: idx=100, lb=0.0, ub=1.0, type=C
+  c_5: idx=101, lb=0.0, ub=1.0, type=C
+  c_6: idx=102, lb=0.0, ub=1.0, type=C
+  c_7: idx=103, lb=0.0, ub=1.0, type=C
+  c_8: idx=104, lb=0.0, ub=1.0, type=C
+  c_9: idx=105, lb=0.0, ub=1.0, type=C
+  c_10: idx=106, lb=0.0, ub=1.0, type=C
+  c_11: idx=107, lb=0.0, ub=1.0, type=C
+  c_12: idx=108, lb=0.0, ub=1.0, type=C
+  c_13: idx=109, lb=0.0, ub=1.0, type=C
+  c_14: idx=110, lb=0.0, ub=1.0, type=C
+  c_15: idx=111, lb=0.0, ub=1.0, type=C
+===================================
+
+b_full: 100.0
+max single m(i,j) cost: 1.3
+sum of all m(i,j) costs (per UAV-step if your formulation sums them): 328.0000000000015
+If M < any of these relevant energy sums, big-M modeling may be invalid.
+
+Computing LP relaxation (max coverage)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_TimeLimit                               30
+Found incumbent of value 0.000000 after 0.00 sec. (0.05 ticks)
+Found incumbent of value 16.000000 after 0.00 sec. (0.07 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.08 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.08 ticks)
+LP-relax max coverage (without constraints): 16.0, status: integer optimal solution
+
+6. Combining all constraints...
+
+Memory usage after combining constraints:
+Array of shape (104, 1244), dtype=float64: 1010.75 KB
+Array of shape (104,), dtype=float64: 832.00 
+Array of shape (3365, 1244), dtype=float64: 31.94 MB
+Array of shape (3365,), dtype=float64: 26.29 KB
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 2 times.
+MIP Presolve eliminated 10 rows and 4 columns.
+MIP Presolve modified 8 coefficients.
+Aggregator did 96 substitutions.
+Reduced MIP has 3363 rows, 1144 columns, and 11042 nonzeros.
+Reduced MIP has 1124 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.99 ticks)
+Found incumbent of value 5.200000 after 0.01 sec. (27.46 ticks)
+Probing fixed 245 vars, tightened 0 bounds.
+Probing changed sense of 2 constraints.
+Probing time = 0.03 sec. (44.32 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 688 rows and 249 columns.
+MIP Presolve modified 170 coefficients.
+Aggregator did 2 substitutions.
+Reduced MIP has 2673 rows, 893 columns, and 9209 nonzeros.
+Reduced MIP has 877 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (18.20 ticks)
+Probing time = 0.00 sec. (4.16 ticks)
+Cover probing fixed 0 vars, tightened 2 bounds.
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 2673 rows, 893 columns, and 9209 nonzeros.
+Reduced MIP has 877 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (9.07 ticks)
+Probing time = 0.00 sec. (4.16 ticks)
+Cover probing fixed 0 vars, tightened 2 bounds.
+Clique table members: 5900.
+Tightened 2 constraints.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.00 sec. (5.35 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            5.2000        0.0000           100.00%
+      0     0        0.0000    17        5.2000        0.0000       54  100.00%
+*     0+    0                            4.6000        0.0000           100.00%
+      0     0        0.0000    12        4.6000      Cuts: 13       73  100.00%
+      0     0        0.0000    16        4.6000      Cuts: 18       85  100.00%
+      0     0        0.0000    15        4.6000      Cuts: 16      106  100.00%
+*     0+    0                            4.3000        0.0000           100.00%
+      0     2        0.0000    15        4.3000        0.0000      106  100.00%
+Elapsed time = 0.12 sec. (239.34 ticks, tree = 0.02 MB, solutions = 3)
+    871   169        cutoff              4.3000        2.3000    14418   46.51%
+
+Clique cuts applied:  1
+Implied bound cuts applied:  26
+Zero-half cuts applied:  6
+
+Root node processing (before b&c):
+  Real time             =    0.12 sec. (238.47 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.14 sec. (282.44 ticks)
+  Sync time (average)   =    0.02 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.26 sec. (520.91 ticks)
+Solver finished in 0.26 seconds.
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 4.3
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): [(np.int64(2), np.int64(2)), (np.int64(2), np.int64(2)), (np.int64(2), np.int64(2))]
+  Battery Levels: [np.float64(100.0), np.float64(99.0), np.float64(98.0)]
+
+--- UAV 2 ---
+  Path (row, col): [(np.int64(1), np.int64(3)), (np.int64(1), np.int64(3)), (np.int64(1), np.int64(1))]
+  Battery Levels: [np.float64(100.0), np.float64(99.0), np.float64(97.7)]
+
+Total Cells Covered: 15 / 16 (93.75%)
+t=0 | Coverage: 68.75% (11/16)
+t=1 | Coverage: 68.75% (11/16)
+t=2 | Coverage: 87.50% (14/16)
+
+Optimization script finished.
+1. Setting up grid and parameters...
+Using optimization model: minimize_energy
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 1, 'eq8': 1, 'eq9': 1, 'eq10': 1, 'eq11': 1, 'eq12': 1, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper and objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Memory usage after computing neighborhoods:
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 512.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 608.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 544.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 416.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 448.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 608.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 736.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 640.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 480.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 384.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 544.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 640.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 544.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 416.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 416.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 480.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 416.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'list'> total size: 11.44 KB
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 320.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 128.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 224.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 256.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 160.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'numpy.int64'>: 32.00 
+<class 'list'> total size: 96.00 
+<class 'list'> total size: 4.41 KB
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+Battery constraints are active. Setting battery variable types and bounds.
+
+Memory usage after building constraints:
+Array of shape (6, 2837), dtype=float64: 132.98 KB
+Array of shape (72, 2837), dtype=float64: 1.56 MB
+Array of shape (3, 2837), dtype=float64: 66.49 KB
+Array of shape (75, 2837), dtype=float64: 1.62 MB
+Array of shape (100, 2837), dtype=float64: 2.16 MB
+Array of shape (2500, 2837), dtype=float64: 54.11 MB
+Array of shape (2500, 2837), dtype=float64: 54.11 MB
+Array of shape (2500, 2837), dtype=float64: 54.11 MB
+<class 'str'>: 59.00 
+Array of shape (4, 2837), dtype=float64: 88.66 KB
+<class 'str'>: 62.00 
+Array of shape (4, 2837), dtype=float64: 88.66 KB
+<class 'str'>: 62.00 
+Array of shape (4, 2837), dtype=float64: 88.66 KB
+<class 'str'>: 59.00 
+Array of shape (4, 2837), dtype=float64: 88.66 KB
+<class 'str'>: 63.00 
+Array of shape (4,), dtype=float64: 32.00 
+<class 'str'>: 59.00 
+Array of shape (4, 2837), dtype=float64: 88.66 KB
+<class 'str'>: 63.00 
+Array of shape (4,), dtype=float64: 32.00 
+<class 'str'>: 56.00 
+Array of shape (2, 2837), dtype=float64: 44.33 KB
+<class 'str'>: 60.00 
+Array of shape (2,), dtype=float64: 16.00 
+dict total size: 488.22 KB
+Array of shape (150, 2837), dtype=float64: 3.25 MB
+Array of shape (150, 2837), dtype=float64: 3.25 MB
+Array of shape (25, 2837), dtype=float64: 554.10 KB
+
+Running feasibility diagnostics before combining constraints...
+
+=== QUICK CHECKS ===
+Grid cells (G): 25
+UAV-time slots (N*T): 6
+Cells with non-empty Irs (coverable): 25
+Coverable cell indices (first 20): [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+Requested C_min: 22.5
+Trivial upper bound on coverage: 6
+>>> TRIVIAL INFEASIBLE: C_min exceeds obvious upper bound.
+====================
+
+=== Irs / Irc INSPECTION ===
+Cells with empty Irs: 0 []
+Invalid indices in Irc (if any): []
+===========================
+
+=== c_i variable bounds / types ===
+Unique lower bounds for c_i: [np.float64(0.0)]
+Unique upper bounds for c_i: [np.float64(1.0)]
+Example c_i lb/ub/type for first 20:
+  c_0: idx=150, lb=0.0, ub=1.0, type=C
+  c_1: idx=151, lb=0.0, ub=1.0, type=C
+  c_2: idx=152, lb=0.0, ub=1.0, type=C
+  c_3: idx=153, lb=0.0, ub=1.0, type=C
+  c_4: idx=154, lb=0.0, ub=1.0, type=C
+  c_5: idx=155, lb=0.0, ub=1.0, type=C
+  c_6: idx=156, lb=0.0, ub=1.0, type=C
+  c_7: idx=157, lb=0.0, ub=1.0, type=C
+  c_8: idx=158, lb=0.0, ub=1.0, type=C
+  c_9: idx=159, lb=0.0, ub=1.0, type=C
+  c_10: idx=160, lb=0.0, ub=1.0, type=C
+  c_11: idx=161, lb=0.0, ub=1.0, type=C
+  c_12: idx=162, lb=0.0, ub=1.0, type=C
+  c_13: idx=163, lb=0.0, ub=1.0, type=C
+  c_14: idx=164, lb=0.0, ub=1.0, type=C
+  c_15: idx=165, lb=0.0, ub=1.0, type=C
+  c_16: idx=166, lb=0.0, ub=1.0, type=C
+  c_17: idx=167, lb=0.0, ub=1.0, type=C
+  c_18: idx=168, lb=0.0, ub=1.0, type=C
+  c_19: idx=169, lb=0.0, ub=1.0, type=C
+===================================
+
+b_full: 100.0
+max single m(i,j) cost: 1.3
+sum of all m(i,j) costs (per UAV-step if your formulation sums them): 804.9999999999931
+If M < any of these relevant energy sums, big-M modeling may be invalid.
+
+Computing LP relaxation (max coverage)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_TimeLimit                               30
+Found incumbent of value 0.000000 after 0.00 sec. (0.11 ticks)
+Found incumbent of value 25.000000 after 0.00 sec. (0.15 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.00 sec. (0.19 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.00 sec. (0.19 ticks)
+LP-relax max coverage (without constraints): 25.0, status: integer optimal solution
+
+6. Combining all constraints...
+
+Memory usage after combining constraints:
+Array of shape (158, 2837), dtype=float64: 3.42 MB
+Array of shape (158,), dtype=float64: 1.23 KB
+Array of shape (7946, 2837), dtype=float64: 171.99 MB
+Array of shape (7946,), dtype=float64: 62.08 KB
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 2 times.
+MIP Presolve eliminated 10 rows and 4 columns.
+MIP Presolve modified 8 coefficients.
+Aggregator did 150 substitutions.
+Reduced MIP has 7944 rows, 2683 columns, and 25109 nonzeros.
+Reduced MIP has 2654 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (39.04 ticks)
+Found incumbent of value 5.200000 after 0.04 sec. (87.48 ticks)
+Probing fixed 965 vars, tightened 0 bounds.
+Probing changed sense of 2 constraints.
+Probing time = 0.12 sec. (230.67 ticks)
+Tried aggregator 2 times.
+MIP Presolve eliminated 2794 rows and 969 columns.
+MIP Presolve modified 146 coefficients.
+Aggregator did 2 substitutions.
+Reduced MIP has 5148 rows, 1712 columns, and 18434 nonzeros.
+Reduced MIP has 1687 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (41.59 ticks)
+Probing time = 0.01 sec. (6.87 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 5148 rows, 1712 columns, and 18434 nonzeros.
+Reduced MIP has 1687 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (19.84 ticks)
+Probing time = 0.01 sec. (6.48 ticks)
+Clique table members: 12783.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.00 sec. (9.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            5.2000        0.0000           100.00%
+      0     0        0.0000    16        5.2000        0.0000       86  100.00%
+*     0+    0                            4.9000        0.0000           100.00%
+      0     0        0.0000    12        4.9000      Cuts: 13      122  100.00%
+      0     0        0.0000    20        4.9000      Cuts: 25      158  100.00%
+      0     0        0.0000    17        4.9000      Cuts: 45      193  100.00%
+      0     0        0.0000    20        4.9000      Cuts: 21      214  100.00%
+      0     2        0.0000    13        4.9000        0.0000      214  100.00%
+Elapsed time = 0.36 sec. (713.57 ticks, tree = 0.02 MB, solutions = 2)
+    334   196        4.6500    12        4.9000        2.0500     4587   58.16%
+    854   512        cutoff              4.9000        2.0875     8731   57.40%
+   1359   838        cutoff              4.9000        2.1500    14049   56.12%
+   1820   858        cutoff              4.9000        2.3000    22113   53.06%
+   2222   887        cutoff              4.9000        2.3000    30053   53.06%
+   2646   951        cutoff              4.9000        2.3000    37107   53.06%
+   3057   986        4.7800    20        4.9000        2.3000    45645   53.06%
+   3468   951        cutoff              4.9000        2.3000    54770   53.06%
+   3866   873        2.6000    10        4.9000        2.3000    62315   53.06%
+
+Cover cuts applied:  1
+Implied bound cuts applied:  95
+Zero-half cuts applied:  8
+
+Root node processing (before b&c):
+  Real time             =    0.35 sec. (711.81 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    1.35 sec. (3003.47 ticks)
+  Sync time (average)   =    0.14 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    1.70 sec. (3715.28 ticks)
+Solver finished in 1.70 seconds.

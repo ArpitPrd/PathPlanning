@@ -57,7 +57,7 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
     """Sets up the objective vector and optimization sense based on the model config."""
     model_name = model_cfg.get("name", "maximize_coverage")
     f = np.zeros(vh.total_vars)
-    
+   
     if model_name == "maximize_coverage":
         # Model 1: Maximize sum(c_i)
         for i in range(vh.num_grid_cells):
@@ -169,7 +169,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     if not any_battery_logic:
         return results
     
-    M = b_full/2
+    M = b_full
     # M = 0
     eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
 
@@ -198,12 +198,12 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
                 # Eq 10b: b(t+1) >= b_full - M(1-x) --> b(t+1) - M*x >= b_full - M
                 r10b = np.zeros(vh.total_vars); r10b[vh.b(t+1,n)]=1; r10b[vh.x_charge(t,n)]=-M; eq10b.append(r10b)
 
-    results['charge_loc'] = np.array(eq8)
-    results['discharge_leq'] = np.array(eq9a)
-    results['discharge_geq'] = np.array(eq9b)
-    results['charge_leq'] = np.array(eq10a)
+    results['charge_loc']     = np.array(eq8)
+    results['discharge_leq']  = np.array(eq9a)
+    results['discharge_geq']  = np.array(eq9b)
+    results['charge_leq']     = np.array(eq10a)
     results['rhs_charge_leq'] = np.full(len(eq10a), b_full + M)
-    results['charge_geq'] = np.array(eq10b)
+    results['charge_geq']     = np.array(eq10b)
     results['rhs_charge_geq'] = np.full(len(eq10b), b_full - M)
 
     # Initial battery state is mandatory if any other battery constraint is active
@@ -212,7 +212,6 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     for n in range(vh.N): B_initial[n, vh.b(0, n)] = 1
     results['initial'] = B_initial
     results['rhs_initial'] = rhs_initial
-            
     return results
 
 def cell_coverage_constraints(vh, Irs, cfg):
@@ -269,7 +268,7 @@ def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
         return (np.array([row]), np.array([B_max])), None
 
     elif model_name == "minimize_energy":
-        C_min = model_cfg.get("C_min")
+        C_min = model_cfg.get("C_min")*(vh.num_grid_cells/100)
         if C_min is None: raise ValueError("C_min must be set for 'minimize_energy' model.")
             
         # Eq 17: Minimum coverage: sum(c_i) >= C_min

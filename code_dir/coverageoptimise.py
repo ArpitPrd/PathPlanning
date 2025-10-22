@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 from matplotlib import patches
 from matplotlib.widgets import Button
 from matplotlib import animation
+from feasability_checks import quick_feasibility_checks, inspect_Irs_Irc, check_variable_bounds_and_types, compute_max_coverage_relax, check_bigM_consistency
+
+
 def process_results(solution, vh, Irs, sz):
     uav_paths = {n: [] for n in range(vh.N)}
     uav_covered_nodes = {n: [] for n in range(vh.N)}
@@ -62,7 +65,7 @@ def main(cfg: dict):
     b_full, e_base = battery.get("b_full", 100.0), battery.get("ebase", 10.0)
     initial_battery = battery.get("initial_battery", b_full)
     
-    solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 600), solver_cfg.get("mipgap", 0.01)
+    solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 6000), solver_cfg.get("mipgap", 0.01)
     
     # --- Read Model and Constraint Toggles from Config ---
     model_cfg = cfg.get("model", {"name": "maximize_coverage"}) # Defaults to model 1
@@ -160,6 +163,32 @@ def main(cfg: dict):
     get_total_size(C13, verbose=True)
     get_total_size(C14, verbose=True)
     get_total_size(C15, verbose=True)
+    
+    
+    # ==============================
+    # 🔍 5a. FEASIBILITY DIAGNOSTICS (insert here)
+    # ==============================
+    print("\nRunning feasibility diagnostics before combining constraints...\n")
+    quick_feasibility_checks(vh, Irs, model_cfg)
+    inspect_Irs_Irc(Irs, Irc)
+    check_variable_bounds_and_types(vh, lb, ub, ctype)
+    check_bigM_consistency(vh, b_mov, b_steady, b_full)
+    
+    # We'll temporarily compute LP-relaxation max coverage here:
+    print("Computing LP relaxation (max coverage)...")
+    # (You’ll define this function above main, same as I gave earlier)
+    A_eq_dummy = np.empty((0, vh.total_vars))
+    b_eq_dummy = np.array([])
+    A_ineq_dummy = np.empty((0, vh.total_vars))
+    b_ineq_dummy = np.array([])
+    senses_dummy = ""
+    max_cov, stat = compute_max_coverage_relax(
+        vh, A_eq_dummy, b_eq_dummy, A_ineq_dummy, b_ineq_dummy, senses_dummy, lb, ub
+    )
+    print(f"LP-relax max coverage (without constraints): {max_cov}, status: {stat}\n")
+    
+    
+    
     # ==============================
     # 6. COMBINE CONSTRAINTS
     # ==============================
