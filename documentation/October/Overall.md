@@ -41,3 +41,20 @@ pt2. Half of the modelling is done for the stations, charging and discharging eq
 - Only centre or peripheries
 
 3. Model for different stations has been made
+
+
+The another current issue is, why is it giving infeasable solutions. Like literally why... It does not make any sense
+
+
+
+
+So, the tasks have been reduced to improving te battery thing, but I am yet unable to understand what the issue is? What is it that it starts giving me linear conflicts after a certain limit, like that too for coverage.
+There are some conflicting lower and upper bounds, which I need to look over, But how come they are arising once we have put the equations into higher coverage
+
+
+
+
+Okay, let us try to analyze the case of a $3*3$ matrix. 
+Trivial upper bound = Sum(c_i), the largest possible value it can take
+What the fuck, C_min is the number of cells. 
+A loophole - The sink node is actually not being taken care of being a part of coverage region as of the plotter code
