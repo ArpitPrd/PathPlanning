@@ -58,3 +58,19 @@ Okay, let us try to analyze the case of a $3*3$ matrix.
 Trivial upper bound = Sum(c_i), the largest possible value it can take
 What the fuck, C_min is the number of cells. 
 A loophole - The sink node is actually not being taken care of being a part of coverage region as of the plotter code
+
+
+Tasks at hand:
+1. Update the equations to sense region -> done
+2. Update the equations to show obstacles -> done
+3. Maybe update the equations to give one movement at a time
+
+
+
+
+
+
+Later tasks:
+1. Introduce the dummy drone architecture......
+2. Split the recharging stations
+
