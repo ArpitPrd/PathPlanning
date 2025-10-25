@@ -20,7 +20,7 @@ def coverage_optimize():
     # ==============================
     # User defined input
     # ==============================
-    Rs = 1  # Sensing Radius
+    Rs = 1.415  # Sensing Radius
     Rc = 2 * Rs  # Communication Radius
     
     # ==============================
@@ -92,8 +92,8 @@ def coverage_optimize():
         
 
     
-    N = 2  # number of UAVs
-    T = 8  # max no. of time steps
+    N = 3  # number of UAVs
+    T = 4  # max no. of time steps
     
     # ==============================
     # Objective function
