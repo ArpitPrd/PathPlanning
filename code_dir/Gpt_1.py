@@ -50,40 +50,47 @@ def communicable_gpt(P_sink, G, sz, Rc, O_lin=None):
 
     Inputs:
       P_sink: linear index of the sink (0-based)
-      G: (M,2) array of valid (row,col) integer grid cells (obstacles already removed)
+      G: (M,2) array of all (row,col) integer grid cells
       sz: grid shape tuple (rows, cols)
       Rc: communication radius (in grid units)
       O_lin: iterable of obstacle linear indices (0-based). Can be None/empty.
 
     Returns:
-      Irc: list of lists; for each row in G, the sorted linear indices of its neighbors
-      Irc_sink: neighbors (linear indices) of the sink row in G
+      Irc: list of lists; for each G row, the sorted linear indices of its neighbors
+      Irc_sink: neighbors (linear indices) of the sink row in G (includes sink)
     """
     obstacles_lin_set = set([] if O_lin is None else list(O_lin))
-
-    # sink (r,c) from linear
     sink_rc = np.array(np.unravel_index(P_sink, sz))
-
+    
     Irc = []
     for p in range(len(G)):
         p_rc = (int(G[p, 0]), int(G[p, 1]))
+        # A node cannot be its own neighbor if it's an obstacle
+        if np.ravel_multi_index(p_rc, sz) in obstacles_lin_set:
+            Irc.append([])
+            continue
+            
         neigh_lin = []
         for q in range(len(G)):
-            if q == p:
-                continue
             q_rc = (int(G[q, 0]), int(G[q, 1]))
+            
+            # --- BUG FIX 1: Removed `if q == p: continue` ---
+            # A node is always in its own communication range.
+            
             # radius test (squared Euclidean)
             if (p_rc[0] - q_rc[0])**2 + (p_rc[1] - q_rc[1])**2 <= Rc**2:
                 # LoS test
                 if _los_clear(p_rc, q_rc, sz, obstacles_lin_set):
                     neigh_lin.append(np.ravel_multi_index(q_rc, sz))
-        # exclude sink explicitly to mirror previous behavior
-        neigh_lin = sorted(set(neigh_lin) - {P_sink})
-        Irc.append(neigh_lin)
+                    
+        # --- BUG FIX 2: Removed `... - {P_sink}` ---
+        # Filtering the sink here breaks mobility and connectivity logic.
+        # Constraint functions are responsible for special handling of the sink.
+        Irc.append(sorted(list(set(neigh_lin))))
 
-    # find sink row in G (guaranteed present if not an obstacle)
+    # find sink row in G
     L = np.where((G == sink_rc).all(axis=1))[0][0]
-    Irc_sink = Irc[L]
+    Irc_sink = Irc[L] # This list now correctly includes the sink itself
 
     return Irc, Irc_sink
 
@@ -95,28 +102,34 @@ def sensing_gpt(P_sink, G, sz, Rs, O_lin=None):
 
     Returns:
       L: index of the sink row in G,
-      Irs: list of lists of neighbor linear indices for each G row,
+      Irs: list of lists of neighbor linear indices for each G row (includes self)
       Irs_sink: sensing neighbors of the sink (linear indices)
     """
     obstacles_lin_set = set([] if O_lin is None else list(O_lin))
-
     sink_rc = np.array(np.unravel_index(P_sink, sz))
 
     Irs = []
     for p in range(len(G)):
         p_rc = (int(G[p, 0]), int(G[p, 1]))
+        # A node cannot be its own neighbor if it's an obstacle
+        if np.ravel_multi_index(p_rc, sz) in obstacles_lin_set:
+            Irs.append([])
+            continue
+            
         neigh_lin = []
         for q in range(len(G)):
-            if q == p:
-                continue
             q_rc = (int(G[q, 0]), int(G[q, 1]))
+            
+            # --- BUG FIX 1: Removed `if q == p: continue` ---
+            # A node can always sense its own grid cell.
+            
             # radius test (squared Euclidean)
             if (p_rc[0] - q_rc[0])**2 + (p_rc[1] - q_rc[1])**2 <= Rs**2:
                 if _los_clear(p_rc, q_rc, sz, obstacles_lin_set):
                     neigh_lin.append(np.ravel_multi_index(q_rc, sz))
-        # exclude sink explicitly for symmetry with communicable_gpt
-        neigh_lin = sorted(set(neigh_lin) - {P_sink})
-        Irs.append(neigh_lin)
+                    
+        # --- BUG FIX 2: Removed `... - {P_sink}` ---
+        Irs.append(sorted(list(set(neigh_lin))))
 
     L = np.where((G == sink_rc).all(axis=1))[0][0]
     Irs_sink = Irs[L]

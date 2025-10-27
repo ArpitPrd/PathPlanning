@@ -12,12 +12,13 @@
 \subsection*{Variable and Parameter Descriptions}
 \textbf{Sets and Indices}
 \begin{itemize}
-    \item $i, j \in G$: Set of all grid points.
-    \item $n \in N$: Set of all UAVs.
-    \item $k \in K$: Set of all time steps.
-    \item $s \in G$: Location of the base station (sink).
-    \item $C_i \subset G$: Set of grid points in communication range of point $i$.
-    \item $S_i \subset G$: Set of grid points in sensing range of point $i$.
+    \item $s$: Base station (or sink) location
+    \item $G_{\,\bar{s}}$: Set of all grid points (excluding the sink).
+    % \item $n \in N$: Set of all UAVs.
+    % \item $k \in K$: Set of all time steps.
+    % \item $s \in G_{\,\bar{s}}$: Location of the base station (sink).
+    \item $C_i$ : Set of grid points in communication range of point $i$. Therefore $C_s$ Set of grid points within the communication range of the sink location
+    \item $S_i$: Set of grid points in sensing range of point $i$.
 \end{itemize}
 
 \textbf{Parameters}
@@ -26,16 +27,21 @@
     \item $b_{steady}$: Energy consumed while idle for one time step.
     \item $b_{full}$: Maximum battery capacity for a single UAV.
     \item $e_{base}$: Minimum required battery level for a single UAV.
+    \item $N$: Number of UAVs (or mobile nodes)
+    \item $K_{\max}$: Maximum number of time-steps
     \item $M$: A large constant for Big-M method (e.g., $b_{full}$).
     \item $B_{\max}$: Maximum allowable total energy consumption for the entire fleet.
     \item $C_{\min}$: Minimum number of grid points that must be covered.
+    \item $C_{\max}$: Total number of grid points to be covered (Note that, $C_{\max}$ = the cardinality of $G_{\,\bar{s}}$)
+    \item $cr$: Area coverage ratio: ratio of the number of grid points covered at least once at any time-step and $C_{\max}$ ($0 \leq cr \leq 1$)
+    \item $K_{\max}$: Maximum number of time-steps
 \end{itemize}
 
 \textbf{Decision Variables}
 \begin{itemize}
-    \item $z_{i,n}^{k} \in \{0,1\}$: 1 if UAV $n$ is at grid point $i$ at time $k$.
-    \item $c_{i} \in [0,1]$: 1 if grid point $i$ is covered at any time.
-    \item $c_{i,n}^{k} \in [0,1]$: 1 if grid point $i$ is covered by UAV $n$ at time $k$.
+    \item $z_{i,n}^{k} \in \{0,1\}$: Binary variable; $z_{i,n}^{k}$ = 1 if the $n$th UAV is located at grid point $i$th at the $k$th time-step, otherwise $z_{i,n}^{k}$ = 0.
+    \item $c_{i} \in [0,1]$: Continuous variable; $c_{i}$ = 1 if the grid point i is covered by any UAV at any time-step, otherwise $c_{i}$ = 0.
+    \item $c_{i,n}^{k} \in [0,1]$: Continuous variable; $c_{i,n}^{k}$ = 1 if the grid point i is covered kth by the nth UAV at the kth time-step, otherwise $c_{i,n}^{k}$ = 0.
     \item $m_{i,j,n}^{k} \in \{0,1\}$: 1 if UAV $n$ moves from $i$ to $j$ between $k$ and $k+1$.
     \item $x_{n}^{k} \in \{0,1\}$: 1 if UAV $n$ is charging at time $k$.
     \item $b_{n}^{k} \in \mathbb{R}^+$: Battery level of UAV $n$ at time $k$.
@@ -44,40 +50,40 @@
 \section*{Multi-Objective Formulations}
 Below are two distinct models for optimizing the UAV path planning based on different mission priorities. The common constraints applicable to both models are listed in the subsequent section.
 
-\subsection*{Model 1: Maximize Coverage with a Battery Consumption Threshold}
+\subsection*{Model: Maximize Coverage with a Battery Consumption Threshold}
 This model aims to achieve the maximum possible area coverage without exceeding a total energy budget for the fleet.
 
 \textbf{Objective Function}
 \begin{align}
-    \max \sum_{i \in G} c_i \quad &\text{Maximize coverage} 
+    \max \sum_{i \in G_{\,\bar{s}}} c_i \quad &\text{Maximize coverage} 
 \end{align}
 
 \textbf{Additional Constraint}
 \begin{align}
-    \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G} m_{i,i,n}^{k} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{16}
+    \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G_{\,\bar{s}}, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G_{\,\bar{s}}} m_{i,i,n}^{k} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{17}
 \end{align}
 
-\subsection*{Model 2: Minimize Battery Consumption with a Coverage Threshold}
-This model aims to find the most energy-efficient flight paths while ensuring a minimum required area is surveyed.
+% \subsection*{Model 2: Minimize Battery Consumption with a Coverage Threshold}
+% This model aims to find the most energy-efficient flight paths while ensuring a minimum required area is surveyed.
 
-\textbf{Objective Function}
-\begin{align}
-    \min \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G} m_{i,i,n}^{k} \right) \quad &\text{Minimize total energy}
-\end{align}
+% \textbf{Objective Function}
+% \begin{align}
+%     \min \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G_{\,\bar{s}}, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G_{\,\bar{s}}} m_{i,i,n}^{k} \right) \quad &\text{Minimize total energy}
+% \end{align}
 
-\textbf{Additional Constraint}
-\begin{align}
-    \sum_{i \in G} c_{i} \ge C_{\min} \quad &\text{Minimum coverage} \tag{17}
-\end{align}
+% \textbf{Other Constraint}
+% \begin{align}
+%     \sum_{i \in G_{\,\bar{s}}} c_{i} \ge C_{\min} \quad &\text{Minimum coverage} \tag{18}
+% \end{align}
 
 \subsection*{Common Constraints}
 The following constraints are applicable to both models presented above.
 \begin{align}
-    \sum_{i \in G} z_{i,n}^{k} &= 1 \quad \forall n, k \quad &\text{Unique position} \tag{2} \\
-    \sum_{n \in N} z_{i,n}^{k} &\le 1 \quad \forall i \neq s, k \quad &\text{Collision avoidance} \tag{3} \\
-    \sum_{n \in N} \sum_{p \in C_s} z_{p,n}^{k} &\ge 1 \quad \forall k \quad &\text{Sink connectivity} \tag{4} \\
-    z_{i,n}^{k} &\le \sum_{p \in C_i} z_{p, n-1}^{k} \quad \forall i, n>1, k \quad &\text{Inter-UAV link} \tag{5} \\
-    z_{i,n}^{k+1} &\le \sum_{p \in C_i} z_{p,n}^{k} \quad \forall i, n, k < K_{max} \quad &\text{Mobility rule} \tag{6} \\
+    \sum_{i \in G_{\,\bar{s}}} z_{i,n}^{k} &= 1 \quad n = 1, 2, ..., N; k = 1, 2, ..., K_{\max} \quad &\text{Unique position} \tag{2} \\
+    \sum_{n = 1}^{N} z_{i,n}^{k} &\le 1 \quad \forall i \in G_{\,\bar{s}}; k = 1, 2, ..., K_{\max}  &\text{Collision avoidance} \tag{3} \\
+    \sum_{n = 1}^{N} \sum_{p \in C_s} z_{p,n}^{k} &\ge 1 \quad k = 1, 2, ..., K_{\max} \quad &\text{Sink connectivity} \tag{4} \\
+    z_{i,n}^{k} &\le \sum_{p \in C_i} z_{p, (n-1)}^{k} \quad \forall i \in G_{\,\bar{s}}; n = 2, 3, ... N; k = 1, 2, ..., K_{\max} \quad &\text{Inter-UAV link} \tag{5} \\
+    z_{i,n}^{k+1} &\le \sum_{p \in C_i} z_{p,n}^{k} \quad \forall i \in G_{\,\bar{s}}; n = 1, 2, ..., N; k = 1, 2, ..., (K_{\max}-1) \quad &\text{Mobility rule} \tag{6} \\
     \nonumber \\
     m_{i,j,n}^{k} &\le z_{i,n}^{k} \quad \forall i, j, n, k \quad &\text{Movement definition} \tag{7a} \\
     m_{i,j,n}^{k} &\le z_{j,n}^{k+1} \quad \forall i, j, n, k \quad &\text{Movement definition} \tag{7b} \\
@@ -91,9 +97,10 @@ The following constraints are applicable to both models presented above.
     b_{n}^{k} &\le b_{full} \quad \forall n, k \quad &\text{Max battery} \tag{11} \\
     b_{n}^{k} &\ge e_{base} \quad \forall n, k \quad &\text{Min battery} \tag{12} \\
     \nonumber \\
-    c_{i,n}^{k} &= \sum_{p \in S_i} z_{p,n}^{k} \quad \forall i, n, k \quad &\text{Local coverage} \tag{13} \\
-    c_{i,n}^{k} &\le c_i \quad \forall i, n, k \quad &\text{Global mapping} \tag{14} \\
-    c_i &\le \sum_{n \in N} \sum_{k \in K} c_{i,n}^{k} \quad \forall i \quad &\text{Global coverage} \tag{15}
+    c_{i,n}^{k} &= \sum_{p \in S_i} z_{p,n}^{k} \quad \forall i \in G_{\,\bar{s}}; n = 1, 2, ..., N; k = 1, 2, ..., K_{\max} \quad &\text{Local coverage} \tag{13} \\
+    c_i &\ge c_{i,n}^{k} \quad \forall i \in G_{\,\bar{s}}; n = 1, 2, ..., N; k = 1, 2, ..., K_{\max} \quad &\text{Global mapping} \tag{14} \\
+    c_i &\le \sum_{k = 1}^{K_{\max}} \sum_{n = 1}^{N} c_{i,n}^{k} \quad \forall i \in G_{\,\bar{s}} \quad &\text{Global coverage} \tag{15} \\
+    0 \le c_{i}, c_{i,n}^{k} &\le 1 \quad \forall i \in G_{\,\bar{s}}; n = 1, 2, ..., N; k = 1, 2, ..., K_{\max} \quad &\text{Coverage bounds} \tag{16}
 \end{align}
 
 \end{document}

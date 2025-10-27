@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1759745358.51171 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" "eq.pdf" "eq" 1759745358.74682 0
-  "/home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1757357335.9656 96713 7ab18899c2ea864bf23a03acef9370b6 ""
+["pdflatex"] 1761494727.04575 "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" "eq.pdf" "eq" 1761494727.25859 0
+  "/home/arpit/.miktex/texmfs/data/fonts/map/pdftex/pdftex.map" 1760584225.27541 96713 7ab18899c2ea864bf23a03acef9370b6 ""
   "/home/arpit/.miktex/texmfs/data/fonts/pk/ljfour/jknappen/ec/dpi600/tcrm1000.pk" 1756723162.90785 11548 e75a29bd56f6661bc942eaef3a0d6a52 ""
   "/home/arpit/.miktex/texmfs/data/miktex/data/le/pdftex/pdflatex.fmt" 1755100822.55062 13252391 fb469f35341a3ce44cf4e6a1e5ca927b ""
   "/home/arpit/.miktex/texmfs/install/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1754929654.20846 1436 c7f957a372ef2fbe93c0982f96625e12 ""
@@ -21,6 +21,7 @@
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1754929644.2195 37912 77d683123f92148345f3fc36a38d9ab1 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1754929644.2265 36281 c355509802a035cadc5f15869451dcee ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1754929644.2375 35752 024fb6c41858982481f6968b5fc26508 ""
+  "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1754929644.2455 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1754929644.2505 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1754929644.30051 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/home/arpit/.miktex/texmfs/install/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1754929644.30851 32716 08e384dc442464e7285e891af9f45947 ""
@@ -42,9 +43,9 @@
   "/home/arpit/.miktex/texmfs/install/tex/latex/geometry/geometry.sty" 1754929376.08777 42759 e63af52ccddba7489ac0e17d6a3344bd ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/graphics/keyval.sty" 1754929364.76534 2671 d9941f4bf4750e9b0603c9a2ec54693b ""
   "/home/arpit/.miktex/texmfs/install/tex/latex/l3backend/l3backend-pdftex.def" 1754929655.7344 30351 a2b09edc6c93a742566b222c33d0278e ""
-  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" 1759745358.00355 5426 3e6502e03c5f45dd61b7260c97c0480c ""
-  "eq.aux" 1759745358.67797 32 044b7f8fc9779af7531264e0c5c84b6d "pdflatex"
-  "eq.tex" 1759745358.00355 5426 3e6502e03c5f45dd61b7260c97c0480c ""
+  "/home/arpit/Desktop/iitd/sem_7/ELD411/PathPlanning/eq_docs/eq.tex" 1761494726.76372 6820 a80808b467c66bf325208a6434954f61 ""
+  "eq.aux" 1761494727.18873 32 ab05033ccbb38b00a31b200ccedf8001 "pdflatex"
+  "eq.tex" 1761494726.76372 6820 a80808b467c66bf325208a6434954f61 ""
   (generated)
   "eq.aux"
   "eq.log"

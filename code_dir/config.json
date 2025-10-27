@@ -1,10 +1,10 @@
 {
-  "sensing_radius": 1.415,
-  "comm_radius": 4,
-  "col_size": 5,
-  "row_size": 5,
-  "N": 2,
-  "T": 3,
+  "sensing_radius": 1,
+  "comm_radius": 1,
+  "col_size": 3,
+  "row_size": 3,
+  "N": 1,
+  "T": 4,
   "row_sink": 1,
   "col_sink": 1,
   "coords_obs": [],
@@ -20,9 +20,9 @@
     "mipgap": 0.01
   },
   "model": {
-    "name": "minimize_energy", 
-    "B_max": 100.0,
-    "C_min": 100
+    "name": "maximize_coverage",
+    "B_max": 100,
+    "C_min": 16
   },
   "constraints": {
     "eq2": 1,

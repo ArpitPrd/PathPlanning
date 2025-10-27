@@ -63,6 +63,10 @@ def communicable_gpt(P_sink, G, sz, Rc, O_lin=None):
     """
     Finds communicable neighbors for all grid cells.
     A cell q is a communicable neighbor of p if it is within radius Rc and has LoS.
+    
+    Returns:
+        I_neighbors (list of lists): I_neighbors[i] is the set C_i
+        sink_neighbors (list): The set C_s, required for constraint (4)
     """
     O_lin_set = set(O_lin or [])
     return _get_neighbors(G, sz, Rc, O_lin_set, P_sink)
@@ -71,13 +75,14 @@ def sensing_gpt(P_sink, G, sz, Rs, O_lin=None):
     """
     Finds sensing neighbors for all grid cells.
     A cell q is a sensing neighbor of p if it is within radius Rs and has LoS.
+    
+    Returns:
+        Irs (list of lists): Irs[i] is the set S_i, required for constraint (13)
     """
     O_lin_set = set(O_lin or [])
-    L = P_sink # The index of the sink is its linear index
-    Irs, Irs_sink = _get_neighbors(G, sz, Rs, O_lin_set, P_sink)
-    return L, Irs, Irs_sink
-
-
-if __name__ == "__main__":
-
-    print(f"the sensing gpt is: {sensing_gpt()}")
+    # _get_neighbors returns two values; we only need the first one (Irs)
+    # The MILP constraints for coverage (13, 14, 15) are defined for i in G_s_bar
+    # (all points *except* the sink), so the entry for Irs[P_sink] will
+    # simply not be used by those constraints.
+    Irs, _ = _get_neighbors(G, sz, Rs, O_lin_set, P_sink)
+    return Irs

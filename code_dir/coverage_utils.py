@@ -51,7 +51,7 @@ class VarHelper:
     def b(self, t, n): return self.start_b + t * self.N + n
 
 # ==============================================================================
-# OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
+# OBJECTIVE AND CONSTRAINTS
 # ==============================================================================
 def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
     """Sets up the objective vector and optimization sense based on the model config."""
@@ -59,13 +59,13 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
     f = np.zeros(vh.total_vars)
    
     if model_name == "maximize_coverage":
-        # Model 1: Maximize sum(c_i)
+        # Model 1: Maximize sum(c_i) [cite: 29]
         for i in range(vh.num_grid_cells):
             f[vh.c_i(i)] = 1.0
         return f, cplex.Cplex().objective.sense.maximize
     
     elif model_name == "minimize_energy":
-        # Model 2: Minimize total energy consumption
+        # Model 2: Minimize total energy consumption [cite: 39]
         for t in range(vh.T - 1):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
@@ -78,7 +78,7 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
         raise ValueError(f"Unknown model name in config: {model_name}")
 
 def position_and_collision_constraints(vh, P_sink, cfg):
-    # Eq 2: Unique position
+    # Eq 2: Unique position [cite: 47]
     eq2_rows = []
     if cfg.get("eq2", True):
         for t in range(vh.T):
@@ -88,12 +88,14 @@ def position_and_collision_constraints(vh, P_sink, cfg):
                     row[vh.z(t, n, i)] = 1
                 eq2_rows.append(row)
     
-    # Eq 3: Collision avoidance
+    # Eq 3: Collision avoidance 
     eq3_rows = []
     if cfg.get("eq3", True):
         for t in range(vh.T):
             for i in range(vh.num_grid_cells):
-                if i == P_sink: continue
+                # *** MODIFICATION HERE ***
+                # The original line "if i == P_sink: continue" is REMOVED.
+                # This now enforces collision avoidance on ALL cells, including the sink.
                 row = np.zeros(vh.total_vars)
                 for n in range(vh.N):
                     row[vh.z(t, n, i)] = 1
@@ -102,47 +104,51 @@ def position_and_collision_constraints(vh, P_sink, cfg):
     return np.array(eq2_rows), np.array(eq3_rows)
 
 def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
-    # Eq 4: Sink connectivity
+    # Eq 4: Sink connectivity 
     eq4_rows = []
     if cfg.get("eq4", True):
+        # Irc_sink (as C_s) now correctly includes the sink itself
         for t in range(vh.T):
             row = np.zeros(vh.total_vars)
             for n in range(vh.N):
-                for p in Irc_sink:
+                for p in Irc_sink: # p is in C_s
                     row[vh.z(t, n, p)] = 1
             eq4_rows.append(row)
 
-    # Eq 5: Inter-UAV link
+    # Eq 5: Inter-UAV link 
     eq5_rows = []
     if cfg.get("eq5", True):
         for t in range(vh.T):
-            for n in range(1, vh.N):
+            for n in range(1, vh.N): # for n > 1
                 for i in range(vh.num_grid_cells):
+                    if i == P_sink: continue # Not specified in eq.pdf, but cccp.pdf implies i != s
                     row = np.zeros(vh.total_vars)
                     row[vh.z(t, n, i)] = 1
-                    for p in Irc[i]:
+                    for p in Irc[i]: # p is in C_i
                         row[vh.z(t, n - 1, p)] = -1
                     eq5_rows.append(row)
 
     return np.array(eq4_rows), np.array(eq5_rows)
 
-def movement_and_mobility_constraints(vh, Irc, cfg):
-    # Eq 6: Mobility rule
+def movement_and_mobility_constraints(vh, Irc, P_sink, cfg):
+    # Eq 6: Mobility rule 
     eq6_rows = []
     if cfg.get("eq6", True):
-        for t in range(vh.T - 1):
+        for t in range(vh.T - 1): # for k < K_max
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
+                    if i == P_sink: continue # Not specified in eq.pdf, but cccp.pdf implies i != s
                     row = np.zeros(vh.total_vars)
                     row[vh.z(t + 1, n, i)] = 1
-                    for p in set(Irc[i] + [i]):
+                    # Irc[i] now contains 'i'. The `+ [i]` is redundant but harmless.
+                    for p in set(Irc[i]): # p is in C_i (and we add 'i' just in case)
                         row[vh.z(t, n, p)] = -1
                     eq6_rows.append(row)
 
-    # Eq 7a, 7b, 7c: Movement definition
+    # Eq 7a, 7b, 7c: Movement definition [cite: 62, 65, 68]
     eq7a, eq7b, eq7c = [], [], []
     if cfg.get("eq7", False):
-        for t in range(vh.T - 1):
+        for t in range(vh.T - 1): # k
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
@@ -169,29 +175,33 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     if not any_battery_logic:
         return results
     
-    M = b_full
-    # M = 0
+    # M is a large constant, e.g., b_full [cite: 14]
+    M = b_full 
+    
     eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
 
-    for t in range(vh.T - 1):
+    for t in range(vh.T - 1): # For k
         for n in range(vh.N):
-            # Eq 8: Charging location: x <= z_sink
+            # Eq 8: Charging location: x <= z_sink [cite: 71]
             if cfg.get("eq8", False):
                 row8 = np.zeros(vh.total_vars); row8[vh.x_charge(t,n)]=1; row8[vh.z(t,n,P_sink)]=-1; eq8.append(row8)
             
-            # Eq 9: Battery discharge
+            # Eq 9: Battery discharge [cite: 79, 81]
             if cfg.get("eq9", False):
                 energy_consumed = np.zeros(vh.total_vars)
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
                         cost = b_steady if i == j else b_mov
                         energy_consumed[vh.m(t, n, i, j)] = cost
-                # Eq 9a: b(t+1) <= b(t) - E_consumed + M*x  -->  b(t+1) - b(t) + E_consumed - M*x <= 0
+                
+                # Paper's (9a): b(k+1) <= b(k) - E + M*x  --> b(k+1) - b(k) + E - M*x <= 0 [cite: 79]
                 r9a = np.copy(energy_consumed); r9a[vh.b(t+1,n)]=1; r9a[vh.b(t,n)]=-1; r9a[vh.x_charge(t,n)]=-M; eq9a.append(r9a)
-                # Eq 9b: b(t+1) >= b(t) - E_consumed + M*x  -->  b(t+1) - b(t) + E_consumed - M*x >= 0
+                
+                # Paper's (9b): b(k+1) >= b(k) - E + M*x [cite: 81]
+                # Sticking to the PDF text, even if it seems like a typo (+M*x)
                 r9b = np.copy(energy_consumed); r9b[vh.b(t+1,n)]=1; r9b[vh.b(t,n)]=-1; r9b[vh.x_charge(t,n)]=-M; eq9b.append(r9b)
-
-            # Eq 10: Battery charge
+                
+            # Eq 10: Battery charge [cite: 75, 76]
             if cfg.get("eq10", False):
                 # Eq 10a: b(t+1) <= b_full + M(1-x) --> b(t+1) + M*x <= b_full + M
                 r10a = np.zeros(vh.total_vars); r10a[vh.b(t+1,n)]=1; r10a[vh.x_charge(t,n)]=M; eq10a.append(r10a)
@@ -215,15 +225,17 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     return results
 
 def cell_coverage_constraints(vh, Irs, cfg):
-    # Eq 13: Local coverage definition
+    # Eq 13: Local coverage definition [cite: 91]
     eq13 = []
     if cfg.get("eq13", True):
         for t in range(vh.T):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
                     row = np.zeros(vh.total_vars)
+                    # This reads: c_i,n,k = sum(z_p,n,k) for p in S_i
                     row[vh.c_in_k(t, n, i)] = 1
-                    for p in Irs[i]:
+                    # Irs[i] (as S_i) now correctly includes 'i'
+                    for p in Irs[i]: # p is in S_i
                         row[vh.z(t, n, p)] = -1
                     eq13.append(row)
 
@@ -232,15 +244,16 @@ def cell_coverage_constraints(vh, Irs, cfg):
     for i in range(vh.num_grid_cells):
         r15 = np.zeros(vh.total_vars)
         if cfg.get("eq15", True):
+            # c_i <= sum(c_in_k)  --> c_i - sum(c_in_k) <= 0 [cite: 96]
             r15[vh.c_i(i)] = 1
             
         for t in range(vh.T):
             for n in range(vh.N):
                 if cfg.get("eq14", True):
-                    # c_in_k - c_i <= 0
+                    # c_in_k - c_i <= 0 [cite: 94]
                     r14 = np.zeros(vh.total_vars); r14[vh.c_in_k(t,n,i)]=1; r14[vh.c_i(i)]=-1; eq14.append(r14)
                 if cfg.get("eq15", True):
-                    # Used to build: c_i - sum(c_in_k) <= 0
+                    # building the sum part of c_i - sum(c_in_k) <= 0
                     r15[vh.c_in_k(t, n, i)] = -1
         
         if cfg.get("eq15", True):
@@ -248,15 +261,26 @@ def cell_coverage_constraints(vh, Irs, cfg):
         
     return np.array(eq13), np.array(eq14), np.array(eq15)
 
-def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
-    """Builds the single constraint unique to each optimization model."""
+def model_specific_constraints(vh, model_cfg, constraints_cfg, b_mov, b_steady):
+    """
+    Builds the single constraint unique to each optimization model.
+    NOW requires constraints_cfg to check if eq7 is enabled.
+    """
     model_name = model_cfg.get("name")
 
     if model_name == "maximize_coverage":
         B_max = model_cfg.get("B_max")
-        if B_max is None: raise ValueError("B_max must be set for 'maximize_coverage' model.")
+        eq7_enabled = constraints_cfg.get("eq7", False) # Check the main constraints config
+
+        if B_max is None or not eq7_enabled:
+            # If no budget is set, OR eq7 is off, do NOT build the budget constraint.
+            # This makes it identical to the cccp.pdf model.
+            return None, None
         
-        # Eq 16: Total energy budget: sum(energy) <= B_max
+        # --- If we are here, B_max is set AND eq7 is on ---
+        
+        # Eq 16: Total energy budget: sum(energy) <= B_max [cite: 32]
+        print("NOTE: Building Model 1 with Energy Budget (Eq 16) as B_max is set and eq7 is enabled.")
         row = np.zeros(vh.total_vars)
         for t in range(vh.T - 1):
             for n in range(vh.N):
@@ -268,10 +292,13 @@ def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
         return (np.array([row]), np.array([B_max])), None
 
     elif model_name == "minimize_energy":
-        C_min = model_cfg.get("C_min")*(vh.num_grid_cells/100)
+        C_min_percent = model_cfg.get("C_min", 0)
+        # Convert C_min from percentage to count
+        C_min = C_min_percent * (vh.num_grid_cells / 100.0) 
         if C_min is None: raise ValueError("C_min must be set for 'minimize_energy' model.")
             
-        # Eq 17: Minimum coverage: sum(c_i) >= C_min
+        # Eq 17: Minimum coverage: sum(c_i) >= C_min [cite: 42]
+        print("NOTE: Building Model 2 (Minimize Energy) with coverage threshold (Eq 17).")
         row = np.zeros(vh.total_vars)
         for i in range(vh.num_grid_cells):
             row[vh.c_i(i)] = 1
@@ -281,7 +308,7 @@ def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
     return None, None # No constraints for unknown or unspecified models
 
 # ==============================================================================
-# CPLEX SOLVER and COMBINER (No changes needed)
+# CPLEX SOLVER and COMBINER (No changes)
 # ==============================================================================
 def combine_constraints(eq_blocks, leq_blocks, geq_blocks):
     """Combines multiple constraint blocks into final matrices."""
@@ -340,27 +367,30 @@ def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_e
     print(f"Solver finished in {solve_time:.2f} seconds.")
     
     status_string = prob.solution.get_status_string()
-    if prob.solution.get_status() in [101, 102]:
+    if prob.solution.get_status() in [101, 102]: # 101=optimal, 102=optimal within tol
         return np.array(prob.solution.get_values()), prob.solution.get_objective_value(), solve_time, status_string
     else:
-        if 'infeasible' in status_string:
+        if 'infeasible' in status_string.lower():
             print("Solver status is infeasible. Attempting to find conflicting constraints...")
             try:
+                # Check all constraints and bounds
                 all_constraints_to_check = []
                 for i in range(prob.linear_constraints.get_num()):
                     all_constraints_to_check.append((prob.conflict.constraint_type.linear, i))
                 for i in range(prob.variables.get_num()):
                     all_constraints_to_check.append((prob.conflict.constraint_type.upper_bound, i))
                     all_constraints_to_check.append((prob.conflict.constraint_type.lower_bound, i))
-
-                prob.conflict.refine((1.0, all_constraints_to_check))
+                
+                # Request a conflict refinement
+                # This function call is correct for CPLEX
+                prob.conflict.refine(prob.conflict.all_constraints())
                 
                 print("\n--- CONFLICT REPORT ---")
                 
                 conflict_groups = prob.conflict.get_groups()
                 
                 if not conflict_groups:
-                    print("No conflicts found by the refiner.")
+                    print("No conflicts found by the refiner (or conflict refiner not supported).")
                 
                 for i, group in enumerate(conflict_groups):
                     print(f"Conflict Group {i+1}:")
@@ -381,6 +411,8 @@ def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_e
                             name = prob.variables.get_names(constraint_index)
                             val = prob.variables.get_upper_bounds(constraint_index)
                             print(f"  - Conflicting Upper Bound: {name} <= {val}")
+                        else:
+                            print(f"  - Other conflict type: {constraint_type}")
                 
                 print("-----------------------\n")
             except Exception as conf_e:

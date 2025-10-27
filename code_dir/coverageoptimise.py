@@ -100,12 +100,12 @@ def main(cfg: dict):
     print("4. Building common constraint matrices with toggles...")
     C2, C3 = position_and_collision_constraints(vh, P_sink, constraints_cfg)
     C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, constraints_cfg)
-    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
+    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, P_sink, constraints_cfg)
     battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
     C13, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
     
     print("4a. Building model-specific constraints...")
-    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady)
+    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, constraints_cfg, b_mov, b_steady)
 
     # ==============================
     # 5. DEFINE BOUNDS AND TYPES

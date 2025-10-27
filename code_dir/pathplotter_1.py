@@ -1,4 +1,11 @@
 import matplotlib.animation as animation
+import matplotlib
+# Set a backend that supports UI
+matplotlib.use('Qt5Agg')
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib import patches
+from matplotlib.widgets import Button
 
 
 def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
@@ -10,14 +17,11 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     Right top panel: CUMULATIVE coverage grid (green = sensed so far).
     Bottom panel: Battery levels over time (if provided via aux_tensor).
     """
-    import numpy as np
-    import matplotlib.pyplot as plt
-    from matplotlib import patches
-    from matplotlib.widgets import Button
 
     if O_lin is None:
         O_lin = []
     O_lin_set = set(int(x) for x in O_lin)
+    sink_lin = int(sink) # Get the linear index of the sink
 
     # --- Time horizon ---
     def get_T():
@@ -31,15 +35,22 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     # --- Battery extraction (if provided) ---
     battery_levels = {}
     if aux_tensor is not None and getattr(aux_tensor, "ndim", None) == 3:
+        # Ensure aux_tensor has enough time steps and UAVs
+        T_aux, N_aux, _ = aux_tensor.shape
         for n in range(len(uav_paths)):
-            battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+            if n < N_aux:
+                 # Only read up to the shortest of T or T_aux
+                battery_levels[n] = [aux_tensor[t, n, 0] for t in range(min(T, T_aux))]
     else:
         battery_levels = {n: [] for n in range(len(uav_paths))}
 
     # --- Precompute cumulative coverage over time (union across UAVs) ---
-    # uav_covered_nodes[n][t] should be an iterable of linear node indices covered by UAV n at time t.
     total_cells = Nx * Ny
-    total_valid = total_cells - len(O_lin_set)
+    
+    # *** FIX HERE: `total_valid` now excludes obstacles AND the sink ***
+    valid_cells_to_cover = set(range(total_cells)) - O_lin_set - {sink_lin}
+    total_valid = len(valid_cells_to_cover)
+    
     covered_cumulative = []
     covered_so_far = set()
     for t in range(T):
@@ -52,13 +63,13 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                     continue
                 for lin in nodes_t:
                     lin = int(lin)
-                    # bounds + non-obstacle
-                    if 0 <= lin < total_cells and lin not in O_lin_set:
+                    # Only count cells that are part of the valid set
+                    if lin in valid_cells_to_cover:
                         covered_so_far.add(lin)
         covered_cumulative.append(set(covered_so_far))  # store a copy
 
     # --- Sink (y,x) from linear index ---
-    sink_y, sink_x = np.unravel_index(int(sink), (Ny, Nx))
+    sink_y, sink_x = np.unravel_index(sink_lin, (Ny, Nx))
 
     # --- Colors/style ---
     uav_colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'cyan']
@@ -134,6 +145,9 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
         for obs_lin in O_lin_set:
             oy, ox = np.unravel_index(obs_lin, (Ny, Nx))
             ax_cov.add_patch(patches.Rectangle((ox - 0.5, oy - 0.5), 1, 1, facecolor='gray', alpha=0.8, hatch='/'))
+        # Sink (gold outline)
+        ax_cov.add_patch(patches.Rectangle((sink_x-0.5, sink_y-0.5), 1, 1, facecolor='none', edgecolor='gold', linewidth=2, hatch='xx'))
+
 
         # Cumulative coverage until t
         covered_now = covered_cumulative[t_idx]
@@ -141,14 +155,14 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
             ry, rx = np.unravel_index(int(lin), (Ny, Nx))
             ax_cov.add_patch(patches.Rectangle((rx - 0.5, ry - 0.5), 1, 1, facecolor=(0.0, 0.7, 0.0), alpha=0.6))
 
-        # Coverage percentage
+        # Coverage percentage (using corrected total_valid)
         pct = (100.0 * len(covered_now) / max(1, total_valid))
         ax_cov.set_title(f'Cumulative Sensed Coverage = {pct:.2f}%  '
                          f'({len(covered_now)}/{total_valid})',
                          fontsize=14, fontweight='bold')
 
         # Also print to console
-        print(f"t={t_idx} | Coverage: {pct:.2f}% ({len(covered_now)}/{total_valid})")
+        # print(f"t={t_idx} | Coverage: {pct:.2f}% ({len(covered_now)}/{total_valid})")
 
         # ===== Bottom panel: Battery =====
         ax_batt.set_title("Battery Levels over Time", fontweight='bold')
@@ -157,14 +171,22 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
         if battery_levels and any(battery_levels.values()):
             vals = [v for v in battery_levels.values() if v]
             if vals:
-                ymin = min(min(v) for v in vals if v)
-                ymax = max(max(v) for v in vals if v)
-                if ymin != ymax:
-                    ax_batt.set_ylim(ymin * 0.95, ymax * 1.05)
+                all_vals = [item for sublist in vals for item in sublist]
+                if all_vals:
+                    ymin, ymax = min(all_vals), max(all_vals)
+                    if ymin != ymax:
+                        # Ensure ylim includes 0 and 100 if they are close
+                        plot_min = min(0, ymin * 1.1)
+                        plot_max = max(100, ymax * 1.1)
+                        ax_batt.set_ylim(plot_min , plot_max)
+                    else:
+                        ax_batt.set_ylim(ymin - 1, ymin + 1)
+                        
         for n, levels in battery_levels.items():
-            if len(levels) == T:
+            if t_idx < len(levels): # Plot full line up to T
                 color = uav_colors[n % len(uav_colors)]
-                ax_batt.plot(range(T), levels, '-o', color=color, label=f'UAV {n+1}')
+                ax_batt.plot(range(len(levels)), levels, '-o', color=color, label=f'UAV {n+1}')
+                # Plot current time marker
                 ax_batt.plot(t_idx, levels[t_idx], 's', color='yellow', markersize=10, markeredgecolor='black')
         ax_batt.legend(loc='upper right')
         ax_batt.grid(True, linestyle='--', alpha=0.6)
@@ -199,14 +221,6 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     return render_at_t, T
 
 
-
-import matplotlib.animation as animation
-import matplotlib.pyplot as plt
-import numpy as np
-from matplotlib import patches
-
-
-
 def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                   Nx, Ny, O_lin=None, aux_tensor=None,
                   filename="uav_animation.mp4", fps=2):
@@ -220,6 +234,7 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     if O_lin is None:
         O_lin = []
     O_lin_set = set(int(x) for x in O_lin)
+    sink_lin = int(sink) # Get the linear index of the sink
 
     # --- Time horizon ---
     def get_T():
@@ -233,14 +248,20 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     # --- Battery extraction ---
     battery_levels = {}
     if aux_tensor is not None and getattr(aux_tensor, "ndim", None) == 3:
+        T_aux, N_aux, _ = aux_tensor.shape
         for n in range(len(uav_paths)):
-            battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+            if n < N_aux:
+                battery_levels[n] = [aux_tensor[t, n, 0] for t in range(min(T, T_aux))]
     else:
         battery_levels = {n: [] for n in range(len(uav_paths))}
 
     # --- Precompute cumulative coverage ---
     total_cells = Nx * Ny
-    total_valid = total_cells - len(O_lin_set)
+    
+    # *** FIX HERE: `total_valid` now excludes obstacles AND the sink ***
+    valid_cells_to_cover = set(range(total_cells)) - O_lin_set - {sink_lin}
+    total_valid = len(valid_cells_to_cover)
+
     covered_cumulative = []
     covered_so_far = set()
     for t in range(T):
@@ -251,12 +272,12 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                     continue
                 for lin in nodes_t:
                     lin = int(lin)
-                    if 0 <= lin < total_cells and lin not in O_lin_set:
+                    if lin in valid_cells_to_cover:
                         covered_so_far.add(lin)
         covered_cumulative.append(set(covered_so_far))
 
     # --- Sink coords ---
-    sink_y, sink_x = np.unravel_index(int(sink), (Ny, Nx))
+    sink_y, sink_x = np.unravel_index(sink_lin, (Ny, Nx))
 
     # --- Colors ---
     uav_colors = ['red', 'blue', 'green', 'orange', 'purple', 'brown', 'pink', 'cyan']
@@ -318,6 +339,8 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
             oy, ox = np.unravel_index(obs_lin, (Ny, Nx))
             ax_cov.add_patch(patches.Rectangle((ox - 0.5, oy - 0.5), 1, 1,
                                                facecolor='gray', alpha=0.8, hatch='/'))
+        # Sink (gold outline)
+        ax_cov.add_patch(patches.Rectangle((sink_x-0.5, sink_y-0.5), 1, 1, facecolor='none', edgecolor='gold', linewidth=2, hatch='xx'))
 
         covered_now = covered_cumulative[t_idx]
         for lin in covered_now:
@@ -335,29 +358,40 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
         ax_batt.set_xlim(-0.5, T - 0.5)
         vals = [v for v in battery_levels.values() if v]
         if vals:
-            ymin = min(min(v) for v in vals if v)
-            ymax = max(max(v) for v in vals if v)
-            if ymin != ymax:
-                ax_batt.set_ylim(ymin * 0.95, ymax * 1.05)
+            all_vals = [item for sublist in vals for item in sublist]
+            if all_vals:
+                ymin, ymax = min(all_vals), max(all_vals)
+                if ymin != ymax:
+                    plot_min = min(0, ymin * 1.1)
+                    plot_max = max(100, ymax * 1.1)
+                    ax_batt.set_ylim(plot_min , plot_max)
+                else:
+                    ax_batt.set_ylim(ymin - 1, ymin + 1)
+                    
         for n, levels in battery_levels.items():
-            if len(levels) == T:
+            if t_idx < len(levels):
                 color = uav_colors[n % len(uav_colors)]
-                ax_batt.plot(range(T), levels, '-o', color=color, label=f'UAV {n+1}')
+                ax_batt.plot(range(len(levels)), levels, '-o', color=color, label=f'UAV {n+1}')
                 ax_batt.plot(t_idx, levels[t_idx], 's', color='yellow',
                              markersize=10, markeredgecolor='black')
         ax_batt.legend(loc='upper right')
         ax_batt.grid(True, linestyle='--', alpha=0.6)
 
     # --- Build animation ---
-    ani = animation.FuncAnimation(fig, render_at_t, frames=T, interval=1000/fps, repeat=False)
+    print(f"Building animation ({T} frames)...")
+    ani = animation.FuncAnimation(fig, render_at_t, frames=T, interval=1000/fps, repeat=False, blit=False)
 
     # Save as video or gif
-    if filename.endswith(".mp4"):
-        ani.save(filename, writer="ffmpeg", fps=fps)
-    elif filename.endswith(".gif"):
-        ani.save(filename, writer="pillow", fps=fps)
-    else:
-        raise ValueError("Unsupported output format. Use .mp4 or .gif")
-
+    try:
+        if filename.endswith(".mp4"):
+            ani.save(filename, writer="ffmpeg", fps=fps)
+        elif filename.endswith(".gif"):
+            ani.save(filename, writer="pillow", fps=fps)
+        else:
+            raise ValueError("Unsupported output format. Use .mp4 or .gif")
+        print(f"Animation saved to {filename}")
+    except Exception as e:
+        print(f"\nCould not save animation. Error: {e}")
+        print("Please ensure 'ffmpeg' (for .mp4) or 'pillow' (for .gif) is installed.")
+    
     plt.close(fig)
-    print(f"Animation saved to {filename}")

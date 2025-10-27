@@ -80,7 +80,7 @@ def main(cfg: dict):
     print("3. Computing neighborhood sets (Sensing/Communication)...")
     all_coords = np.array([i_to_ij(i, sz) for i in range(row_size * col_size)])
     Irc, Irc_sink = communicable_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
-    _, Irs, _ = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
+    Irs = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
 
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
