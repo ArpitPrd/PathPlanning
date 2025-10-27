@@ -5,50 +5,58 @@ from coverage_utils import (
     position_and_collision_constraints, connectivity_constraints, movement_and_mobility_constraints,
     cell_coverage_constraints, battery_constraints, model_specific_constraints, combine_constraints, cplex_solver
 )
-from Gpt_1 import communicable_gpt, sensing_gpt
-from pathplotter_1 import plot_interactive_paths, animate_paths
-from memory import get_total_size
-import sys
-
-import matplotlib.pyplot as plt
-from matplotlib import patches
-from matplotlib.widgets import Button
-from matplotlib import animation
-from feasability_checks import quick_feasibility_checks, inspect_Irs_Irc, check_variable_bounds_and_types, compute_max_coverage_relax, check_bigM_consistency
-
+from Gpt import communicable_gpt, sensing_gpt
+from pathplotter import plot_interactive_paths # Assuming this is in pathplotter.py
+# from battery_model import compute_battery_for_paths # Assuming this is in battery_model.py
 
 def process_results(solution, vh, Irs, sz):
     uav_paths = {n: [] for n in range(vh.N)}
-    uav_covered_nodes = {n: [] for n in range(vh.N)}
+    uav_covered_nodes = {n: [] for n in range(vh.N)} # This seems for plotting, keeping it
 
     for n in range(vh.N):
         for t in range(vh.T):
             pos_found = False
             for i in range(vh.num_grid_cells):
                 if solution[vh.z(t, n, i)] > 0.99:
-                    uav_paths[n].append(i)
-                    sensed_by_i = Irs[i] if i < len(Irs) else []
-                    uav_covered_nodes[n].append(sensed_by_i + [i])
+                    uav_paths[n].append(i_to_ij(i, sz)) # Store (r,c) coords
+                    
+                    # Store nodes sensed from this position
+                    sensed_nodes_from_pos = []
+                    for s_idx in Irs[i]:
+                        sensed_nodes_from_pos.append(i_to_ij(s_idx, sz))
+                    uav_covered_nodes[n].append(sensed_nodes_from_pos)
+                    
                     pos_found = True
                     break
             if not pos_found:
                 uav_paths[n].append(None); uav_covered_nodes[n].append([])
 
     covered_cells_idx = {i for i in range(vh.num_grid_cells) if solution[vh.c_i(i)] > 0.99}
-    return uav_paths, covered_cells_idx, uav_covered_nodes
+    covered_cells_coords = {i_to_ij(i, sz) for i in covered_cells_idx}
+    
+    return uav_paths, covered_cells_coords, uav_covered_nodes
 
-def display_results(vh, uav_paths, covered_cells_idx, battery_levels):
+def display_results(vh, uav_paths, covered_cells_coords, battery_levels):
     print("\n" + "="*50 + "\nOPTIMIZATION RESULTS\n" + "="*50)
     for n in range(vh.N):
         print(f"\n--- UAV {n+1} ---")
-        path_coords = [i_to_ij(pos, (vh.rs, vh.cs)) if pos is not None else 'N/A' for pos in uav_paths[n]]
+        
+        # --- CORRECTED LINE ---
+        # Iterate over 'pos' first, then check if it's None before unpacking.
+        path_coords = [f"({pos[0]+1},{pos[1]+1})" if pos is not None else 'N/A' for pos in uav_paths[n]]
+        
         print(f"  Path (row, col): {path_coords}")
-        if battery_levels: # Only print if battery levels exist
+        
+        if battery_levels and n in battery_levels: # Only print if battery levels exist for this UAV
             print(f"  Battery Levels: {[round(b, 2) for b in battery_levels[n]]}")
 
-    coverage_percent = len(covered_cells_idx) / vh.num_grid_cells * 100
-    print(f"\nTotal Cells Covered: {len(covered_cells_idx)} / {vh.num_grid_cells} ({coverage_percent:.2f}%)")
-
+    # Note: num_grid_cells includes the sink. Paper excludes sink from coverage.
+    # Adjusting for C_max = |G_s_bar|
+    non_sink_cells = vh.num_grid_cells - 1 
+    # Ensure denominator is not zero if grid is 1x1
+    coverage_percent = len(covered_cells_coords) / max(1, non_sink_cells) * 100
+    print(f"\nTotal Cells Covered (excl. sink): {len(covered_cells_coords)} / {non_sink_cells} ({coverage_percent:.2f}%)")
+    # print(f"  Covered Coords: {sorted(list(covered_cells_coords))}")
 
 def main(cfg: dict):
     # ==============================
@@ -65,22 +73,25 @@ def main(cfg: dict):
     b_full, e_base = battery.get("b_full", 100.0), battery.get("ebase", 10.0)
     initial_battery = battery.get("initial_battery", b_full)
     
-    solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 6000), solver_cfg.get("mipgap", 0.01)
+    solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 600), solver_cfg.get("mipgap", 0.01)
     
     # --- Read Model and Constraint Toggles from Config ---
-    model_cfg = cfg.get("model", {"name": "maximize_coverage"}) # Defaults to model 1
+    model_cfg = cfg.get("model", {"name": "maximize_coverage"})
     constraints_cfg = cfg.get("constraints", {})
     print(f"Using optimization model: {model_cfg.get('name')}")
-    print("Constraints config:", constraints_cfg)
+    print(f"Constraints config: {constraints_cfg}")
 
-    sz = (row_size, col_size); P_sink, _ = pos_sink(row_sink - 1, col_sink - 1, sz)
+    sz = (row_size, col_size); P_sink, sink_coord_rc0 = pos_sink(row_sink - 1, col_sink - 1, sz)
     obs = pos_obs(coords_obs); O_lin = {ij_to_i((r - 1, c - 1), sz) for r, c in obs} if obs.size > 0 else set()
     
     # ==============================
     # 2. INITIALIZE VARHELPER & OBJECTIVE
     # ==============================
-    print("2. Initializing variable helper and objective function...")
-    vh = VarHelper(N, T, row_size, col_size)
+    print("2. Initializing variable helper...")
+    # *** CHANGED: Pass configs to VarHelper ***
+    vh = VarHelper(N, T, row_size, col_size, constraints_cfg, model_cfg)
+    
+    print("2a. Setting up objective function...")
     objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady)
 
     # ==============================
@@ -89,23 +100,22 @@ def main(cfg: dict):
     print("3. Computing neighborhood sets (Sensing/Communication)...")
     all_coords = np.array([i_to_ij(i, sz) for i in range(row_size * col_size)])
     Irc, Irc_sink = communicable_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
-    _, Irs, _ = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
-    print("Memory usage after computing neighborhoods:")
-    get_total_size(Irc, verbose=True)
-    get_total_size(Irc_sink, verbose=True)
-    get_total_size(Irs, verbose=True)
+    Irs = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
+
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
     # ==============================
     print("4. Building common constraint matrices with toggles...")
     C2, C3 = position_and_collision_constraints(vh, P_sink, constraints_cfg)
     C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, constraints_cfg)
-    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, P_sink, constraints_cfg)
+    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
     battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
-    C13, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
+    
+    # *** CHANGED: Unpack new Eq13 blocks ***
+    C13_leq, C13_geq, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
     
     print("4a. Building model-specific constraints...")
-    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, constraints_cfg, b_mov, b_steady)
+    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady)
 
     # ==============================
     # 5. DEFINE BOUNDS AND TYPES
@@ -113,91 +123,54 @@ def main(cfg: dict):
     print("5. Defining variable bounds and types...")
     lb = np.zeros(vh.total_vars); ub = np.ones(vh.total_vars); ctype = ['B'] * vh.total_vars
 
-    any_battery_enabled = any(constraints_cfg.get(k, False) for k in [
-        "eq8", "eq9", "eq10", "eq11", "eq12"
-    ])
-
-    if any_battery_enabled:
-        print("Battery constraints are active. Setting battery variable types and bounds.")
+    # *** CHANGED: Check vh.has_b_vars ***
+    if vh.has_b_vars:
+        print("Battery variables are active. Setting battery variable types and bounds.")
         for t in range(T):
             for n in range(N):
                 ctype[vh.b(t, n)] = 'C'
                 lb[vh.b(t, n)] = 0.0
-                ub[vh.b(t, n)] = b_full # Default max, can be overridden by eq11
+                ub[vh.b(t, n)] = b_full # Default max
         
-        if constraints_cfg.get("eq11", False):
+        if constraints_cfg.get("eq11", False): # Max battery
              for t in range(T):
                 for n in range(N):
                     ub[vh.b(t, n)] = b_full
         
-        if constraints_cfg.get("eq12", False):
+        if constraints_cfg.get("eq12", False): # Min battery
             for t in range(T):
                 for n in range(N):
                     lb[vh.b(t, n)] = e_base
+    
+    # *** CHANGED: Check vh.has_x_vars ***
+    if not vh.has_x_vars:
+        # If x-vars don't exist, ensure any binary vars at their (non-existent)
+        # index are just standard [0,1] 'B'
+        pass # ctype is already 'B' by default, lb=0, ub=1. No change needed.
 
-    # Obstacle constraints
+    # Obstacle constraints (on z-vars)
     for q_obs in O_lin:
         for t in range(T):
             for n in range(N): ub[vh.z(t, n, q_obs)] = 0
 
-    # Coverage variables are continuous [0,1]
-    any_coverage_enabled = any(constraints_cfg.get(k, False) for k in [
-        "eq13", "eq14", "eq15"
-    ])
-    if any_coverage_enabled:
-        for i in range(vh.num_grid_cells):
-            ctype[vh.c_i(i)] = 'C'
-            for t in range(T):
-                for n in range(N): ctype[vh.c_in_k(t,n,i)] = 'C'
+    # Coverage variables are continuous [0,1] (always active)
+    for i in range(vh.num_grid_cells):
+        ctype[vh.c_i(i)] = 'C'
+        for t in range(T):
+            for n in range(N): ctype[vh.c_in_k(t,n,i)] = 'C'
 
-    print("\nMemory usage after building constraints:")
-    get_total_size(C2, verbose=True)
-    get_total_size(C3, verbose=True)
-    get_total_size(C4, verbose=True)
-    get_total_size(C5, verbose=True)
-    get_total_size(C6, verbose=True)
-    get_total_size(C7a, verbose=True)
-    get_total_size(C7b, verbose=True)
-    get_total_size(C7c, verbose=True)
-    get_total_size(battery_blocks, verbose=True)
-    get_total_size(C13, verbose=True)
-    get_total_size(C14, verbose=True)
-    get_total_size(C15, verbose=True)
-    
-    
-    # ==============================
-    # 🔍 5a. FEASIBILITY DIAGNOSTICS (insert here)
-    # ==============================
-    print("\nRunning feasibility diagnostics before combining constraints...\n")
-    quick_feasibility_checks(vh, Irs, model_cfg)
-    inspect_Irs_Irc(Irs, Irc)
-    check_variable_bounds_and_types(vh, lb, ub, ctype)
-    check_bigM_consistency(vh, b_mov, b_steady, b_full)
-    
-    # We'll temporarily compute LP-relaxation max coverage here:
-    print("Computing LP relaxation (max coverage)...")
-    # (You’ll define this function above main, same as I gave earlier)
-    A_eq_dummy = np.empty((0, vh.total_vars))
-    b_eq_dummy = np.array([])
-    A_ineq_dummy = np.empty((0, vh.total_vars))
-    b_ineq_dummy = np.array([])
-    senses_dummy = ""
-    max_cov, stat = compute_max_coverage_relax(
-        vh, A_eq_dummy, b_eq_dummy, A_ineq_dummy, b_ineq_dummy, senses_dummy, lb, ub
-    )
-    print(f"LP-relax max coverage (without constraints): {max_cov}, status: {stat}\n")
-    
-    
-    
     # ==============================
     # 6. COMBINE CONSTRAINTS
     # ==============================
     print("6. Combining all constraints...")
+    
+    # *** CHANGED: Removed C13 from eq_blocks ***
     eq_blocks = [
         (C2, np.ones(C2.shape[0])),
-        (battery_blocks['initial'], battery_blocks['rhs_initial']),
-        (C13, np.zeros(C13.shape[0]))
+        (battery_blocks['initial'], battery_blocks['rhs_initial'])
     ]
+    
+    # *** CHANGED: Added C13_leq to leq_blocks ***
     leq_blocks = [
         (C3, np.ones(C3.shape[0])), (C5, np.zeros(C5.shape[0])),
         (C6, np.zeros(C6.shape[0])), (C7a, np.zeros(C7a.shape[0])),
@@ -205,23 +178,26 @@ def main(cfg: dict):
         (battery_blocks['charge_loc'], np.zeros(battery_blocks['charge_loc'].shape[0])),
         (battery_blocks['discharge_leq'], np.zeros(battery_blocks['discharge_leq'].shape[0])),
         (battery_blocks['charge_leq'], battery_blocks['rhs_charge_leq']),
-        (C14, np.zeros(C14.shape[0])), (C15, np.zeros(C15.shape[0]))
+        (C14, np.zeros(C14.shape[0])), (C15, np.zeros(C15.shape[0])),
+        (C13_leq, np.zeros(C13_leq.shape[0])) # <-- ADDED
     ]
+    
+    # *** CHANGED: Added C13_geq to geq_blocks ***
     geq_blocks = [
         (C4, np.ones(C4.shape[0])),
         (battery_blocks['discharge_geq'], np.zeros(battery_blocks['discharge_geq'].shape[0])),
-        (battery_blocks['charge_geq'], battery_blocks['rhs_charge_geq'])
+        (battery_blocks['charge_geq'], battery_blocks['rhs_charge_geq']),
+        (C13_geq, np.zeros(C13_geq.shape[0])) # <-- ADDED
     ]
 
-    if leq_model_block: leq_blocks.append(leq_model_block)
-    if geq_model_block: geq_blocks.append(geq_model_block)
+    # Add model-specific constraints
+    if leq_model_block and leq_model_block[0] is not None: 
+        leq_blocks.append((leq_model_block[0], leq_model_block[1]))
+    if geq_model_block and geq_model_block[0] is not None: 
+        geq_blocks.append((geq_model_block[0], geq_model_block[1]))
 
     A_eq, b_eq, A_ineq, b_ineq, senses = combine_constraints(eq_blocks, leq_blocks, geq_blocks)
-    print("\nMemory usage after combining constraints:")
-    get_total_size(A_eq, verbose=True)
-    get_total_size(b_eq, verbose=True)
-    get_total_size(A_ineq, verbose=True)
-    get_total_size(b_ineq, verbose=True)
+
     # ==============================
     # 7. SOLVE MILP
     # ==============================
@@ -239,32 +215,44 @@ def main(cfg: dict):
     print(f"Objective Value: {fval if fval is not None else 'N/A'}")
     
     if solution is not None:
-        uav_paths, covered_cells_idx, uav_covered_nodes = process_results(solution, vh, Irs, sz)
+        # Note: P_sink is 0-based linear index, need (r,c) 1-based for plotter
+        sink_rc1 = (row_sink, col_sink) 
+        
+        uav_paths_rc0, covered_cells_coords, uav_covered_nodes_rc0 = process_results(solution, vh, Irs, sz)
+        
+        # Convert paths from 0-based (r,c) to 1-based (r,c) for plotter/display
+        uav_paths_rc1 = {n: [(r+1, c+1) if (r,c) is not None else None for (r,c) in path] 
+                         for n, path in uav_paths_rc0.items()}
         
         battery_levels = {}
-        if any_battery_enabled:
-             battery_levels = {n: [solution[vh.b(t, n)] for t in range(vh.T)] for n in range(vh.N)}
+        # *** CHANGED: Check vh.has_b_vars ***
+        if vh.has_b_vars:
+             battery_levels = {n: [solution[vh.b(t, n)] for t in range(T)] for n in range(vh.N)}
 
-        display_results(vh, uav_paths, covered_cells_idx, battery_levels)
+        display_results(vh, uav_paths_rc0, covered_cells_coords, battery_levels)
         
-        aux_tensor = None
-        if battery_levels:
-            aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
+        # Post-process paths and battery for plotting
+        # (This part depends on your external plotter and battery_model files)
+        try:
+            # Example: Re-compute battery trace using external model for plotting
+            # battery_traces, position_traces = compute_battery_for_paths(
+            #     uav_paths_rc1, sink_rc1, T
+            # )
+            
+            plot_interactive_paths(
+                G=None, 
+                uav_paths=uav_paths_rc1, 
+                uav_covered_nodes=uav_covered_nodes_rc0, # Pass 0-indexed coords
+                sink=sink_rc1, 
+                Rs=sensing_radius, Rc=comm_radius,
+                Nx=row_size, Ny=col_size, O_lin=list(O_lin),
+                battery_traces=None, # battery_traces, # Pass real traces if computed
+                position_traces=None # position_traces
+            )
+        except Exception as plot_e:
+            print(f"\nCould not generate plot: {plot_e}")
+            print("Check 'pathplotter.py' and 'battery_model.py' imports.")
 
-        render_at_t, T = plot_interactive_paths(
-            G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes,
-            sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
-            Nx=col_size, Ny=row_size, O_lin=list(O_lin), aux_tensor=aux_tensor
-        )
-        # animate_paths(G=None, uav_paths=uav_paths, uav_covered_nodes=uav_covered_nodes, sink=P_sink, Rs=sensing_radius, Rc=comm_radius,
-        #       Nx=col_size, Ny=row_size, O_lin=O_lin, aux_tensor=aux_tensor,
-        #       filename="coverage.mp4", fps=1)
-
-        # fig = plt.figure(figsize=(16, 8))
-        # # (setup axes as before)
-
-        # ani = animation.FuncAnimation(fig, lambda t: render_at_t(t), frames=T, interval=500)
-        # ani.save("uav_simulation.mp4", writer="ffmpeg", fps=2)
     else:
         print("Optimization failed to find a feasible solution.")
 
@@ -282,3 +270,5 @@ if __name__ == "__main__":
         print(f"Error: Config file not found at {args.config}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+        import traceback
+        traceback.print_exc()

@@ -21,7 +21,7 @@
   },
   "model": {
     "name": "maximize_coverage",
-    "B_max": 100,
+    
     "C_min": 16
   },
   "constraints": {
@@ -30,12 +30,13 @@
     "eq4": 1,
     "eq5": 1,
     "eq6": 1,
-    "eq7": 1,
-    "eq8": 1,
-    "eq9": 1,
-    "eq10": 1,
-    "eq11": 1,
-    "eq12": 1,
+    "eq6_allow_stay": false,
+    "eq7": 0,
+    "eq8": 0,
+    "eq9": 0,
+    "eq10": 0,
+    "eq11": 0,
+    "eq12": 0,
     "eq13": 1,
     "eq14": 1,
     "eq15": 1

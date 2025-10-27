@@ -27,28 +27,104 @@ def pos_obs(coords_obs):
     return np.array(coords_obs)
 
 # ==============================================================================
-# VARIABLE INDEXING HELPER CLASS (No changes)
+# DYNAMIC VARIABLE INDEXING HELPER CLASS (Rewritten)
 # ==============================================================================
 class VarHelper:
-    """Manages indices of decision variables based on eq.pdf formulation."""
-    def __init__(self, N, T, row_size, col_size):
+    """
+    Manages indices of decision variables *dynamically* based on config.
+    Only creates variables that are actually needed by the enabled constraints.
+    """
+    def __init__(self, N, T, row_size, col_size, constraints_cfg, model_cfg):
         self.N, self.T = N, T
         self.rs, self.cs = row_size, col_size
         self.num_grid_cells = row_size * col_size
-        self.start_z = 0
-        self.start_c_i = self.start_z + self.num_grid_cells * N * T
-        self.start_c_in_k = self.start_c_i + self.num_grid_cells
-        self.start_m = self.start_c_in_k + self.num_grid_cells * N * T
-        self.start_x_charge = self.start_m + self.num_grid_cells**2 * N * (T - 1)
-        self.start_b = self.start_x_charge + N * T
-        self.total_vars = self.start_b + N * T
+        
+        # --- Decide which optional variables are needed ---
+        model_name = model_cfg.get("name")
+        
+        # m-vars (movement) are needed for:
+        # 1. Eq 7 (Movement definition)
+        # 2. Eq 9 (Battery discharge)
+        # 3. Model "minimize_energy" (Objective)
+        # 4. Model "maximize_coverage" with a B_max budget (Eq 16)
+        self.has_m_vars = constraints_cfg.get("eq7", False) or \
+                          constraints_cfg.get("eq9", False) or \
+                          model_name == "minimize_energy" or \
+                          (model_name == "maximize_coverage" and "B_max" in model_cfg)
+
+        # x-vars (charging) are needed for:
+        # 1. Eq 8 (Charging location)
+        # 2. Eq 9 (Battery discharge)
+        # 3. Eq 10 (Battery charge)
+        self.has_x_vars = constraints_cfg.get("eq8", False) or \
+                          constraints_cfg.get("eq9", False) or \
+                          constraints_cfg.get("eq10", False)
+                          
+        # b-vars (battery level) are needed if any battery logic is on
+        # (for initial state, min/max, or charging/discharging)
+        self.has_b_vars = self.has_x_vars or \
+                          constraints_cfg.get("eq11", False) or \
+                          constraints_cfg.get("eq12", False)
+
+        # --- Sequentially build variable offsets ---
+        offset = 0
+        
+        # z (position) - always on
+        self.num_z = self.num_grid_cells * N * T
+        self.start_z = offset
+        offset += self.num_z
+        
+        # c_i (global coverage) - always on
+        self.num_c_i = self.num_grid_cells
+        self.start_c_i = offset
+        offset += self.num_c_i
+        
+        # c_in_k (local coverage) - always on
+        self.num_c_in_k = self.num_grid_cells * N * T
+        self.start_c_in_k = offset
+        offset += self.num_c_in_k
+        
+        # m (movement) - optional
+        self.start_m = offset
+        if self.has_m_vars:
+            self.num_m = self.num_grid_cells**2 * N * (T - 1)
+            offset += self.num_m
+            
+        # x_charge (charging) - optional
+        self.start_x_charge = offset
+        if self.has_x_vars:
+            self.num_x = N * T
+            offset += self.num_x
+
+        # b (battery level) - optional
+        self.start_b = offset
+        if self.has_b_vars:
+            self.num_b = N * T
+            offset += self.num_b
+            
+        self.total_vars = offset
+        
+        print(f"VarHelper initialized: Total variables = {self.total_vars}")
+        print(f"  - has_m_vars: {self.has_m_vars}")
+        print(f"  - has_x_vars: {self.has_x_vars}")
+        print(f"  - has_b_vars: {self.has_b_vars}")
+
 
     def z(self, t, n, i): return self.start_z + t*self.N*self.num_grid_cells + n*self.num_grid_cells + i
     def c_i(self, i): return self.start_c_i + i
     def c_in_k(self, t, n, i): return self.start_c_in_k + t*self.N*self.num_grid_cells + n*self.num_grid_cells + i
-    def m(self, t, n, i, j): return self.start_m + t*self.N*self.num_grid_cells**2 + n*self.num_grid_cells**2 + i*self.num_grid_cells + j
-    def x_charge(self, t, n): return self.start_x_charge + t * self.N + n
-    def b(self, t, n): return self.start_b + t * self.N + n
+    
+    def m(self, t, n, i, j): 
+        if not self.has_m_vars: raise AttributeError("m-variables are not active in this model.")
+        return self.start_m + t*self.N*self.num_grid_cells**2 + n*self.num_grid_cells**2 + i*self.num_grid_cells + j
+    
+    def x_charge(self, t, n): 
+        if not self.has_x_vars: raise AttributeError("x_charge-variables are not active in this model.")
+        return self.start_x_charge + t * self.N + n
+        
+    def b(self, t, n): 
+        if not self.has_b_vars: raise AttributeError("b-variables are not active in this model.")
+        return self.start_b + t * self.N + n
 
 # ==============================================================================
 # OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
@@ -66,6 +142,9 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
     
     elif model_name == "minimize_energy":
         # Model 2: Minimize total energy consumption
+        if not vh.has_m_vars:
+            raise ValueError("Cannot 'minimize_energy': m-variables are not active. Enable 'eq7' or 'eq9' in config.")
+        
         for t in range(vh.T - 1):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
@@ -130,33 +209,46 @@ def movement_and_mobility_constraints(vh, Irc, cfg):
     # Eq 6: Mobility rule
     eq6_rows = []
     if cfg.get("eq6", True):
+        # NEW TOGGLE: 'eq6_allow_stay'
+        # True = (eq.pdf logic): z(t+1) <= z(t) + sum(z_neighbors)
+        # False = (ccpp.pdf logic): z(t+1) <= sum(z_neighbors)
+        allow_stay = cfg.get("eq6_allow_stay", True)
+        
         for t in range(vh.T - 1):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
                     row = np.zeros(vh.total_vars)
                     row[vh.z(t + 1, n, i)] = 1
-                    for p in set(Irc[i] + [i]):
+                    
+                    # Determine neighbor set based on toggle
+                    neighbors = set(Irc[i] + [i]) if allow_stay else set(Irc[i])
+                    
+                    for p in neighbors:
                         row[vh.z(t, n, p)] = -1
                     eq6_rows.append(row)
 
     # Eq 7a, 7b, 7c: Movement definition
     eq7a, eq7b, eq7c = [], [], []
     if cfg.get("eq7", False):
-        for t in range(vh.T - 1):
-            for n in range(vh.N):
-                for i in range(vh.num_grid_cells):
-                    for j in range(vh.num_grid_cells):
-                        # 7a: m <= z(t)
-                        r7a = np.zeros(vh.total_vars); r7a[vh.m(t,n,i,j)]=1; r7a[vh.z(t,n,i)]=-1; eq7a.append(r7a)
-                        # 7b: m <= z(t+1)
-                        r7b = np.zeros(vh.total_vars); r7b[vh.m(t,n,i,j)]=1; r7b[vh.z(t+1,n,j)]=-1; eq7b.append(r7b)
-                        # 7c: m >= z(t) + z(t+1) - 1
-                        r7c = np.zeros(vh.total_vars); r7c[vh.m(t,n,i,j)]=-1; r7c[vh.z(t,n,i)]=1; r7c[vh.z(t+1,n,j)]=1; eq7c.append(r7c)
+        if not vh.has_m_vars:
+            print("Warning: eq7 is True in config, but m-vars were not created. Skipping eq7.")
+        else:
+            for t in range(vh.T - 1):
+                for n in range(vh.N):
+                    for i in range(vh.num_grid_cells):
+                        for j in range(vh.num_grid_cells):
+                            # 7a: m <= z(t)
+                            r7a = np.zeros(vh.total_vars); r7a[vh.m(t,n,i,j)]=1; r7a[vh.z(t,n,i)]=-1; eq7a.append(r7a)
+                            # 7b: m <= z(t+1)
+                            r7b = np.zeros(vh.total_vars); r7b[vh.m(t,n,i,j)]=1; r7b[vh.z(t+1,n,j)]=-1; eq7b.append(r7b)
+                            # 7c: m >= z(t) + z(t+1) - 1
+                            r7c = np.zeros(vh.total_vars); r7c[vh.m(t,n,i,j)]=-1; r7c[vh.z(t,n,i)]=1; r7c[vh.z(t+1,n,j)]=1; eq7c.append(r7c)
     
     return np.array(eq6_rows), np.array(eq7a), np.array(eq7b), np.array(eq7c)
 
 def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cfg):
-    any_battery_logic = any(cfg.get(k, False) for k in ["eq8", "eq9", "eq10"])
+    # Check if *any* battery logic is enabled
+    any_battery_logic = vh.has_b_vars or vh.has_x_vars
     
     empty = np.empty((0, vh.total_vars))
     results = {
@@ -169,6 +261,10 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     if not any_battery_logic:
         return results
     
+    if not vh.has_b_vars:
+        print("Warning: Battery constraints (eq8-10) enabled but no b-vars (eq11/12) are on. Skipping.")
+        return results
+
     M = b_full
     eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
 
@@ -176,10 +272,15 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
         for n in range(vh.N):
             # Eq 8: Charging location: x <= z_sink
             if cfg.get("eq8", False):
+                if not vh.has_x_vars: continue
                 row8 = np.zeros(vh.total_vars); row8[vh.x_charge(t,n)]=1; row8[vh.z(t,n,P_sink)]=-1; eq8.append(row8)
             
             # Eq 9: Battery discharge
             if cfg.get("eq9", False):
+                if not vh.has_m_vars or not vh.has_x_vars:
+                    print("Warning: Skipping eq9. It requires 'eq7' (for m-vars) and 'eq8' or 'eq10' (for x-vars) to be enabled.")
+                    continue
+                
                 energy_consumed = np.zeros(vh.total_vars)
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
@@ -192,6 +293,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
 
             # Eq 10: Battery charge
             if cfg.get("eq10", False):
+                if not vh.has_x_vars: continue
                 # Eq 10a: b(t+1) <= b_full + M(1-x) --> b(t+1) + M*x <= b_full + M
                 r10a = np.zeros(vh.total_vars); r10a[vh.b(t+1,n)]=1; r10a[vh.x_charge(t,n)]=M; eq10a.append(r10a)
                 # Eq 10b: b(t+1) >= b_full - M(1-x) --> b(t+1) - M*x >= b_full - M
@@ -205,7 +307,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     results['charge_geq'] = np.array(eq10b)
     results['rhs_charge_geq'] = np.full(len(eq10b), b_full - M)
 
-    # Initial battery state is mandatory if any other battery constraint is active
+    # Initial battery state is mandatory if b-vars exist
     B_initial = np.zeros((vh.N, vh.total_vars))
     rhs_initial = np.full(vh.N, initial_battery)
     for n in range(vh.N): B_initial[n, vh.b(0, n)] = 1
@@ -215,17 +317,31 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
     return results
 
 def cell_coverage_constraints(vh, Irs, cfg):
-    # Eq 13: Local coverage definition
-    eq13 = []
+    # Eq 13: Local coverage definition (CORRECTED Big-M Version)
+    eq13_leq = []  # c_in_k <= sum(z)
+    eq13_geq = []  # M * c_in_k >= sum(z)
+    
     if cfg.get("eq13", True):
         for t in range(vh.T):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
-                    row = np.zeros(vh.total_vars)
-                    row[vh.c_in_k(t, n, i)] = 1
+                    
+                    # M can be the max number of UAVs (N) or |S_i|
+                    M = vh.N 
+                    
+                    # 1. c_in_k <= sum(z_p)  -->  c_in_k - sum(z_p) <= 0
+                    row_leq = np.zeros(vh.total_vars)
+                    row_leq[vh.c_in_k(t, n, i)] = 1
                     for p in Irs[i]:
-                        row[vh.z(t, n, p)] = -1
-                    eq13.append(row)
+                        row_leq[vh.z(t, n, p)] = -1
+                    eq13_leq.append(row_leq)
+
+                    # 2. M * c_in_k >= sum(z_p)  -->  M*c_in_k - sum(z_p) >= 0
+                    row_geq = np.zeros(vh.total_vars)
+                    row_geq[vh.c_in_k(t, n, i)] = M
+                    for p in Irs[i]:
+                        row_geq[vh.z(t, n, p)] = -1
+                    eq13_geq.append(row_geq)
 
     # Eq 14 & 15: Global coverage mapping
     eq14, eq15 = [], []
@@ -245,8 +361,9 @@ def cell_coverage_constraints(vh, Irs, cfg):
         
         if cfg.get("eq15", True):
             eq15.append(r15)
-        
-    return np.array(eq13), np.array(eq14), np.array(eq15)
+            
+    # Return new LEQ and GEQ blocks for Eq 13
+    return np.array(eq13_leq), np.array(eq13_geq), np.array(eq14), np.array(eq15)
 
 def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
     """Builds the single constraint unique to each optimization model."""
@@ -254,8 +371,12 @@ def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
 
     if model_name == "maximize_coverage":
         B_max = model_cfg.get("B_max")
-        if B_max is None: raise ValueError("B_max must be set for 'maximize_coverage' model.")
+        if B_max is None:
+            return None, None # No constraint if B_max is not specified
         
+        if not vh.has_m_vars:
+            raise ValueError("Cannot set 'B_max': m-variables are not active. Enable 'eq7' or 'eq9' in config.")
+
         # Eq 16: Total energy budget: sum(energy) <= B_max
         row = np.zeros(vh.total_vars)
         for t in range(vh.T - 1):
@@ -278,7 +399,7 @@ def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
             
         return None, (np.array([row]), np.array([C_min]))
     
-    return None, None # No constraints for unknown or unspecified models
+    return None, None
 
 # ==============================================================================
 # CPLEX SOLVER and COMBINER (No changes needed)
@@ -329,7 +450,7 @@ def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_e
     prob.parameters.mip.tolerances.mipgap.set(mipgap)
     prob.parameters.timelimit.set(time_limit)
     prob.parameters.threads.set(4)
-    prob.set_log_stream(None); prob.set_error_stream(None); prob.set_warning_stream(None); prob.set_results_stream(None)
+    # prob.set_log_stream(None); prob.set_error_stream(None); prob.set_warning_stream(None); prob.set_results_stream(None)
 
     print(f"Starting CPLEX solver (timelimit: {time_limit}s, mipgap: {mipgap})...")
     start_time = time.time()
@@ -340,30 +461,23 @@ def cplex_solver(prob_name, objective, objective_sense, lb, ub, ctype, A_eq, b_e
     print(f"Solver finished in {solve_time:.2f} seconds.")
     
     status_string = prob.solution.get_status_string()
-    if prob.solution.get_status() in [101, 102]:
+    if prob.solution.get_status() in [101, 102]: # MIP Optimal or Feasible
         return np.array(prob.solution.get_values()), prob.solution.get_objective_value(), solve_time, status_string
     else:
-        if 'infeasible' in status_string:
+        if 'infeasible' in status_string.lower():
             print("Solver status is infeasible. Attempting to find conflicting constraints...")
             try:
-                all_constraints_to_check = []
-                for i in range(prob.linear_constraints.get_num()):
-                    all_constraints_to_check.append((prob.conflict.constraint_type.linear, i))
-                for i in range(prob.variables.get_num()):
-                    all_constraints_to_check.append((prob.conflict.constraint_type.upper_bound, i))
-                    all_constraints_to_check.append((prob.conflict.constraint_type.lower_bound, i))
-
-                prob.conflict.refine((1.0, all_constraints_to_check))
-                
+                # Use default list of constraints/bounds to check
+                prob.conflict.refine(prob.conflict.all_constraints())
                 print("\n--- CONFLICT REPORT ---")
                 
                 conflict_groups = prob.conflict.get_groups()
                 
                 if not conflict_groups:
-                    print("No conflicts found by the refiner.")
+                    print("No conflicts found by the refiner (or refiner failed).")
                 
                 for i, group in enumerate(conflict_groups):
-                    print(f"Conflict Group {i+1}:")
+                    print(f"Conflict Group {i+1} (Status: {prob.conflict.get_group_status(i)[1]}):")
                     group_members = group[1]
 
                     for conflict_member in group_members:

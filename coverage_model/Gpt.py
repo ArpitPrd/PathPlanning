@@ -53,6 +53,7 @@ def _get_neighbors(G, sz, R, O_lin_set, P_sink):
                 # Check Line of Sight
                 if _los_clear(p_rc, q_rc, sz, O_lin_set):
                     neigh_lin.append(np.ravel_multi_index(q_rc, sz))
+        neigh_lin = sorted(set(neigh_lin) - {P_sink})
         I_neighbors.append(sorted(neigh_lin))
     
     # Find sink's neighbors by its linear index
