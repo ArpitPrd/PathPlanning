@@ -1,8 +1,8 @@
 {
   "sensing_radius": 1.4142135623730951,
   "comm_radius": 2.8284271247461903,
-  "col_size": 8,
-  "row_size": 8,
+  "col_size": 5,
+  "row_size": 5,
   "N": 2,
   "T": 4,
   "row_sink": 1,
