@@ -40,8 +40,9 @@ def coverage_optimize():
     TG = np.column_stack((A.flatten(), B.flatten()))
     sz = (Nx, Ny)
     
-    P_sink = 0  # Index position of sink (0-based in Python)
+    P_sink = 27  # Index position of sink (0-based in Python)
     row, col = np.unravel_index(P_sink, sz)
+    print(f"@@@@ row and col = {row, col}")
     sink = np.array([row + 1, col + 1])  # Convert to 1-based for consistency with TG
     
     # Obstacles (empty in this case)
@@ -92,7 +93,7 @@ def coverage_optimize():
         
 
     
-    N = 2  # number of UAVs
+    N = 3  # number of UAVs
     T = 4  # max no. of time steps
     
     # ==============================

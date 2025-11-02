@@ -129,7 +129,7 @@ class VarHelper:
 # ==============================================================================
 # OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
 # ==============================================================================
-def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
+def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady, P_sink):
     """Sets up the objective vector and optimization sense based on the model config."""
     model_name = model_cfg.get("name", "maximize_coverage")
     f = np.zeros(vh.total_vars)
@@ -137,6 +137,7 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
     if model_name == "maximize_coverage":
         # Model 1: Maximize sum(c_i)
         for i in range(vh.num_grid_cells):
+            if i == P_sink: continue
             f[vh.c_i(i)] = 1.0
         return f, cplex.Cplex().objective.sense.maximize
     
@@ -316,7 +317,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
             
     return results
 
-def cell_coverage_constraints(vh, Irs, cfg):
+def cell_coverage_constraints(vh, Irs, cfg, P_sink):
     # Eq 13: Local coverage definition (CORRECTED Big-M Version)
     eq13_leq = []  # c_in_k <= sum(z)
     eq13_geq = []  # M * c_in_k >= sum(z)
@@ -325,7 +326,7 @@ def cell_coverage_constraints(vh, Irs, cfg):
         for t in range(vh.T):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
-                    
+                    if i == P_sink: continue
                     # M can be the max number of UAVs (N) or |S_i|
                     M = vh.N 
                     
@@ -346,6 +347,7 @@ def cell_coverage_constraints(vh, Irs, cfg):
     # Eq 14 & 15: Global coverage mapping
     eq14, eq15 = [], []
     for i in range(vh.num_grid_cells):
+        if i == P_sink: continue
         r15 = np.zeros(vh.total_vars)
         if cfg.get("eq15", True):
             r15[vh.c_i(i)] = 1

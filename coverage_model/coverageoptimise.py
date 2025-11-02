@@ -8,7 +8,7 @@ from coverage_utils import (
 from Gpt import communicable_gpt, sensing_gpt
 from pathplotter import plot_interactive_paths  # <-- IMPORT ADDED
 
-def process_results(solution, vh, Irs, sz):
+def process_results(solution, vh, Irs, sz, P_sink):
     """
     Processes the CPLEX solution vector into paths and coverage lists.
     - uav_paths_lin: Dict of paths as lists of LINEAR indices (for plotter)
@@ -41,7 +41,7 @@ def process_results(solution, vh, Irs, sz):
                 uav_paths_rc0[n].append(None)
                 uav_covered_nodes_lin[n].append([])
 
-    covered_cells_idx = {i for i in range(vh.num_grid_cells) if solution[vh.c_i(i)] > 0.99}
+    covered_cells_idx = {i for i in range(vh.num_grid_cells) if solution[vh.c_i(i)] > 0.99 and i != P_sink}
     covered_cells_coords = {i_to_ij(i, sz) for i in covered_cells_idx}
     
     return uav_paths_lin, uav_paths_rc0, covered_cells_coords, uav_covered_nodes_lin
@@ -106,7 +106,7 @@ def main(cfg: dict):
     vh = VarHelper(N, T, row_size, col_size, constraints_cfg, model_cfg)
     
     print("2a. Setting up objective function...")
-    objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady)
+    objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady, P_sink)
 
     # ==============================
     # 3. COMPUTE NEIGHBORHOOD SETS
@@ -130,7 +130,7 @@ def main(cfg: dict):
     C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
     battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
     
-    C13_leq, C13_geq, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg)
+    C13_leq, C13_geq, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg, P_sink)
     
     print("4a. Building model-specific constraints...")
     leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady)
@@ -224,7 +224,7 @@ def main(cfg: dict):
     
     if solution is not None:
         # --- UPDATED DATA PROCESSING ---
-        uav_paths_lin, uav_paths_rc0, covered_cells_coords, uav_covered_nodes_lin = process_results(solution, vh, Irs, sz)
+        uav_paths_lin, uav_paths_rc0, covered_cells_coords, uav_covered_nodes_lin = process_results(solution, vh, Irs, sz, P_sink)
         
         battery_levels = {}
         aux_tensor = None

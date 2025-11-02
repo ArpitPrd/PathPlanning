@@ -5,8 +5,8 @@
   "row_size": 5,
   "N": 2,
   "T": 4,
-  "row_sink": 1,
-  "col_sink": 1,
+  "row_sink": 3,
+  "col_sink": 3,
   "coords_obs": [],
   "battery_": {
     "b_mov": 2.0,
