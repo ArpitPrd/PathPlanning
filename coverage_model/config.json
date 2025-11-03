@@ -1,0 +1,43 @@
+{
+  "sensing_radius": 1,
+  "comm_radius": 2,
+  "col_size": 4,
+  "row_size": 4,
+  "N": 1,
+  "T": 4,
+  "row_sink": 1,
+  "col_sink": 1,
+  "coords_obs": [[2,2],[2,3]],
+  "battery": {
+    "b_mov": 2.0,
+    "b_steady": 0.1,
+    "b_full": 100.0,
+    "initial_battery": 100.0,
+    "ebase": 5.0
+  },
+  "solver": {
+    "time_limit": 600,
+    "mipgap": 0.01
+  },
+  "model": {
+    "name": "maximize_coverage", 
+    "B_max": 80.0,
+    "C_min": 6
+  },
+  "constraints": {
+    "eq2": 1,
+    "eq3": 1,
+    "eq4": 1,
+    "eq5": 1,
+    "eq6": 1,
+    "eq7": 1,
+    "eq8": 1,
+    "eq9": 1,
+    "eq10": 1,
+    "eq11": 1,
+    "eq12": 1,
+    "eq13": 1,
+    "eq14": 1,
+    "eq15": 1
+  }
+}
