@@ -63,7 +63,7 @@ A loophole - The sink node is actually not being taken care of being a part of c
 Tasks at hand:
 1. Update the equations to sense region -> done
 2. Update the equations to show obstacles -> done
-3. Maybe update the equations to give one movement at a time
+
 
 
 
@@ -73,4 +73,20 @@ Tasks at hand:
 Later tasks:
 1. Introduce the dummy drone architecture......
 2. Split the recharging stations
+3. Maybe update the equations to give one movement at a time (or atleast decouple hop)
+4. Drone is not going to charge to the sink node
 
+
+
+
+
+
+
+5. Check equations
+6. Epsilon base
+
+Test plan:
+
+| Sensing Radius | Comm Radius | Col_Size | Row_Size | N   | T   | b_mov | b_steady | E_base | C_min |     |
+| -------------- | ----------- | -------- | -------- | --- | --- | ----- | -------- | ------ | ----- | --- |
+|                |             |          |          |     |     |       |          |        |       |     |

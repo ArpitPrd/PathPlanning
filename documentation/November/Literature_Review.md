@@ -1,0 +1,15 @@
+[link](https://kilthub.cmu.edu/articles/dataset/Data_Collected_with_Package_Delivery_Quadcopter_Drone/12683453) -> This contains many parameters, collected over the flight of a drone
+
+[link](documentation/Research_papers/battery_modelling/s41598-025-99001-z.pdf)  -> Studies triangular trajectory or drones, and if they are able to come back
+
+[link](documentation/Research_papers/battery_modelling/multi_rotor_battery.pdf) -> Studies some power consumption in watts, not in battery percentages
+
+[link](PathPlanning/documentation/Research_papers/battery_modelling/s41597-021-00930-x.pdf) -> Studies the variation of energy consumption with speed and all
+
+| Source/Paper                                                | Description                                                                                                                                                                                                                                                                           |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| In-flight Dataset: DJI Matrice 100 (Rodrigues et al., 2021) | Empirical, high-resolution dataset from 209 flights of a DJI Matrice 100, spanning varying speeds, altitudes, and payloads to quantify real energy use under practical surveillance conditions. Includes detailed sensor streams and flight regimes .                                 |
+| Multi-UAV Path Planning (Qi et al., 2025)                   | Grid-based simulation and modeling of multi-UAV surveillance scenarios, using realistic energy consumption equations for steady, angular, and climbing flight, with calculation of global and per-vehicle energy budgets for trajectory assurance .                                   |
+| Multi-rotor Power Consumption Modeling (Gong et al., 2022)  | Presents theoretical and experimental formulations for multi-rotor power use, breaking down hovering and forward flight into drag, induced, and profile components with parameter studies across drone models and payloads. Focuses on watts/Joules rather than battery percentages . |
+| Drone Flight Data & GHG Emissions (Rodrigues et al., 2022)  | Quantifies energy and greenhouse gas emissions from hundreds of quadcopter flights, performing comparative analysis with other delivery modes. Features validated models for takeoff, cruise, and landing, highlighting payload and speed dependencies .                              |
+| CMU Package Delivery Dataset (2021)                         | Large raw dataset from 196 autonomous flights of a DJI Matrice 100, includes sensor streams (wind, GPS, current, voltage). Enables empirical study of real-world drone energy use across delivery and surveillance missions.                                                          |
