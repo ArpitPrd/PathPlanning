@@ -53,7 +53,7 @@ class VarHelper:
 # ==============================================================================
 # OBJECTIVE AND CONSTRAINTS (Updated for Toggling and Correctness)
 # ==============================================================================
-def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
+def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady, P_sink):
     """Sets up the objective vector and optimization sense based on the model config."""
     model_name = model_cfg.get("name", "maximize_coverage")
     f = np.zeros(vh.total_vars)
@@ -62,6 +62,7 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady):
         # Model 1: Maximize sum(c_i)
         for i in range(vh.num_grid_cells):
             f[vh.c_i(i)] = 1.0
+        f[vh.c_i(P_sink)] = 0.0
         return f, cplex.Cplex().objective.sense.maximize
     
     elif model_name == "minimize_energy":

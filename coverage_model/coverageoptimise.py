@@ -55,7 +55,7 @@ def main(cfg: dict):
     battery = cfg.get("battery", {}); b_mov, b_steady = battery.get("b_mov", 2.0), battery.get("b_steady", 0.1)
     b_full, e_base = battery.get("b_full", 100.0), battery.get("ebase", 10.0)
     initial_battery = battery.get("initial_battery", b_full)
-    
+    movement_type = cfg.get("movement_type", "euclidean")  # ← ADD THIS: default to euclidean
     solver_cfg = cfg.get("solver", {}); time_limit, mipgap = solver_cfg.get("time_limit", 600), solver_cfg.get("mipgap", 0.01)
     
     # --- Read Model and Constraint Toggles from Config ---
@@ -72,7 +72,7 @@ def main(cfg: dict):
     # ==============================
     print("2. Initializing variable helper and objective function...")
     vh = VarHelper(N, T, row_size, col_size)
-    objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady)
+    objective, objective_sense = setup_objective_and_sense(vh, model_cfg, b_mov, b_steady, P_sink)
 
     # ==============================
     # 3. COMPUTE NEIGHBORHOOD SETS
@@ -81,7 +81,13 @@ def main(cfg: dict):
     all_coords = np.array([i_to_ij(i, sz) for i in range(row_size * col_size)])
     Irc, Irc_sink = communicable_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
     _, Irs, _ = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
-    Imv, Imv_sink = movement_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
+    if movement_type.lower() == "manhattan":
+        Imv, Imv_sink = movement_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
+        print("Using Manhattan distance for movement (BFS-based)")
+    else:  # euclidean
+        Imv, Imv_sink = Irc, Irc_sink
+        Imv[P_sink] = []  # Ensure sink has no movable neighbors
+        print("Using Euclidean distance for movement (same as communication range)")
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
     # ==============================

@@ -26,13 +26,13 @@ def _los_clear(p_rc, q_rc, sz, obstacles_lin_set):
     Returns True if the segment between p and q does not pass through an obstacle.
     Endpoints are ignored as they are assumed to be valid locations.
     """
-    cells = _bresenham_line_cells(p_rc, q_rc)
-    if len(cells) <= 2: return True
+    # cells = _bresenham_line_cells(p_rc, q_rc)
+    # if len(cells) <= 2: return True
     
-    # Check inner cells for obstacles
-    for (r, c) in cells[1:-1]:
-        if np.ravel_multi_index((r, c), sz) in obstacles_lin_set:
-            return False
+    # # Check inner cells for obstacles
+    # for (r, c) in cells[1:-1]:
+    #     if np.ravel_multi_index((r, c), sz) in obstacles_lin_set:
+    #         return False
     return True
 
 def _get_neighbors(G, sz, R, O_lin_set, P_sink):
@@ -70,11 +70,40 @@ def communicable_gpt(P_sink, G, sz, Rc, O_lin=None):
 def sensing_gpt(P_sink, G, sz, Rs, O_lin=None):
     """
     Finds sensing neighbors for all grid cells.
-    A cell q is a sensing neighbor of p if it is within radius Rs and has LoS.
+    A cell q is a sensing neighbor of p if it is within radius Rs.
+    Excludes obstacles and sink from being in the sensing coverage.
     """
     O_lin_set = set(O_lin or [])
-    L = P_sink # The index of the sink is its linear index
-    Irs, Irs_sink = _get_neighbors(G, sz, Rs, O_lin_set, P_sink)
+    L = P_sink  # The index of the sink is its linear index
+    
+    Irs = []
+    
+    for p in range(len(G)):
+        p_rc = (int(G[p, 0]), int(G[p, 1]))
+        neigh_lin = []
+        
+        for q in range(len(G)):
+            if p == q: 
+                continue
+            
+            q_lin = np.ravel_multi_index((int(G[q, 0]), int(G[q, 1])), sz)
+            
+            # Skip if q is an obstacle or the sink
+            if q_lin in O_lin_set or q_lin == P_sink:
+                continue
+            
+            q_rc = (int(G[q, 0]), int(G[q, 1]))
+            
+            # Check Euclidean distance (squared)
+            if (p_rc[0] - q_rc[0])**2 + (p_rc[1] - q_rc[1])**2 <= Rs**2:
+                neigh_lin.append(q_lin)
+        
+        Irs.append(sorted(neigh_lin))
+    
+    # Find sink's sensing neighbors
+    Irs[P_sink] = []
+    Irs_sink = Irs[P_sink]
+    
     return L, Irs, Irs_sink
 
 
@@ -129,10 +158,12 @@ def movement_gpt(P_sink, G, sz, Rc, O_lin=None):
                     # Add to neighbors if it's not the starting point
                     if next_rc != p_rc:
                         neigh_lin.append(next_lin)
-        
+            if P_sink in neigh_lin:
+                neigh_lin.remove(P_sink)  # Exclude sink from movable neighbors
         I_movement.append(sorted(neigh_lin))
     
     # Find sink's movable neighbors
+    I_movement[P_sink] = []
     movement_sink = I_movement[P_sink]
     return I_movement, movement_sink
 
