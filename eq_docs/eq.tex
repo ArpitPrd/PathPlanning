@@ -91,7 +91,7 @@ The following constraints are applicable to both models presented above.
     \nonumber \\
     x_{n}^{k} &\le z_{s,n}^{k} \quad \forall n, k \quad &\text{Charging location} \tag{8} \\
     b_{n}^{k+1} &\le b_{n}^{k} - \sum_{i,j, i \ne j} m_{i,j,n}^{k} b_{mov} - \sum_{i} m_{i,i,n}^{k} b_{steady} + M \cdot x_{n}^{k} \quad &\text{Battery discharge} \tag{9a} \\
-    b_{n}^{k+1} &\ge b_{n}^{k} - \sum_{i,j, i \ne j} m_{i,j,n}^{k} b_{mov} - \sum_{i} m_{i,i,n}^{k} b_{steady} + M \cdot x_{n}^{k} \quad &\text{Battery discharge} \tag{9b} \\
+    b_{n}^{k+1} &\ge b_{n}^{k} - \sum_{i,j, i \ne j} m_{i,j,n}^{k} b_{mov} - \sum_{i} m_{i,i,n}^{k} b_{steady} - M \cdot x_{n}^{k} \quad &\text{Battery discharge} \tag{9b} \\
     b_{n}^{k+1} &\le b_{full} + M \cdot (1 - x_{n}^{k}) \quad \forall n, k \quad &\text{Battery charge} \tag{10a} \\
     b_{n}^{k+1} &\ge b_{full} - M \cdot (1 - x_{n}^{k}) \quad \forall n, k \quad &\text{Battery charge} \tag{10b} \\
     b_{n}^{k} &\le b_{full} \quad \forall n, k \quad &\text{Max battery} \tag{11} \\
