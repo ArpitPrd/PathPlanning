@@ -232,7 +232,7 @@ now you can pip install
     - the drone may give out energy at the sink or accept energy based on optimality 
     - M must b full at least
 
-Assuming b_mov = 30.0 and b_steady = 20.0
+Assuming b_mov = 30.0 and b_steady = 20.0, euclidean metric
 
 | Grid size | No. of UAVs | Sink location | CCPP Area coverage (%) | BTP Area coverage (%) | CCPP Battery Consumption | BTP Battery Consumption |
 |:----------:|:------------:|:--------------:|:----------------------:|:---------------------:|:------------------------:|:-----------------------:|
