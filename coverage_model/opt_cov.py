@@ -1,12 +1,12 @@
 import numpy as np
 import argparse
-from coverage_utils import (
+from utils_cov import (
     load_config, VarHelper, setup_objective_and_sense, pos_sink, pos_obs, ij_to_i, i_to_ij,
     position_and_collision_constraints, connectivity_constraints, movement_and_mobility_constraints,
     cell_coverage_constraints, battery_constraints, model_specific_constraints, combine_constraints, cplex_solver
 )
-from Gpt import communicable_gpt, sensing_gpt, movement_gpt
-from PathPlanning.coverage_model.pathplotter import plot_interactive_paths  # <-- IMPORT ADDED
+from gpt import communicable_gpt, sensing_gpt, movement_gpt
+from pathplotter import plot_interactive_paths  # <-- IMPORT ADDED
 
 def process_results(solution, vh, Irs, sz, P_sink):
     """

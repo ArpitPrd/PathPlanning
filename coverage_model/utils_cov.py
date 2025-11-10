@@ -367,7 +367,7 @@ def cell_coverage_constraints(vh, Irs, cfg, P_sink):
     # Return new LEQ and GEQ blocks for Eq 13
     return np.array(eq13_leq), np.array(eq13_geq), np.array(eq14), np.array(eq15)
 
-def model_specific_constraints(vh, model_cfg, b_mov, b_steady, P_sink):
+def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
     """
     Builds the single constraint unique to each optimization model.
 
