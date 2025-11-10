@@ -221,3 +221,34 @@ unset PYTHONHOME
 conda activate /home/ee/btech/ee1221163/cplex_env
 ```
 now you can pip install
+
+
+## Results
+
+
+- Producing results with following assumption
+    - ccpp paper always charges when entering the sink node
+    - there are no steady movements
+    - the drone may give out energy at the sink or accept energy based on optimality 
+    - M must b full at least
+
+Assuming b_mov = 2.0 and b_steady = 0.1
+
+| Grid size | No. of UAVs | Sink location | CCPP Area coverage (%) | BTP Area coverage (%) | CCPP Battery Consumption | BTP Battery Consumption |
+|:----------:|:------------:|:--------------:|:----------------------:|:---------------------:|:------------------------:|:-----------------------:|
+| 5 × 5 | 2 | Corner | 100.00 | 0 | 1 | 1 |
+| 6 × 6 | 2 | Corner | 100.00 | 0 | 1 | 1 |
+| 7 × 7 | 2 | Corner | 72.92 | 0 | 1 | 1 |
+| 8 × 8 | 2 | Corner | 55.56 | 0 | 1 | 1 |
+| 5 × 5 | 2 | Center | 100.00 | 0 | 1 | 1 |
+| 6 × 6 | 2 | Center | 100.00 | 0 | 1 | 1 |
+| 7 × 7 | 2 | Center | 91.67 | 0 | 1 | 1 |
+| 8 × 8 | 2 | Center | 76.19 | 0 | 1 | 1 |
+| 5 × 5 | 3 | Corner | 100.00 | 0 | 1 | 1 |
+| 6 × 6 | 3 | Corner | 100.00 | 0 | 1 | 1 |
+| 7 × 7 | 3 | Corner | 95.83 | 0 | 1 | 1 |
+| 8 × 8 | 3 | Corner | 87.30 | 0 | 1 | 1 |
+| 5 × 5 | 3 | Center | 100.00 | 0 | 1 | 1 |
+| 6 × 6 | 3 | Center | 100.00 | 0 | 1 | 1 |
+| 7 × 7 | 3 | Center | 100.00 | 0 | 1 | 1 |
+| 8 × 8 | 3 | Center | 96.83 | 0 | 1 | 1 |

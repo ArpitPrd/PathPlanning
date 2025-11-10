@@ -31,6 +31,7 @@
     "eq4": 1,
     "eq5": 1,
     "eq6": 1,
+    "eq6_allow_stay": true,
     "eq7": 0,
     "eq8": 0,
     "eq9": 0,

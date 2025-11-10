@@ -165,6 +165,7 @@ def position_and_collision_constraints(vh, P_sink, cfg):
             for n in range(vh.N):
                 row = np.zeros(vh.total_vars)
                 for i in range(vh.num_grid_cells):
+                    if i == P_sink: continue
                     row[vh.z(t, n, i)] = 1
                 eq2_rows.append(row)
     
@@ -189,6 +190,7 @@ def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
             row = np.zeros(vh.total_vars)
             for n in range(vh.N):
                 for p in Irc_sink:
+                    if p == P_sink: continue
                     row[vh.z(t, n, p)] = 1
             eq4_rows.append(row)
 
@@ -199,14 +201,16 @@ def connectivity_constraints(vh, Irc, Irc_sink, P_sink, cfg):
             for n in range(1, vh.N):
                 for i in range(vh.num_grid_cells):
                     row = np.zeros(vh.total_vars)
+                    if i == P_sink: continue
                     row[vh.z(t, n, i)] = 1
                     for p in Irc[i]:
+                        if p == P_sink: continue
                         row[vh.z(t, n - 1, p)] = -1
                     eq5_rows.append(row)
 
     return np.array(eq4_rows), np.array(eq5_rows)
 
-def movement_and_mobility_constraints(vh, Irc, cfg):
+def movement_and_mobility_constraints(vh, Irc, cfg, P_sink):
     # Eq 6: Mobility rule
     eq6_rows = []
     if cfg.get("eq6", True):
@@ -219,12 +223,14 @@ def movement_and_mobility_constraints(vh, Irc, cfg):
             for n in range(vh.N):
                 for i in range(vh.num_grid_cells):
                     row = np.zeros(vh.total_vars)
+                    if i == P_sink: continue
                     row[vh.z(t + 1, n, i)] = 1
                     
                     # Determine neighbor set based on toggle
                     neighbors = set(Irc[i] + [i]) if allow_stay else set(Irc[i])
                     
                     for p in neighbors:
+                        if p == P_sink: continue
                         row[vh.z(t, n, p)] = -1
                     eq6_rows.append(row)
 
@@ -238,6 +244,7 @@ def movement_and_mobility_constraints(vh, Irc, cfg):
                 for n in range(vh.N):
                     for i in range(vh.num_grid_cells):
                         for j in range(vh.num_grid_cells):
+                            if i == P_sink or j == P_sink: continue
                             # 7a: m <= z(t)
                             r7a = np.zeros(vh.total_vars); r7a[vh.m(t,n,i,j)]=1; r7a[vh.z(t,n,i)]=-1; eq7a.append(r7a)
                             # 7b: m <= z(t+1)
@@ -247,7 +254,7 @@ def movement_and_mobility_constraints(vh, Irc, cfg):
     
     return np.array(eq6_rows), np.array(eq7a), np.array(eq7b), np.array(eq7c)
 
-def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cfg):
+def battery_constraints(vh, b_mov, b_steady, b_full, M, P_sink, initial_battery, cfg):
     # Check if *any* battery logic is enabled
     any_battery_logic = vh.has_b_vars or vh.has_x_vars
     
@@ -266,7 +273,6 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
         print("Warning: Battery constraints (eq8-10) enabled but no b-vars (eq11/12) are on. Skipping.")
         return results
 
-    M = b_full
     eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
 
     for t in range(vh.T - 1):
@@ -286,6 +292,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
                 for i in range(vh.num_grid_cells):
                     for j in range(vh.num_grid_cells):
                         cost = b_steady if i == j else b_mov
+                        if i == P_sink or j == P_sink: continue
                         energy_consumed[vh.m(t, n, i, j)] = cost
                 # Eq 9a: b(t+1) <= b(t) - E_consumed + M*x  -->  b(t+1) - b(t) + E_consumed - M*x <= 0
                 r9a = np.copy(energy_consumed); r9a[vh.b(t+1,n)]=1; r9a[vh.b(t,n)]=-1; r9a[vh.x_charge(t,n)]=-M; eq9a.append(r9a)
@@ -334,6 +341,7 @@ def cell_coverage_constraints(vh, Irs, cfg, P_sink):
                     row_leq = np.zeros(vh.total_vars)
                     row_leq[vh.c_in_k(t, n, i)] = 1
                     for p in Irs[i]:
+                        if p == P_sink: continue
                         row_leq[vh.z(t, n, p)] = -1
                     eq13_leq.append(row_leq)
 
@@ -341,13 +349,14 @@ def cell_coverage_constraints(vh, Irs, cfg, P_sink):
                     row_geq = np.zeros(vh.total_vars)
                     row_geq[vh.c_in_k(t, n, i)] = M
                     for p in Irs[i]:
+                        if p == P_sink: continue
                         row_geq[vh.z(t, n, p)] = -1
                     eq13_geq.append(row_geq)
 
     # Eq 14 & 15: Global coverage mapping
     eq14, eq15 = [], []
     for i in range(vh.num_grid_cells):
-        if i == P_sink: continue
+        # if i == P_sink: continue
         r15 = np.zeros(vh.total_vars)
         if cfg.get("eq15", True):
             r15[vh.c_i(i)] = 1
@@ -367,41 +376,37 @@ def cell_coverage_constraints(vh, Irs, cfg, P_sink):
     # Return new LEQ and GEQ blocks for Eq 13
     return np.array(eq13_leq), np.array(eq13_geq), np.array(eq14), np.array(eq15)
 
-def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
-    """Builds the single constraint unique to each optimization model."""
+def model_specific_constraints(vh, model_cfg, b_mov, b_steady, P_sink):
+    """
+    Builds the single constraint unique to each optimization model.
+
+    Implements the Total Energy Budget constraint:
+        Σₙ Σₖ [ - (b⁽ᵏ⁾ₙ - b⁽ᵏ⁻¹⁾ₙ) ] ≤ B_max
+    """
     model_name = model_cfg.get("name")
 
     if model_name == "maximize_coverage":
+        if model_cfg.get("eq17", None) is None: return None, None
         B_max = model_cfg.get("B_max")
         if B_max is None:
-            return None, None # No constraint if B_max is not specified
-        
-        if not vh.has_m_vars:
-            raise ValueError("Cannot set 'B_max': m-variables are not active. Enable 'eq7' or 'eq9' in config.")
+            return None, None  # No constraint if B_max not provided
 
-        # Eq 16: Total energy budget: sum(energy) <= B_max
+        if not vh.has_b_vars:
+            raise ValueError("Cannot set energy budget: battery variables (b) are not active. Enable eq11 or eq12 in config.")
+
+        # Build one linear constraint: sum over all n, k [ - (b_k - b_(k-1)) ] ≤ B_max
         row = np.zeros(vh.total_vars)
-        for t in range(vh.T - 1):
+
+        for t in range(1, vh.T):  # k = 1,...,T-1
             for n in range(vh.N):
-                for i in range(vh.num_grid_cells):
-                    for j in range(vh.num_grid_cells):
-                        cost = b_steady if i == j else b_mov
-                        row[vh.m(t, n, i, j)] = cost
-        
+                row[vh.b(t, n)] -= 1.0       # -b_k
+                row[vh.b(t - 1, n)] += 1.0   # +b_(k-1)
+
+        # The inequality is sum(row * vars) ≤ B_max
         return (np.array([row]), np.array([B_max])), None
 
-    elif model_name == "minimize_energy":
-        C_min = model_cfg.get("C_min")
-        if C_min is None: raise ValueError("C_min must be set for 'minimize_energy' model.")
-            
-        # Eq 17: Minimum coverage: sum(c_i) >= C_min
-        row = np.zeros(vh.total_vars)
-        for i in range(vh.num_grid_cells):
-            row[vh.c_i(i)] = 1
-            
-        return None, (np.array([row]), np.array([C_min]))
-    
     return None, None
+
 
 # ==============================================================================
 # CPLEX SOLVER and COMBINER (No changes needed)

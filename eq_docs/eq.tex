@@ -60,7 +60,8 @@ This model aims to achieve the maximum possible area coverage without exceeding 
 
 \textbf{Additional Constraint}
 \begin{align}
-    \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G_{\,\bar{s}}, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G_{\,\bar{s}}} m_{i,i,n}^{k} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{17}
+    % \sum_{n \in N} \sum_{k \in K} \left( b_{\text{mov}} \sum_{i,j \in G_{\,\bar{s}}, i \neq j} m_{i,j,n}^{k} + b_{\text{steady}} \sum_{i \in G_{\,\bar{s}}} m_{i,i,n}^{k} + (b_{n}^{k} - b_{n}^{k-1}) x_{n}^{k} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{17}
+    \sum_{n \in N} \sum_{k \in K} - \left( b_{n}^{k} - b_{n}^{k-1} \right) \le B_{\max} \quad &\text{Total energy budget} \tag{17}
 \end{align}
 
 % \subsection*{Model 2: Minimize Battery Consumption with a Coverage Threshold}

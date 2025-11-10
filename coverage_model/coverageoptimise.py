@@ -46,31 +46,67 @@ def process_results(solution, vh, Irs, sz, P_sink):
     
     return uav_paths_lin, uav_paths_rc0, covered_cells_coords, uav_covered_nodes_lin
 
-def display_results(vh, uav_paths_rc0, covered_cells_coords, battery_levels):
+def display_results(vh, uav_paths_rc0, covered_cells_coords, battery_levels, x_charge_matrix=None, b_mov=2.0, b_steady=0.1, M=5.0, b_full=100.0, sink_lin=None):
     """
     Prints the results to the console.
-    Receives uav_paths_rc0, which is already a list of (r,c) tuples or None.
+    Computes total battery consumption based on solver battery levels (if available)
+    or dynamically from movement, steady states, and charging decisions xnk.
     """
     print("\n" + "="*50 + "\nOPTIMIZATION RESULTS\n" + "="*50)
+    total_battery_consumption1 = 0.0  # when battery vars are active
+    total_battery_consumption2 = 0.0  # when battery vars are not active (dynamic model)
+
     for n in range(vh.N):
         print(f"\n--- UAV {n+1} ---")
-        
-        # --- CORRECTED LOGIC ---
-        # uav_paths_rc0 is now a list of (r,c) tuples or None
-        path_coords = [f"({pos[0]+1},{pos[1]+1})" if pos is not None else 'N/A' for pos in uav_paths_rc0[n]]
-        
-        print(f"  Path (row, col): {path_coords}")
-        
-        if battery_levels and n in battery_levels: # Only print if battery levels exist for this UAV
-            print(f"  Battery Levels: {[round(b, 2) for b in battery_levels[n]]}")
 
-    # Note: num_grid_cells includes the sink. Paper excludes sink from coverage.
-    # Adjusting for C_max = |G_s_bar|
-    non_sink_cells = vh.num_grid_cells - 1 
-    # Ensure denominator is not zero if grid is 1x1
+        # --- Display Path ---
+        path_coords = [f"({pos[0]+1},{pos[1]+1})" if pos is not None else 'N/A'
+                       for pos in uav_paths_rc0[n]]
+        print(f"  Path (row, col): {path_coords}")
+
+        # --- CASE 1: Battery levels from solver ---
+        if battery_levels and n in battery_levels:
+            blist = battery_levels[n]
+            print(f"  Battery Levels: {[round(b, 2) for b in blist]}")
+            total_battery_consumption1 += blist[0] - blist[-1]
+
+        # --- CASE 2: No solver battery levels, compute manually ---
+        path = uav_paths_rc0[n]
+        if not path or len(path) < 2:
+            continue  # skip if path too short
+        b_prev = b_full
+        for t in range(len(path) - 1):
+            curr, nxt = path[t], path[t + 1]
+            if curr is None or nxt is None:
+                continue
+
+            # Movement or steady
+            moved = curr != nxt
+            delta = - (b_mov if moved else b_steady)
+            b_prev -= delta
+            # Charging (xnk = 1)
+            xnk = 0
+            if x_charge_matrix is not None:
+                xnk = 1 if x_charge_matrix[t, n] > 0.5 else 0
+            elif sink_lin is not None:
+                # fallback: check if UAV is at sink
+                sink_r, sink_c = divmod(sink_lin, vh.cs)
+                if curr == (sink_r, sink_c):
+                    xnk = 1
+
+            if xnk == 1:
+                delta -= (b_full - b_prev)
+
+            total_battery_consumption2 += -delta  # negative delta = consumption reduction
+
+    print(f"\nTotal battery consumption (solver mode): {round(total_battery_consumption1, 3)}")
+    print(f"Total battery consumption (computed mode): {round(total_battery_consumption2, 3)}")
+
+    # --- Coverage ---
+    non_sink_cells = vh.num_grid_cells - 1
     coverage_percent = len(covered_cells_coords) / max(1, non_sink_cells) * 100
     print(f"\nTotal Cells Covered (excl. sink): {len(covered_cells_coords)} / {non_sink_cells} ({coverage_percent:.2f}%)")
-    # print(f"  Covered Coords: {sorted(list(covered_cells_coords))}")
+
 
 
 def main(cfg: dict):
@@ -127,13 +163,13 @@ def main(cfg: dict):
     print("4. Building common constraint matrices with toggles...")
     C2, C3 = position_and_collision_constraints(vh, P_sink, constraints_cfg)
     C4, C5 = connectivity_constraints(vh, Irc, Irc_sink, P_sink, constraints_cfg)
-    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg)
-    battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, constraints_cfg)
+    C6, C7a, C7b, C7c = movement_and_mobility_constraints(vh, Irc, constraints_cfg, P_sink)
+    battery_blocks = battery_constraints(vh, b_mov, b_steady, b_full, cfg["M"], P_sink, initial_battery, constraints_cfg)
     
     C13_leq, C13_geq, C14, C15 = cell_coverage_constraints(vh, Irs, constraints_cfg, P_sink)
     
     print("4a. Building model-specific constraints...")
-    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady)
+    leq_model_block, geq_model_block = model_specific_constraints(vh, model_cfg, b_mov, b_steady, P_sink)
 
     # ==============================
     # 5. DEFINE BOUNDS AND TYPES
@@ -234,7 +270,25 @@ def main(cfg: dict):
              aux_tensor = np.array([battery_levels[n] for n in range(vh.N)]).T.reshape(T,N,1)
 
         # Display text results using (r,c) paths
-        display_results(vh, uav_paths_rc0, covered_cells_coords, battery_levels)
+        x_charge_matrix = None
+        if vh.has_x_vars:
+            x_charge_matrix = np.zeros((T, N))
+            for t in range(T):
+                for n in range(N):
+                    x_charge_matrix[t, n] = solution[vh.x_charge(t, n)]
+
+        display_results(
+            vh,
+            uav_paths_rc0,
+            covered_cells_coords,
+            battery_levels,
+            x_charge_matrix=x_charge_matrix,
+            b_mov=b_mov,
+            b_steady=b_steady,
+            b_full=b_full,
+            M=cfg["M"],      # or batt_cfg["ebase"] if using charge constant
+            sink_lin=P_sink
+        )
         
         # Plot results using linear-index paths
         try:
@@ -247,7 +301,8 @@ def main(cfg: dict):
                 Nx=col_size,                        # <-- Pass col_size as Nx
                 Ny=row_size,                        # <-- Pass row_size as Ny
                 O_lin=list(O_lin),
-                aux_tensor=aux_tensor               # <-- Pass battery tensor
+                aux_tensor=aux_tensor,               # <-- Pass battery tensor
+                x_charge_matrix=x_charge_matrix
             )
             print("\nPlot saved to plot.png and displayed.")
         except Exception as plot_e:
