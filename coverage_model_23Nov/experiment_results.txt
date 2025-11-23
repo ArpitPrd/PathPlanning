@@ -1,0 +1,2425 @@
+========================================
+Experiment 1: Grid 5×5, UAVs=2, Sink=corner
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 4175
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 7 rows and 3759 columns.
+MIP Presolve modified 150 coefficients.
+Reduced MIP has 952 rows, 416 columns, and 7684 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (5.27 ticks)
+Found incumbent of value 2.500000 after 0.01 sec. (6.59 ticks)
+Probing time = 0.00 sec. (2.96 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 952 rows, 416 columns, and 7684 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (4.59 ticks)
+Probing time = 0.00 sec. (2.87 ticks)
+Clique table members: 1792.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.01 sec. (14.34 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.5000       24.0000           860.00%
+*     0+    0                            5.0000       24.0000           380.00%
+*     0+    0                            9.0000       24.0000           166.67%
+      0     0       24.0000    46        9.0000       24.0000      433  166.67%
+*     0+    0                           19.0000       24.0000            26.32%
+*     0+    0                           24.0000       24.0000             0.00%
+      0     0        cutoff             24.0000       24.0000      433    0.00%
+Elapsed time = 0.05 sec. (56.14 ticks, tree = 0.01 MB, solutions = 5)
+
+Root node processing (before b&c):
+  Real time             =    0.05 sec. (56.37 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.05 sec. (56.37 ticks)
+Solver finished in 0.05 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 24.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(4,4)', '(2,5)', '(2,3)', '(4,1)']
+
+--- UAV 2 ---
+  Path (row, col): ['(2,2)', '(1,3)', '(1,2)', '(2,1)']
+
+Total Cells Covered (excl. sink): 24 / 24 (100.00%)
+t=0 | Coverage: 66.67% (16/24)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: Could not find t=3 coverage in output
+
+----------------------------------------
+
+========================================
+Experiment 2: Grid 6×6, UAVs=2, Sink=corner
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 8388
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 7785 columns.
+Reduced MIP has 1387 rows, 603 columns, and 12075 nonzeros.
+Reduced MIP has 288 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (7.40 ticks)
+Found incumbent of value 2.500000 after 0.01 sec. (9.54 ticks)
+Probing fixed 44 vars, tightened 0 bounds.
+Probing time = 0.01 sec. (3.22 ticks)
+Cover probing fixed 44 vars, tightened 1 bounds.
+Tried aggregator 1 time.
+MIP Presolve eliminated 160 rows and 88 columns.
+MIP Presolve modified 150 coefficients.
+Reduced MIP has 1227 rows, 515 columns, and 8567 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (4.72 ticks)
+Probing time = 0.00 sec. (3.18 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 1227 rows, 515 columns, and 8567 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (5.20 ticks)
+Probing time = 0.00 sec. (3.17 ticks)
+Clique table members: 3228.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (22.60 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.5000       35.0000              --- 
+*     0+    0                           18.0000       35.0000            94.44%
+      0     0       35.0000    48       18.0000       35.0000      559   94.44%
+*     0+    0                           35.0000       35.0000             0.00%
+      0     0        cutoff             35.0000       35.0000      559    0.00%
+Elapsed time = 0.13 sec. (167.66 ticks, tree = 0.01 MB, solutions = 3)
+
+Root node processing (before b&c):
+  Real time             =    0.13 sec. (168.01 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.13 sec. (168.01 ticks)
+Solver finished in 0.13 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(5,5)', '(3,3)', '(2,2)', '(1,3)']
+
+--- UAV 2 ---
+  Path (row, col): ['(3,3)', '(5,2)', '(3,3)', '(2,5)']
+
+Total Cells Covered (excl. sink): 35 / 35 (100.00%)
+t=0 | Coverage: 48.57% (17/35)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: Could not find t=3 coverage in output
+
+----------------------------------------
+
+========================================
+Experiment 3: Grid 7×7, UAVs=2, Sink=corner
+Expected Coverage at t=3: 72.92%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 15239
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 14415 columns.
+Reduced MIP has 1894 rows, 824 columns, and 17224 nonzeros.
+Reduced MIP has 392 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (11.53 ticks)
+Found incumbent of value 2.500000 after 0.02 sec. (14.74 ticks)
+Probing fixed 123 vars, tightened 52 bounds.
+Probing time = 0.01 sec. (6.12 ticks)
+Cover probing fixed 35 vars, tightened 29 bounds.
+Tried aggregator 1 time.
+MIP Presolve eliminated 522 rows and 242 columns.
+MIP Presolve modified 125 coefficients.
+Reduced MIP has 1372 rows, 582 columns, and 9829 nonzeros.
+Reduced MIP has 234 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (5.59 ticks)
+Probing fixed 13 vars, tightened 10 bounds.
+Probing time = 0.01 sec. (9.59 ticks)
+Tried aggregator 2 times.
+Detecting symmetries...
+MIP Presolve eliminated 78 rows and 33 columns.
+MIP Presolve modified 25 coefficients.
+Aggregator did 1 substitutions.
+Reduced MIP has 1293 rows, 548 columns, and 9186 nonzeros.
+Reduced MIP has 221 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.75 ticks)
+Probing time = 0.00 sec. (3.29 ticks)
+Clique table members: 6350.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.03 sec. (30.25 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.5000       48.0000              --- 
+*     0+    0                            5.0000       48.0000           860.00%
+*     0+    0                            7.0000       48.0000           585.71%
+      0     0       37.9286    56        7.0000       37.9286      781  441.84%
+*     0+    0                           21.0000       37.9286            80.61%
+*     0+    0                           35.0000       37.9286             8.37%
+      0     0       36.3333    37       35.0000      Cuts: 35      947    3.81%
+      0     0       36.3333    29       35.0000      Cuts: 37      998    3.81%
+      0     0       36.0000    14       35.0000      Cuts: 21     1034    2.86%
+      0     0       36.0000    21       35.0000       Cuts: 5     1056    2.86%
+      0     0       36.0000    16       35.0000   ZeroHalf: 1     1073    2.86%
+      0     0       36.0000    18       35.0000      Cuts: 12     1099    2.86%
+      0     0        cutoff             35.0000       35.0000     1099    0.00%
+Elapsed time = 0.20 sec. (210.37 ticks, tree = 0.01 MB, solutions = 5)
+
+Clique cuts applied:  3
+Implied bound cuts applied:  4
+Mixed integer rounding cuts applied:  2
+Zero-half cuts applied:  7
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0.20 sec. (211.22 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.20 sec. (211.22 ticks)
+Solver finished in 0.20 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(3,3)', '(2,5)', '(3,3)', '(1,3)']
+
+--- UAV 2 ---
+  Path (row, col): ['(5,5)', '(3,3)', '(5,2)', '(3,1)']
+
+Total Cells Covered (excl. sink): 35 / 48 (72.92%)
+t=0 | Coverage: 35.42% (17/48)
+t=1 | Coverage: 50.00% (24/48)
+t=2 | Coverage: 64.58% (31/48)
+t=3 | Coverage: 72.92% (35/48)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 72.92%, Actual: 72.92%)
+
+----------------------------------------
+
+========================================
+Experiment 4: Grid 8×8, UAVs=2, Sink=corner
+Expected Coverage at t=3: 55.56%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 25664
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 24585 columns.
+Reduced MIP has 2479 rows, 1079 columns, and 23287 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (17.14 ticks)
+Found incumbent of value 2.500000 after 0.02 sec. (21.75 ticks)
+Probing fixed 220 vars, tightened 112 bounds.
+Probing time = 0.01 sec. (11.03 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 724 rows and 332 columns.
+MIP Presolve modified 75 coefficients.
+Reduced MIP has 1755 rows, 747 columns, and 12903 nonzeros.
+Reduced MIP has 292 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.90 ticks)
+Probing fixed 33 vars, tightened 40 bounds.
+Probing time = 0.01 sec. (4.89 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+MIP Presolve eliminated 178 rows and 73 columns.
+MIP Presolve modified 25 coefficients.
+Reduced MIP has 1577 rows, 674 columns, and 11128 nonzeros.
+Reduced MIP has 259 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.47 ticks)
+Probing time = 0.00 sec. (3.99 ticks)
+Clique table members: 10740.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.04 sec. (48.14 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.5000       60.0000              --- 
+*     0+    0                            5.0000       60.0000              --- 
+*     0+    0                            7.0000       60.0000           757.14%
+      0     0       45.9152    60        7.0000       45.9152     1199  555.93%
+*     0+    0                           25.0000       45.9152            83.66%
+*     0+    0                           33.0000       45.9152            39.14%
+      0     0       44.8663    47       33.0000      Cuts: 17     1296   35.96%
+      0     0       43.9576    48       33.0000      Cuts: 57     1431   33.20%
+      0     0       43.4578    50       33.0000      Cuts: 15     1520   31.69%
+      0     0       42.8673    45       33.0000      Cuts: 34     1602   29.90%
+      0     0       42.2500    30       33.0000      Cuts: 31     1678   28.03%
+Detecting symmetries...
+      0     0       42.0424    38       33.0000      Cuts: 20     1712   27.40%
+      0     0       41.4286    28       33.0000      Cuts: 33     1769   25.54%
+*     0+    0                           34.0000       41.4286            21.85%
+      0     0       40.4333    37       34.0000      Cuts: 16     1863   18.92%
+      0     0       39.5811    42       34.0000      Cuts: 31     1945   16.41%
+*     0+    0                           35.0000       39.5811            13.09%
+      0     0       39.4615    37       35.0000      Cuts: 26     1979   12.75%
+      0     0       39.0833    32       35.0000      Cuts: 35     2010   11.67%
+      0     0       38.8333    24       35.0000      Cuts: 20     2049   10.95%
+      0     0       38.5000    34       35.0000      Cuts: 21     2083   10.00%
+      0     0       38.0000    28       35.0000      Cuts: 23     2108    8.57%
+      0     0       37.9412    34       35.0000      Cuts: 29     2155    8.40%
+      0     0       37.6500    31       35.0000      Cuts: 15     2187    7.57%
+      0     0       37.4762    34       35.0000      Cuts: 24     2212    7.07%
+      0     0       37.4762    28       35.0000      Cuts: 13     2227    7.07%
+      0     0       37.2258    32       35.0000      Cuts: 21     2264    6.36%
+      0     0       37.0000    21       35.0000      Cuts: 22     2285    5.71%
+      0     0       36.5000    31       35.0000      Cuts: 35     2321    4.29%
+      0     0        cutoff             35.0000                   2324     --- 
+Elapsed time = 0.41 sec. (406.12 ticks, tree = 0.01 MB, solutions = 7)
+
+Clique cuts applied:  6
+Implied bound cuts applied:  2
+Mixed integer rounding cuts applied:  6
+Zero-half cuts applied:  53
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0.41 sec. (407.89 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.41 sec. (407.89 ticks)
+Solver finished in 0.41 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(2,5)', '(3,3)', '(1,2)', '(3,2)']
+
+--- UAV 2 ---
+  Path (row, col): ['(3,3)', '(5,5)', '(3,3)', '(5,2)']
+
+Total Cells Covered (excl. sink): 35 / 63 (55.56%)
+t=0 | Coverage: 25.40% (16/63)
+t=1 | Coverage: 38.10% (24/63)
+t=2 | Coverage: 42.86% (27/63)
+t=3 | Coverage: 55.56% (35/63)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 55.56%, Actual: 55.56%)
+
+----------------------------------------
+
+========================================
+Experiment 5: Grid 5×5, UAVs=2, Sink=center
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 4175
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 7 rows and 3759 columns.
+MIP Presolve modified 150 coefficients.
+Reduced MIP has 952 rows, 416 columns, and 7732 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (5.26 ticks)
+Found incumbent of value 3.000000 after 0.01 sec. (6.59 ticks)
+Probing time = 0.00 sec. (2.97 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 952 rows, 416 columns, and 7732 nonzeros.
+Reduced MIP has 200 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (5.40 ticks)
+Probing time = 0.00 sec. (2.87 ticks)
+Clique table members: 1847.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.01 sec. (15.72 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            3.0000       24.0000           700.00%
+*     0+    0                           15.0000       24.0000            60.00%
+*     0+    0                           18.0000       24.0000            33.33%
+      0     0       24.0000    48       18.0000       24.0000      419   33.33%
+*     0+    0                           24.0000       24.0000             0.00%
+      0     0        cutoff             24.0000       24.0000      419    0.00%
+Elapsed time = 0.06 sec. (64.51 ticks, tree = 0.01 MB, solutions = 4)
+
+Root node processing (before b&c):
+  Real time             =    0.06 sec. (64.71 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.06 sec. (64.71 ticks)
+Solver finished in 0.06 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 24.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(2,4)', '(3,2)', '(1,1)', '(1,1)']
+
+--- UAV 2 ---
+  Path (row, col): ['(4,4)', '(4,2)', '(3,1)', '(1,3)']
+
+Total Cells Covered (excl. sink): 24 / 24 (100.00%)
+t=0 | Coverage: 58.33% (14/24)
+t=1 | Coverage: 91.67% (22/24)
+t=2 | Coverage: 100.00% (24/24)
+t=3 | Coverage: 100.00% (24/24)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 6: Grid 6×6, UAVs=2, Sink=center
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 8388
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 7785 columns.
+Reduced MIP has 1387 rows, 603 columns, and 12123 nonzeros.
+Reduced MIP has 288 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (7.40 ticks)
+Found incumbent of value 3.000000 after 0.01 sec. (9.55 ticks)
+Probing time = 0.00 sec. (3.29 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 1387 rows, 603 columns, and 12123 nonzeros.
+Reduced MIP has 288 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (7.14 ticks)
+Probing time = 0.00 sec. (3.70 ticks)
+Clique table members: 6579.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.03 sec. (35.60 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            3.0000       35.0000              --- 
+*     0+    0                            6.0000       35.0000           483.33%
+      0     0       35.0000    55        6.0000       35.0000      675  483.33%
+*     0+    0                           20.0000       35.0000            75.00%
+*     0+    0                           32.0000       35.0000             9.37%
+*     0+    0                           34.0000       35.0000             2.94%
+      0     2       35.0000    15       34.0000       35.0000      675    2.94%
+Elapsed time = 0.22 sec. (275.23 ticks, tree = 0.02 MB, solutions = 5)
+*     3     3      integral     0       35.0000       35.0000      779    0.00%
+
+Root node processing (before b&c):
+  Real time             =    0.22 sec. (274.91 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.02 sec. (22.13 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.24 sec. (297.05 ticks)
+Solver finished in 0.24 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(3,4)', '(2,2)', '(3,4)', '(2,5)']
+
+--- UAV 2 ---
+  Path (row, col): ['(5,2)', '(3,4)', '(5,5)', '(3,6)']
+
+Total Cells Covered (excl. sink): 35 / 35 (100.00%)
+t=0 | Coverage: 45.71% (16/35)
+t=1 | Coverage: 65.71% (23/35)
+t=2 | Coverage: 85.71% (30/35)
+t=3 | Coverage: 100.00% (35/35)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 7: Grid 7×7, UAVs=2, Sink=center
+Expected Coverage at t=3: 91.67%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 15239
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 14415 columns.
+Reduced MIP has 1894 rows, 824 columns, and 17272 nonzeros.
+Reduced MIP has 392 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (11.54 ticks)
+Found incumbent of value 18.000000 after 0.02 sec. (23.23 ticks)
+Probing time = 0.01 sec. (4.71 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 1894 rows, 824 columns, and 17272 nonzeros.
+Reduced MIP has 392 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (12.13 ticks)
+Probing time = 0.00 sec. (4.31 ticks)
+Clique table members: 9322.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.07 sec. (98.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           18.0000       48.0000           166.67%
+      0     0       48.0000    66       18.0000       48.0000     1413  166.67%
+*     0+    0                           22.0000       48.0000           118.18%
+*     0+    0                           30.0000       48.0000            60.00%
+*     0+    0                           39.0000       48.0000            23.08%
+*     0+    0                           44.0000       48.0000             9.09%
+      0     2       48.0000    38       44.0000       48.0000     1413    9.09%
+Elapsed time = 0.48 sec. (617.97 ticks, tree = 0.02 MB, solutions = 5)
+    152    87       45.6667    14       44.0000       48.0000    13607    9.09%
+    302   203       46.7619    51       44.0000       48.0000    25433    9.09%
+    373   260       44.4375    39       44.0000       48.0000    35163    9.09%
+    428   278       47.8333    27       44.0000       48.0000    44275    9.09%
+    530   357       47.4857    40       44.0000       48.0000    58962    9.09%
+    678   422       47.7333    44       44.0000       47.7500    69997    8.52%
+    876   507       46.2500    26       44.0000       47.7353    85356    8.49%
+   1040   639       47.0000    46       44.0000       47.5464   101876    8.06%
+   1259   686       45.0303    23       44.0000       47.5333   111299    8.03%
+   1983   966        cutoff             44.0000       47.0000   168497    6.82%
+Elapsed time = 3.06 sec. (3739.80 ticks, tree = 0.62 MB, solutions = 5)
+   2929   985       44.5625    22       44.0000       46.2794   231187    5.18%
+
+Clique cuts applied:  5
+Implied bound cuts applied:  121
+
+Root node processing (before b&c):
+  Real time             =    0.48 sec. (617.62 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    3.90 sec. (4731.76 ticks)
+  Sync time (average)   =    0.17 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    4.38 sec. (5349.38 ticks)
+Solver finished in 4.38 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal, tolerance
+Objective Value: 44.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(4,1)', '(2,3)', '(4,4)', '(2,6)']
+
+--- UAV 2 ---
+  Path (row, col): ['(6,2)', '(4,4)', '(6,5)', '(4,7)']
+
+Total Cells Covered (excl. sink): 44 / 48 (91.67%)
+t=0 | Coverage: 27.08% (13/48)
+t=1 | Coverage: 54.17% (26/48)
+t=2 | Coverage: 68.75% (33/48)
+t=3 | Coverage: 91.67% (44/48)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 91.67%, Actual: 91.67%)
+
+----------------------------------------
+
+========================================
+Experiment 8: Grid 8×8, UAVs=2, Sink=center
+Expected Coverage at t=3: 76.19%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 25664
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 24585 columns.
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (17.15 ticks)
+Found incumbent of value 18.000000 after 0.02 sec. (33.19 ticks)
+Probing time = 0.01 sec. (5.69 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (13.84 ticks)
+Probing time = 0.01 sec. (5.04 ticks)
+Clique table members: 12549.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.18 sec. (219.82 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           18.0000       63.0000           250.00%
+      0     0       60.0000    83       18.0000       60.0000     2714  233.33%
+*     0+    0                           34.0000       60.0000            76.47%
+*     0+    0                           43.0000       60.0000            39.53%
+      0     0       60.0000    48       43.0000       Cuts: 2     2717   39.53%
+      0     0       60.0000    50       43.0000      Cuts: 26     2896   39.53%
+*     0+    0                           47.0000       60.0000            27.66%
+      0     0       60.0000    69       47.0000      Cuts: 13     3194   27.66%
+      0     2       60.0000    47       47.0000       60.0000     3194   27.66%
+Elapsed time = 1.68 sec. (1904.16 ticks, tree = 0.02 MB, solutions = 4)
+    175    77       53.8625    48       47.0000       60.0000    10785   27.66%
+    311   165       48.6364    15       47.0000       60.0000    19320   27.66%
+    373   237       49.7239    45       47.0000       60.0000    25226   27.66%
+    488   281       59.9828    85       47.0000       60.0000    30759   27.66%
+    579   385       59.9744    74       47.0000       60.0000    39639   27.66%
+    677   457       55.5348    46       47.0000       60.0000    48418   27.66%
+    789   559       55.6364    35       47.0000       60.0000    57059   27.66%
+    942   626       55.0677    42       47.0000       60.0000    62540   27.66%
+   1114   777       55.5333    30       47.0000       60.0000    74629   27.66%
+*  1665+ 1128                           48.0000       59.5000            23.96%
+   1710  1093       52.0990    39       48.0000       59.5000   105540   23.96%
+Elapsed time = 5.01 sec. (5067.82 ticks, tree = 12.56 MB, solutions = 5)
+   2433  1601       53.3478    39       48.0000       57.6051   136125   20.01%
+
+Performing restart 1
+
+Repeating presolve.
+Tried aggregator 1 time.
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (10.13 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.14 ticks)
+Represolve time = 0.06 sec. (57.83 ticks)
+   2515     0       60.0000    41       48.0000   ZeroHalf: 2   145160   19.69%
+   2515     0       60.0000    58       48.0000      Cuts: 38   145452   19.69%
+   2515     0       60.0000    39       48.0000     Covers: 1   145535   19.69%
+   2515     0       60.0000    56       48.0000      Cuts: 47   145799   19.69%
+   2515     0       60.0000    45       48.0000   ZeroHalf: 1   145846   19.69%
+   2515     0       60.0000    70       48.0000      Cuts: 50   146028   19.69%
+   2515     0       60.0000    63       48.0000      Cuts: 19   146269   19.69%
+   2515     0       60.0000    61       48.0000      Cuts: 24   146468   19.69%
+   2515     2       60.0000    48       48.0000       57.4517   146468   19.69%
+   2569    19        cutoff             48.0000       57.4517   155651   19.69%
+   2961   221       56.0408    43       48.0000       57.4517   167615   19.69%
+   3606   651       49.3333    27       48.0000       57.4517   201818   19.69%
+   4083   943       51.5484    38       48.0000       57.4517   232967   19.69%
+   4410  1292       56.0000    30       48.0000       57.4517   268774   19.69%
+   4783  1616       51.7059    33       48.0000       57.4517   298003   19.69%
+   5338  2036       49.5810    28       48.0000       57.4517   326513   19.69%
+
+Performing restart 2
+
+Repeating presolve.
+Tried aggregator 1 time.
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (10.13 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2479 rows, 1079 columns, and 23335 nonzeros.
+Reduced MIP has 512 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.14 ticks)
+Represolve time = 0.09 sec. (74.03 ticks)
+   5681     0       60.0000    64       48.0000       Cuts: 9   358104   19.69%
+   5681     0       60.0000    72       48.0000      Cuts: 44   358770   19.69%
+   5681     0       60.0000    73       48.0000      Cuts: 22   359054   19.69%
+   5681     2       60.0000    49       48.0000       57.4517   359054   19.69%
+Elapsed time = 20.57 sec. (20503.10 ticks, tree = 0.02 MB, solutions = 5)
+   5970   146       50.8235    20       48.0000       57.4517   377013   19.69%
+   6337   404       56.6000    29       48.0000       57.4517   403014   19.69%
+   6806   699       54.0000    52       48.0000       57.4517   424277   19.69%
+   7223  1032       54.1215    46       48.0000       57.4517   451024   19.69%
+   7672  1300       50.7551    35       48.0000       57.4517   473980   19.69%
+   8083  1704       52.3720    43       48.0000       57.4517   505303   19.69%
+   8733  2149       49.1923    22       48.0000       57.0995   530930   18.96%
+   9465  2679       51.6417    41       48.0000       56.6914   557463   18.11%
+  10196  3165       53.2533    36       48.0000       56.3359   583730   17.37%
+  10716  3602       50.1667    27       48.0000       55.8665   609538   16.39%
+Elapsed time = 30.97 sec. (30084.81 ticks, tree = 69.25 MB, solutions = 5)
+  11397  4076       51.2826    36       48.0000       55.6291   640123   15.89%
+  12303  4620       48.5882    23       48.0000       55.4231   669369   15.46%
+  13050  5037       49.8235    23       48.0000       55.1548   694935   14.91%
+  13780  5542       51.5392    48       48.0000       55.0000   726933   14.58%
+  14832  6086       51.6538    26       48.0000       54.8236   751245   14.22%
+  15410  6562       48.1159    38       48.0000       54.6000   780101   13.75%
+  16216  6841       49.9878    22       48.0000       54.3604   805122   13.25%
+  16741  7224       51.0265    35       48.0000       54.1053   828043   12.72%
+  17661  7624       49.1374    38       48.0000       54.0000   862606   12.50%
+  18257  7946       48.5538    31       48.0000       53.7869   888469   12.06%
+Elapsed time = 42.25 sec. (39634.62 ticks, tree = 119.48 MB, solutions = 5)
+  19102  8271       51.1122    40       48.0000       53.6675   914857   11.81%
+  19883  8644        cutoff             48.0000       53.5022   944686   11.46%
+  20685  9093       48.2500    11       48.0000       53.3316   983816   11.11%
+  21114  9158       50.0189    40       48.0000       53.1429   998036   10.71%
+  21999  9314        cutoff             48.0000       53.0000  1014174   10.42%
+  22736  9529        cutoff             48.0000       52.8646  1055450   10.13%
+  23348  9732       50.0000    34       48.0000       52.7193  1076372    9.83%
+  23931  9932        cutoff             48.0000       52.5000  1109990    9.37%
+  24456  9939       49.3051    27       48.0000       52.4118  1125171    9.19%
+  24915 10019        cutoff             48.0000       52.2575  1152252    8.87%
+Elapsed time = 53.76 sec. (49185.97 ticks, tree = 126.38 MB, solutions = 5)
+  25685 10083       50.8409    42       48.0000       52.0385  1172195    8.41%
+  26296 10079        cutoff             48.0000       52.0000  1200970    8.33%
+  26888  9957        cutoff             48.0000       51.9048  1227320    8.13%
+  27459  9959       48.1667    22       48.0000       51.7556  1251504    7.82%
+  28050  9824        cutoff             48.0000       51.6124  1280415    7.53%
+  28680  9612        cutoff             48.0000       51.5000  1301438    7.29%
+  29288  9525        cutoff             48.0000       51.3582  1323638    7.00%
+  29883  9362        cutoff             48.0000       51.2154  1351771    6.70%
+  30532  9243        cutoff             48.0000       51.0833  1369704    6.42%
+  31173  8938        cutoff             48.0000       51.0000  1400969    6.25%
+Elapsed time = 65.25 sec. (58736.19 ticks, tree = 106.61 MB, solutions = 5)
+  31899  8684       49.5000    18       48.0000       50.8112  1429686    5.86%
+  32639  8387        cutoff             48.0000       50.6281  1450905    5.48%
+  33472  7811        cutoff             48.0000       50.4367  1481291    5.08%
+  34365  7285        cutoff             48.0000       50.2381  1511294    4.66%
+  35239  6818       49.2500    15       48.0000       50.0714  1534206    4.32%
+  36274  6168        cutoff             48.0000       49.8148  1563048    3.78%
+  37500  5063        cutoff             48.0000       49.5300  1596849    3.19%
+  39089  3711        cutoff             48.0000       49.1667  1624507    2.43%
+  40944  1793        cutoff             48.0000       48.7600  1653703    1.58%
+
+Clique cuts applied:  26
+Cover cuts applied:  3
+Implied bound cuts applied:  90
+Zero-half cuts applied:  22
+
+Root node processing (before b&c):
+  Real time             =    1.67 sec. (1889.41 ticks)
+Parallel b&c, 4 threads:
+  Real time             =   74.74 sec. (65758.45 ticks)
+  Sync time (average)   =    3.45 sec.
+  Wait time (average)   =    0.01 sec.
+                          ------------
+Total (root+branch&cut) =   76.41 sec. (67647.87 ticks)
+Solver finished in 76.41 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal, tolerance
+Objective Value: 48.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(2,7)', '(4,5)', '(6,6)', '(7,4)']
+
+--- UAV 2 ---
+  Path (row, col): ['(2,5)', '(2,3)', '(4,4)', '(5,2)']
+
+Total Cells Covered (excl. sink): 48 / 63 (76.19%)
+t=0 | Coverage: 23.81% (15/63)
+t=1 | Coverage: 41.27% (26/63)
+t=2 | Coverage: 55.56% (35/63)
+t=3 | Coverage: 76.19% (48/63)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 76.19%, Actual: 76.19%)
+
+----------------------------------------
+
+========================================
+Experiment 9: Grid 5×5, UAVs=3, Sink=corner
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 6250
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 10 rows and 5638 columns.
+MIP Presolve modified 225 coefficients.
+Reduced MIP has 1416 rows, 612 columns, and 12236 nonzeros.
+Reduced MIP has 300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (8.06 ticks)
+Found incumbent of value 1.666667 after 0.01 sec. (10.11 ticks)
+Probing time = 0.00 sec. (2.29 ticks)
+Cover probing fixed 0 vars, tightened 1 bounds.
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 1416 rows, 612 columns, and 12236 nonzeros.
+Reduced MIP has 300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (7.13 ticks)
+Probing time = 0.00 sec. (2.95 ticks)
+Clique table members: 4604.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (24.24 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            1.6667       24.0000              --- 
+*     0+    0                            5.0000       24.0000           380.00%
+*     0+    0                            9.0000       24.0000           166.67%
+      0     0       24.0000    60        9.0000       24.0000      563  166.67%
+*     0+    0                           23.0000       24.0000             4.35%
+*     0+    0                           24.0000       24.0000             0.00%
+      0     0        cutoff             24.0000       24.0000      563    0.00%
+Elapsed time = 0.08 sec. (90.99 ticks, tree = 0.01 MB, solutions = 5)
+
+Root node processing (before b&c):
+  Real time             =    0.09 sec. (91.33 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.09 sec. (91.33 ticks)
+Solver finished in 0.09 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 24.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(4,4)', '(3,2)', '(1,1)', '(2,1)']
+
+--- UAV 2 ---
+  Path (row, col): ['(2,2)', '(1,4)', '(1,3)', '(3,2)']
+
+--- UAV 3 ---
+  Path (row, col): ['(1,2)', '(1,2)', '(3,1)', '(5,2)']
+
+Total Cells Covered (excl. sink): 24 / 24 (100.00%)
+t=0 | Coverage: 66.67% (16/24)
+t=1 | Coverage: 91.67% (22/24)
+t=2 | Coverage: 91.67% (22/24)
+t=3 | Coverage: 100.00% (24/24)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 10: Grid 6×6, UAVs=3, Sink=corner
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 12564
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 11677 columns.
+Reduced MIP has 2063 rows, 887 columns, and 19247 nonzeros.
+Reduced MIP has 432 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (11.40 ticks)
+Found incumbent of value 1.666667 after 0.01 sec. (14.72 ticks)
+Probing time = 0.01 sec. (4.16 ticks)
+Cover probing fixed 8 vars, tightened 0 bounds.
+Tried aggregator 1 time.
+Detecting symmetries...
+MIP Presolve eliminated 8 rows and 8 columns.
+Reduced MIP has 2055 rows, 879 columns, and 18819 nonzeros.
+Reduced MIP has 424 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (10.86 ticks)
+Probing fixed 25 vars, tightened 0 bounds.
+Probing time = 0.01 sec. (7.43 ticks)
+Clique table members: 10021.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.04 sec. (59.92 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            1.6667       35.0000              --- 
+*     0+    0                            5.0000       35.0000           600.00%
+*     0+    0                            8.0000       35.0000           337.50%
+      0     0       35.0000    80        8.0000       35.0000      754  337.50%
+*     0+    0                           28.0000       35.0000            25.00%
+*     0+    0                           35.0000       35.0000             0.00%
+      0     0        cutoff             35.0000       35.0000      754    0.00%
+Elapsed time = 0.18 sec. (215.88 ticks, tree = 0.01 MB, solutions = 5)
+
+Root node processing (before b&c):
+  Real time             =    0.18 sec. (216.56 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.18 sec. (216.56 ticks)
+Solver finished in 0.18 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(1,6)', '(3,5)', '(5,4)', '(6,6)']
+
+--- UAV 2 ---
+  Path (row, col): ['(1,4)', '(3,3)', '(5,2)', '(4,4)']
+
+--- UAV 3 ---
+  Path (row, col): ['(3,3)', '(2,1)', '(3,1)', '(3,2)']
+
+Total Cells Covered (excl. sink): 35 / 35 (100.00%)
+t=0 | Coverage: 42.86% (15/35)
+t=1 | Coverage: 62.86% (22/35)
+t=2 | Coverage: 94.29% (33/35)
+t=3 | Coverage: 100.00% (35/35)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 11: Grid 7×7, UAVs=3, Sink=corner
+Expected Coverage at t=3: 95.83%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 22834
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 21622 columns.
+Reduced MIP has 2817 rows, 1212 columns, and 27494 nonzeros.
+Reduced MIP has 588 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (17.77 ticks)
+Found incumbent of value 1.666667 after 0.02 sec. (22.75 ticks)
+Probing time = 0.01 sec. (5.12 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 2817 rows, 1212 columns, and 27494 nonzeros.
+Reduced MIP has 588 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (15.86 ticks)
+Probing time = 0.01 sec. (4.45 ticks)
+Clique table members: 14631.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.09 sec. (127.88 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            1.6667       48.0000              --- 
+*     0+    0                            5.0000       48.0000           860.00%
+      0     0       48.0000   119        5.0000       48.0000     1372  860.00%
+*     0+    0                           25.0000       48.0000            92.00%
+*     0+    0                           44.0000       48.0000             9.09%
+      0     2       48.0000    40       44.0000       48.0000     1372    9.09%
+Elapsed time = 0.92 sec. (1103.22 ticks, tree = 0.02 MB, solutions = 4)
+*    13    11      integral     0       45.0000       48.0000     3165    6.67%
+     72    37       45.7500    30       45.0000       48.0000     5532    6.67%
+    146   103       48.0000    46       45.0000       48.0000    12234    6.67%
+    340   202       46.8571    28       45.0000       48.0000    19150    6.67%
+    481   310       46.7778    31       45.0000       48.0000    25848    6.67%
+    647   383       48.0000    38       45.0000       48.0000    31760    6.67%
+    827   497       45.5116    31       45.0000       48.0000    40812    6.67%
+   1071   629       45.4405    44       45.0000       48.0000    46485    6.67%
+   1222   760        cutoff             45.0000       48.0000    53450    6.67%
+   1408   783       47.7551    48       45.0000       48.0000    60030    6.67%
+*  1793   888      integral     0       46.0000       48.0000    77693    4.35%
+   2246   888       47.0000    31       46.0000       48.0000    95157    4.35%
+Elapsed time = 3.24 sec. (4232.82 ticks, tree = 17.77 MB, solutions = 6)
+   3087  1219        cutoff             46.0000       48.0000   127634    4.35%
+
+Performing restart 1
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 29 rows and 17 columns.
+MIP Presolve modified 865 coefficients.
+Reduced MIP has 2788 rows, 1195 columns, and 26092 nonzeros.
+Reduced MIP has 571 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (16.27 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2788 rows, 1195 columns, and 26092 nonzeros.
+Reduced MIP has 571 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.29 ticks)
+Represolve time = 0.07 sec. (65.13 ticks)
+   3504     0       48.0000    58       46.0000    Cliques: 1   156911    4.35%
+   3504     0       48.0000    68       46.0000      Cuts: 82   157178    4.35%
+   3504     2       48.0000    25       46.0000       48.0000   157178    4.35%
+   3510     3       48.0000    94       46.0000       48.0000   158476    4.35%
+   3516     3       48.0000    93       46.0000       48.0000   158876    4.35%
+   3526     3       48.0000    82       46.0000       48.0000   158967    4.35%
+   3538     4       48.0000    67       46.0000       48.0000   159095    4.35%
+   3587    22       48.0000    87       46.0000       48.0000   176725    4.35%
+   3817   116       48.0000    63       46.0000       48.0000   192104    4.35%
+   4007   298       47.5238    44       46.0000       48.0000   210564    4.35%
+   4201   390       47.5000    33       46.0000       48.0000   228182    4.35%
+Elapsed time = 14.93 sec. (16886.46 ticks, tree = 0.31 MB, solutions = 6)
+   4395   546       47.3333    22       46.0000       48.0000   256793    4.35%
+   4654   735       47.3413    71       46.0000       48.0000   282125    4.35%
+   4952   900        cutoff             46.0000       48.0000   313470    4.35%
+   5212   998       47.7500    42       46.0000       48.0000   328696    4.35%
+   5342  1106       46.5000    29       46.0000       48.0000   353614    4.35%
+   5484  1185       47.0000    25       46.0000       48.0000   375543    4.35%
+   5810  1363       46.7136    41       46.0000       48.0000   404155    4.35%
+   6080  1560       46.4615    38       46.0000       48.0000   420710    4.35%
+   6441  1702       47.0000    32       46.0000       48.0000   444999    4.35%
+   7295  2127       46.5000    24       46.0000       48.0000   466631    4.35%
+Elapsed time = 26.44 sec. (26495.88 ticks, tree = 16.79 MB, solutions = 6)
+   7715  2560       47.0000    33       46.0000       48.0000   490912    4.35%
+   8360  3107       46.7333    47       46.0000       48.0000   518987    4.35%
+   8880  3633       48.0000    54       46.0000       48.0000   543849    4.35%
+   9680  3967       47.0000    26       46.0000       48.0000   559333    4.35%
+  10228  4435       46.7579    70       46.0000       48.0000   590643    4.35%
+  10639  4672       46.6296    63       46.0000       48.0000   609997    4.35%
+  11217  4827       47.0000    29       46.0000       48.0000   624960    4.35%
+  11716  5238       48.0000    54       46.0000       48.0000   654210    4.35%
+  12053  5502       46.0422    60       46.0000       48.0000   682508    4.35%
+  12463  5655       47.7083    60       46.0000       48.0000   695917    4.35%
+Elapsed time = 37.40 sec. (36058.62 ticks, tree = 66.67 MB, solutions = 6)
+  12909  6028       47.0000    30       46.0000       48.0000   723040    4.35%
+  13687  6554       47.0000    22       46.0000       48.0000   759228    4.35%
+  14241  6850       46.9758    45       46.0000       48.0000   782232    4.35%
+  14450  7107       48.0000    69       46.0000       48.0000   804176    4.35%
+  14666  7224        cutoff             46.0000       48.0000   819032    4.35%
+  15095  7380       48.0000    56       46.0000       48.0000   839844    4.35%
+  15403  7562       47.5000    39       46.0000       48.0000   864581    4.35%
+  15611  7752       46.6667    34       46.0000       48.0000   904667    4.35%
+  15759  7794       47.2515    66       46.0000       48.0000   915602    4.35%
+  16012  7851       46.1000    66       46.0000       48.0000   927025    4.35%
+Elapsed time = 48.96 sec. (45665.52 ticks, tree = 94.62 MB, solutions = 6)
+  16405  8020        cutoff             46.0000       48.0000   965682    4.35%
+  16807  8203       46.7368    50       46.0000       48.0000   996615    4.35%
+  17034  8297       47.6798    58       46.0000       48.0000  1012729    4.35%
+  17168  8286        cutoff             46.0000       48.0000  1026983    4.35%
+  17414  8327       47.6103    69       46.0000       47.9800  1036650    4.30%
+  18348  8487        cutoff             46.0000       47.9661  1048454    4.27%
+  19463  8971       46.7500    30       46.0000       47.9272  1088267    4.19%
+  19911  9592       47.4571    31       46.0000       47.9238  1121591    4.18%
+  20335  9691       47.0000    27       46.0000       47.8733  1145729    4.07%
+  21260  9834       47.0000    26       46.0000       47.8330  1159256    3.98%
+Elapsed time = 60.29 sec. (55228.32 ticks, tree = 125.58 MB, solutions = 6)
+  22066 10190       46.7750    42       46.0000       47.7858  1188558    3.88%
+  22584 10593       46.7500    23       46.0000       47.7677  1219555    3.84%
+  22996 10703       47.1633    66       46.0000       47.7500  1239338    3.80%
+  23840 10865       47.0000    34       46.0000       47.7324  1266318    3.77%
+  25050 11135        cutoff             46.0000       47.6905  1293352    3.67%
+  25783 11766       46.8889    24       46.0000       47.6667  1337702    3.62%
+  26236 11785       46.3333    18       46.0000       47.6429  1355066    3.57%
+  26545 11862       46.3000    32       46.0000       47.6071  1369436    3.49%
+  26862 11981       46.9412    34       46.0000       47.6000  1392673    3.48%
+  27686 12199       47.0000    32       46.0000       47.6000  1404989    3.48%
+Elapsed time = 70.64 sec. (64787.74 ticks, tree = 169.62 MB, solutions = 6)
+  28460 12712       46.9000    30       46.0000       47.6000  1432042    3.48%
+  28965 12904       47.0000    31       46.0000       47.6000  1442122    3.48%
+  29434 13058       47.0000    25       46.0000       47.6000  1460447    3.48%
+
+Performing restart 2
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 69 rows and 34 columns.
+MIP Presolve modified 613 coefficients.
+Reduced MIP has 2719 rows, 1161 columns, and 24129 nonzeros.
+Reduced MIP has 545 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.97 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 2719 rows, 1161 columns, and 24129 nonzeros.
+Reduced MIP has 545 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (13.46 ticks)
+Represolve time = 0.09 sec. (66.93 ticks)
+  29904     0       48.0000    58       46.0000      Cuts: 11  1491540    3.21%
+  29904     0       48.0000    62       46.0000      Cuts: 66  1491662    3.21%
+  29904     0       48.0000    50       46.0000       Cuts: 5  1491813    3.21%
+  29904     0       48.0000    78       46.0000      Cuts: 74  1492324    3.21%
+  29904     0       48.0000    77       46.0000      Cuts: 35  1492528    3.21%
+  29904     0       48.0000    84       46.0000      Cuts: 12  1492784    3.21%
+  29904     0       48.0000    63       46.0000       Cuts: 6  1492898    3.21%
+  29904     0       48.0000    62       46.0000      Cuts: 43  1493031    3.21%
+  29904     0       48.0000    17       46.0000   ZeroHalf: 2  1493101    3.21%
+  29904     0       48.0000    88       46.0000      Cuts: 77  1493353    3.21%
+  29904     2       48.0000    27       46.0000       47.4763  1493353    3.21%
+  29906     3       48.0000    69       46.0000       47.4763  1493600    3.21%
+  29913     8       47.9866    95       46.0000       47.4763  1496990    3.21%
+  29935    13       48.0000    85       46.0000       47.4763  1501331    3.21%
+  29973    30        cutoff             46.0000       47.4763  1508183    3.21%
+  30002    47       48.0000    63       46.0000       47.4763  1515995    3.21%
+  30056    57       48.0000   103       46.0000       47.4763  1526623    3.21%
+Elapsed time = 83.33 sec. (79213.68 ticks, tree = 0.06 MB, solutions = 6)
+  30154    94       46.4688    32       46.0000       47.4763  1537475    3.21%
+  30212   148       48.0000    73       46.0000       47.4763  1549914    3.21%
+  30303   192       48.0000    61       46.0000       47.4763  1560101    3.21%
+  30450   260       48.0000    61       46.0000       47.4763  1576461    3.21%
+  30665   459       48.0000    68       46.0000       47.4763  1602270    3.21%
+  30883   559       47.0000    22       46.0000       47.4763  1621861    3.21%
+  31105   710       47.3226    52       46.0000       47.4763  1642929    3.21%
+  31310   814       47.4815    62       46.0000       47.4763  1680743    3.21%
+  31504   934       47.3333    41       46.0000       47.4763  1713963    3.21%
+  31721   961       47.4545    51       46.0000       47.4763  1733449    3.21%
+Elapsed time = 93.39 sec. (88822.60 ticks, tree = 0.78 MB, solutions = 6)
+  31809  1115       46.8107    91       46.0000       47.4763  1768739    3.21%
+  31966  1166       46.9000    45       46.0000       47.4763  1796773    3.21%
+  32150  1253       46.7500    33       46.0000       47.4763  1811886    3.21%
+  32327  1349       47.6667    44       46.0000       47.4763  1849328    3.21%
+  32481  1463       48.0000    68       46.0000       47.4763  1880413    3.21%
+  32611  1519       46.8000    58       46.0000       47.4763  1888133    3.21%
+  32735  1659       47.0000    27       46.0000       47.4763  1915545    3.21%
+  32876  1655       46.7500    56       46.0000       47.4763  1924797    3.21%
+  33042  1743       47.5789    77       46.0000       47.4763  1962798    3.21%
+  34127  2247        cutoff             46.0000       47.4763  2053164    3.21%
+Elapsed time = 106.51 sec. (101322.76 ticks, tree = 9.22 MB, solutions = 6)
+  35404  3043       46.6875    45       46.0000       47.4763  2126553    3.21%
+  36531  3569       46.8605    40       46.0000       47.4763  2236628    3.21%
+  37626  4055       46.5000    26       46.0000       47.4763  2313227    3.21%
+  38953  4734       47.6574    69       46.0000       47.4763  2400249    3.21%
+  39955  5312        cutoff             46.0000       47.4763  2500321    3.21%
+  41551  5549        cutoff             46.0000       47.4763  2601188    3.21%
+  42856  5359        cutoff             46.0000       47.4763  2686934    3.21%
+  44440  5198       46.8800    41       46.0000       47.4763  2782491    3.21%
+  46157  4826       47.0000    30       46.0000       47.2953  2883741    2.82%
+  48313  4074        cutoff             46.0000       47.0714  2955148    2.33%
+Elapsed time = 148.71 sec. (139510.40 ticks, tree = 36.64 MB, solutions = 6)
+  49853  3387        cutoff             46.0000       47.0000  3053868    2.17%
+  52332  1444        cutoff             46.0000       46.6667  3145365    1.45%
+
+Clique cuts applied:  62
+Cover cuts applied:  3
+Implied bound cuts applied:  26
+Mixed integer rounding cuts applied:  2
+Zero-half cuts applied:  43
+Gomory fractional cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    0.92 sec. (1102.81 ticks)
+Parallel b&c, 4 threads:
+  Real time             =  157.46 sec. (146457.00 ticks)
+  Sync time (average)   =   10.44 sec.
+  Wait time (average)   =    0.01 sec.
+                          ------------
+Total (root+branch&cut) =  158.38 sec. (147559.80 ticks)
+Solver finished in 158.38 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal, tolerance
+Objective Value: 46.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(2,7)', '(4,6)', '(6,6)', '(6,4)']
+
+--- UAV 2 ---
+  Path (row, col): ['(1,5)', '(3,4)', '(4,4)', '(5,2)']
+
+--- UAV 3 ---
+  Path (row, col): ['(2,3)', '(3,2)', '(2,3)', '(3,2)']
+
+Total Cells Covered (excl. sink): 46 / 48 (95.83%)
+t=0 | Coverage: 35.42% (17/48)
+t=1 | Coverage: 62.50% (30/48)
+t=2 | Coverage: 79.17% (38/48)
+t=3 | Coverage: 95.83% (46/48)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 95.83%, Actual: 95.83%)
+
+----------------------------------------
+
+========================================
+Experiment 12: Grid 8×8, UAVs=3, Sink=corner
+Expected Coverage at t=3: 87.30%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 38464
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 36877 columns.
+Reduced MIP has 3687 rows, 1587 columns, and 37211 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (26.38 ticks)
+Found incumbent of value 1.666667 after 0.03 sec. (33.51 ticks)
+Probing time = 0.01 sec. (6.19 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 3687 rows, 1587 columns, and 37211 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (21.70 ticks)
+Probing time = 0.01 sec. (5.24 ticks)
+Clique table members: 19745.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.24 sec. (322.70 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            1.6667       63.0000              --- 
+*     0+    0                            5.0000       63.0000              --- 
+*     0+    0                            7.0000       63.0000           800.00%
+      0     0       63.0000   126        7.0000       63.0000     2716  800.00%
+*     0+    0                           49.0000       63.0000            28.57%
+*     0+    0                           50.0000       63.0000            26.00%
+      0     0       63.0000    74       50.0000   ZeroHalf: 2     2893   26.00%
+      0     0       63.0000    66       50.0000      Cuts: 58     3309   26.00%
+      0     0       63.0000    97       50.0000      Cuts: 34     3604   26.00%
+*     0+    0                           53.0000       63.0000            18.87%
+      0     0       63.0000    92       53.0000       Cuts: 2     3791   18.87%
+      0     0       63.0000   147       53.0000      Cuts: 48     4903   18.87%
+      0     2       63.0000    82       53.0000       63.0000     5280   18.87%
+Elapsed time = 6.13 sec. (7337.28 ticks, tree = 0.02 MB, solutions = 6)
+      2     3       63.0000    85       53.0000       63.0000     5407   18.87%
+     44    12       58.4269    58       53.0000       63.0000     9071   18.87%
+    108    63       57.3256    50       53.0000       63.0000    16246   18.87%
+    144    86       59.9204    88       53.0000       63.0000    20771   18.87%
+    204   113       56.1983    54       53.0000       63.0000    25920   18.87%
+    233   156       63.0000    67       53.0000       63.0000    32758   18.87%
+    269   167       60.8965    89       53.0000       63.0000    36103   18.87%
+    321   192        cutoff             53.0000       63.0000    40594   18.87%
+    353   218        cutoff             53.0000       63.0000    44260   18.87%
+    460   291       62.9619    85       53.0000       63.0000    60141   18.87%
+Elapsed time = 9.09 sec. (10563.07 ticks, tree = 6.47 MB, solutions = 6)
+    650   449       58.9510    60       53.0000       63.0000    82755   18.87%
+    847   629       61.6481   102       53.0000       63.0000   104705   18.87%
+   1060   801       55.5779    59       53.0000       63.0000   127462   18.87%
+   1268   918       55.2844    64       53.0000       63.0000   145520   18.87%
+   1478  1054       56.7333    54       53.0000       63.0000   171305   18.87%
+   1717  1258       57.4863    56       53.0000       63.0000   199141   18.87%
+   1984  1378       59.5401    61       53.0000       63.0000   220313   18.87%
+   2104  1513       58.4715    47       53.0000       63.0000   250193   18.87%
+   2317  1657       57.4113    49       53.0000       63.0000   274767   18.87%
+   2468  1741        cutoff             53.0000       63.0000   292571   18.87%
+Elapsed time = 18.25 sec. (20151.61 ticks, tree = 50.84 MB, solutions = 6)
+
+Performing restart 1
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 54 rows and 60 columns.
+Reduced MIP has 3633 rows, 1527 columns, and 34278 nonzeros.
+Reduced MIP has 708 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (14.88 ticks)
+Tried aggregator 1 time.
+MIP Presolve eliminated 9 rows and 9 columns.
+Reduced MIP has 3624 rows, 1518 columns, and 33923 nonzeros.
+Reduced MIP has 699 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (18.28 ticks)
+Represolve time = 0.09 sec. (89.74 ticks)
+   2472     0       63.0000    91       53.0000       Cuts: 6   303858   18.87%
+   2472     0       63.0000   121       53.0000      Cuts: 62   306030   18.87%
+   2472     0       63.0000    63       53.0000       Cuts: 8   306138   18.87%
+   2472     0       63.0000   121       53.0000      Cuts: 65   307790   18.87%
+   2472     0       63.0000    52       53.0000       Cuts: 4   307852   18.87%
+   2472     0       63.0000    93       53.0000      Cuts: 57   308613   18.87%
+   2472     2       63.0000    42       53.0000       63.0000   308613   18.87%
+   2474     4       61.0000    54       53.0000       63.0000   313719   18.87%
+*  2483+    3                           55.0000       63.0000            14.55%
+   2483    10       58.4826    56       55.0000       63.0000   315686   14.55%
+   2538    26       56.6007    35       55.0000       63.0000   322793   14.55%
+   2713    79        cutoff             55.0000       63.0000   335781   14.55%
+   3102   292        cutoff             55.0000       63.0000   346519   14.55%
+   3397   630       59.9210    59       55.0000       63.0000   362848   14.55%
+   3834   947       61.6824    67       55.0000       63.0000   380061   14.55%
+   4230  1338       63.0000    57       55.0000       63.0000   398498   14.55%
+   4617  1756       56.0000    34       55.0000       63.0000   416801   14.55%
+Elapsed time = 33.33 sec. (35708.65 ticks, tree = 47.73 MB, solutions = 7)
+   4765  1807        cutoff             55.0000       63.0000   430722   14.55%
+   4925  1901       61.0154    67       55.0000       63.0000   435352   14.55%
+   5169  2044       60.2522    63       55.0000       63.0000   444156   14.55%
+   5394  2260       63.0000    62       55.0000       63.0000   466243   14.55%
+   5729  2489        cutoff             55.0000       63.0000   479427   14.55%
+   6094  2655       58.4605    62       55.0000       63.0000   496204   14.55%
+   6205  2859       62.4750    73       55.0000       63.0000   521811   14.55%
+   6462  3026       60.2977    82       55.0000       63.0000   536192   14.55%
+   6915  3452       59.2686    66       55.0000       63.0000   560653   14.55%
+   7242  3721        cutoff             55.0000       63.0000   578669   14.55%
+Elapsed time = 43.70 sec. (45275.04 ticks, tree = 103.80 MB, solutions = 7)
+   7453  3863        cutoff             55.0000       63.0000   594854   14.55%
+   7700  3956       57.2087    54       55.0000       63.0000   612218   14.55%
+   7919  4174       57.7778    61       55.0000       63.0000   636189   14.55%
+   8237  4295       62.3364    61       55.0000       63.0000   649431   14.55%
+   8419  4536       59.7720    51       55.0000       63.0000   675238   14.55%
+   8628  4604       55.0926    51       55.0000       63.0000   683771   14.55%
+   8870  4792       56.0290    46       55.0000       63.0000   701472   14.55%
+   9077  4893       60.9314    52       55.0000       63.0000   721497   14.55%
+   9301  5030       56.0000    40       55.0000       63.0000   744981   14.55%
+   9665  5203       58.5657    43       55.0000       63.0000   760959   14.55%
+Elapsed time = 53.32 sec. (54848.35 ticks, tree = 145.98 MB, solutions = 7)
+   9912  5419       58.8741    60       55.0000       63.0000   782252   14.55%
+  10001  5470       60.3986    58       55.0000       63.0000   794432   14.55%
+  10067  5561       58.4179    58       55.0000       63.0000   810289   14.55%
+  10253  5617       62.0421    66       55.0000       63.0000   822706   14.55%
+  10609  5835       57.9808    50       55.0000       63.0000   847654   14.55%
+  10955  5855        cutoff             55.0000       63.0000   857408   14.55%
+  11115  6214       55.3333    48       55.0000       63.0000   885358   14.55%
+  11239  6276       57.4000    61       55.0000       63.0000   902294   14.55%
+  11485  6435       63.0000    64       55.0000       63.0000   923137   14.55%
+  11677  6596       56.3106    59       55.0000       63.0000   938426   14.55%
+Elapsed time = 63.03 sec. (64456.58 ticks, tree = 185.75 MB, solutions = 7)
+  11825  6649       56.0973    55       55.0000       63.0000   952405   14.55%
+  12012  6806       62.7504    71       55.0000       63.0000   976730   14.55%
+  12204  6975       58.5529    67       55.0000       63.0000  1004576   14.55%
+  12407  7064       62.6493    70       55.0000       63.0000  1022043   14.55%
+  12549  7221       55.1667    27       55.0000       63.0000  1043456   14.55%
+  12688  7325        cutoff             55.0000       63.0000  1062821   14.55%
+  12838  7303       58.7453    94       55.0000       63.0000  1079368   14.55%
+  12968  7443       55.6111    35       55.0000       63.0000  1103277   14.55%
+  13089  7508       62.0480    94       55.0000       63.0000  1125204   14.55%
+  13289  7601       61.4444    68       55.0000       63.0000  1148773   14.55%
+Elapsed time = 73.09 sec. (74084.10 ticks, tree = 214.34 MB, solutions = 7)
+  13523  7703       61.6809    72       55.0000       63.0000  1162193   14.55%
+  13593  7783       55.0249    42       55.0000       63.0000  1180177   14.55%
+  13655  7782       58.7306    54       55.0000       63.0000  1190354   14.55%
+  13770  7861       58.2222    41       55.0000       63.0000  1199299   14.55%
+  13871  7995       57.5637    54       55.0000       63.0000  1211987   14.55%
+  13974  7984       59.7183    58       55.0000       63.0000  1229609   14.55%
+  14080  8049        cutoff             55.0000       63.0000  1259778   14.55%
+  14247  8095       57.9961    49       55.0000       63.0000  1278049   14.55%
+  14444  8102       58.5217    34       55.0000       63.0000  1288875   14.55%
+  14638  8237        cutoff             55.0000       62.9916  1302025   14.53%
+Elapsed time = 83.10 sec. (83717.23 ticks, tree = 232.53 MB, solutions = 7)
+  14838  8306       57.4528    46       55.0000       62.9715  1316198   14.49%
+  15045  8341        cutoff             55.0000       62.9646  1343885   14.48%
+  15199  8430       61.2013    84       55.0000       62.9596  1363314   14.47%
+  15391  8538       61.3187    74       55.0000       62.9393  1389126   14.44%
+  15534  8561       59.0224    52       55.0000       62.9189  1398882   14.40%
+  15693  8587        cutoff             55.0000       62.8978  1415747   14.36%
+  15923  8667        cutoff             55.0000       62.8333  1445510   14.24%
+  16093  8661        cutoff             55.0000       62.7937  1456700   14.17%
+  16246  8685       58.3333    24       55.0000       62.7596  1472904   14.11%
+  16437  8728       58.4280    62       55.0000       62.7338  1502328   14.06%
+Elapsed time = 93.29 sec. (93292.62 ticks, tree = 246.51 MB, solutions = 7)
+  16637  8724       56.1136    60       55.0000       62.7190  1528240   14.03%
+  16786  8791       56.3788    65       55.0000       62.6636  1547443   13.93%
+  16966  8781        cutoff             55.0000       62.6293  1556761   13.87%
+  17189  8897       57.0530    51       55.0000       62.5926  1578002   13.80%
+  17444  8928        cutoff             55.0000       62.5585  1581847   13.74%
+  17744  9147       57.2565    50       55.0000       62.5194  1608988   13.67%
+  18112  9213       57.2697    68       55.0000       62.4782  1626746   13.60%
+  18674  9403        cutoff             55.0000       62.4355  1650503   13.52%
+  19194  9737       59.4649    58       55.0000       62.3546  1684073   13.37%
+  20223 10286       56.1685    38       55.0000       62.1626  1771896   13.02%
+Elapsed time = 106.34 sec. (105723.73 ticks, tree = 290.31 MB, solutions = 7)
+  21165 10395       56.0000    29       55.0000       61.8889  1856705   12.53%
+  22022 10310       56.5909    25       55.0000       61.6667  1936749   12.12%
+  22984 10332        cutoff             55.0000       61.4088  2012350   11.65%
+  23891 10498       55.7500    27       55.0000       61.0273  2123848   10.96%
+  24865 10482        cutoff             55.0000       60.8801  2235782   10.69%
+  25949 10361        cutoff             55.0000       60.5179  2330386   10.03%
+  26863 10178        cutoff             55.0000       60.3984  2394913    9.82%
+
+Performing restart 2
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 73 rows and 42 columns.
+MIP Presolve modified 96 coefficients.
+Reduced MIP has 3551 rows, 1476 columns, and 30529 nonzeros.
+Reduced MIP has 657 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (15.21 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 3551 rows, 1476 columns, and 30529 nonzeros.
+Reduced MIP has 657 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (16.35 ticks)
+Represolve time = 0.14 sec. (107.80 ticks)
+  26891     0       63.0000   103       55.0000       Cuts: 7  2415022    9.40%
+  26891     0       63.0000   128       55.0000      Cuts: 36  2417228    9.40%
+  26891     0       63.0000    92       55.0000   ZeroHalf: 2  2417510    9.40%
+  26891     0       63.0000   114       55.0000      Cuts: 81  2418531    9.40%
+  26891     0       63.0000    73       55.0000    Cliques: 8  2418711    9.40%
+  26891     0       63.0000   107       55.0000     Cuts: 106  2420426    9.40%
+  26891     0       63.0000    66       55.0000       Cuts: 5  2420607    9.40%
+  26891     0       63.0000    90       55.0000      Cuts: 99  2421430    9.40%
+  26891     0       63.0000    79       55.0000      Cuts: 11  2421702    9.40%
+  26891     0       63.0000   129       55.0000      Cuts: 75  2424822    9.40%
+  26891     0       63.0000    65       55.0000    Cliques: 5  2424922    9.40%
+  26891     0       63.0000   100       55.0000      Cuts: 93  2425148    9.40%
+  26891     2       63.0000    59       55.0000       60.1679  2425148    9.40%
+  26917    11       62.3167    80       55.0000       60.1679  2438491    9.40%
+  27069   101       61.2824    68       55.0000       60.1679  2458362    9.40%
+Elapsed time = 156.74 sec. (154674.65 ticks, tree = 1.60 MB, solutions = 7)
+  27283   229       61.6684    63       55.0000       60.1679  2475395    9.40%
+  27600   468       63.0000   100       55.0000       60.1679  2495936    9.40%
+  27968   651       61.0000    54       55.0000       60.1679  2538945    9.40%
+  28488   948       57.6173    44       55.0000       60.1679  2577307    9.40%
+  28929  1257       59.6667    75       55.0000       60.1679  2618058    9.40%
+  29463  1603       57.3111    45       55.0000       60.1679  2678962    9.40%
+  30043  1923        cutoff             55.0000       60.1679  2719246    9.40%
+  30704  2512       58.2654    69       55.0000       60.1679  2786845    9.40%
+  31046  2737       61.1250    72       55.0000       60.1679  2834261    9.40%
+  31625  3112       60.8121    64       55.0000       60.1679  2878652    9.40%
+Elapsed time = 200.84 sec. (192885.08 ticks, tree = 44.75 MB, solutions = 7)
+  32442  3646       58.1831    60       55.0000       60.1679  2945184    9.40%
+  33131  4016       58.8253    54       55.0000       60.1679  3036501    9.40%
+  33980  4246        cutoff             55.0000       60.1679  3112851    9.40%
+  34713  4314        cutoff             55.0000       60.1679  3192977    9.40%
+  35598  4377       55.5000     4       55.0000       60.1679  3263960    9.40%
+  36559  4197        cutoff             55.0000       60.1679  3348883    9.40%
+  37817  4149       55.6297    53       55.0000       60.1679  3410645    9.40%
+  39157  3630       55.1333    39       55.0000       59.2692  3503259    7.76%
+  41060  2693        cutoff             55.0000       57.9444  3589552    5.35%
+
+GUB cover cuts applied:  1
+Clique cuts applied:  61
+Implied bound cuts applied:  17
+Flow cuts applied:  3
+Zero-half cuts applied:  60
+
+Root node processing (before b&c):
+  Real time             =    6.06 sec. (7251.01 ticks)
+Parallel b&c, 4 threads:
+  Real time             =  236.51 sec. (222876.26 ticks)
+  Sync time (average)   =   12.93 sec.
+  Wait time (average)   =    0.01 sec.
+                          ------------
+Total (root+branch&cut) =  242.57 sec. (230127.27 ticks)
+Solver finished in 242.57 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal, tolerance
+Objective Value: 55.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(7,3)', '(7,5)', '(6,7)', '(4,7)']
+
+--- UAV 2 ---
+  Path (row, col): ['(5,1)', '(5,3)', '(4,5)', '(2,5)']
+
+--- UAV 3 ---
+  Path (row, col): ['(3,3)', '(3,2)', '(3,3)', '(1,3)']
+
+Total Cells Covered (excl. sink): 55 / 63 (87.30%)
+t=0 | Coverage: 34.92% (22/63)
+t=1 | Coverage: 50.79% (32/63)
+t=2 | Coverage: 69.84% (44/63)
+t=3 | Coverage: 87.30% (55/63)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 87.30%, Actual: 87.30%)
+
+----------------------------------------
+
+========================================
+Experiment 13: Grid 5×5, UAVs=3, Sink=center
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 6250
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 10 rows and 5638 columns.
+MIP Presolve modified 225 coefficients.
+Reduced MIP has 1416 rows, 612 columns, and 12308 nonzeros.
+Reduced MIP has 300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (8.05 ticks)
+Found incumbent of value 2.666667 after 0.01 sec. (10.11 ticks)
+Probing time = 0.00 sec. (2.26 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 1416 rows, 612 columns, and 12308 nonzeros.
+Reduced MIP has 300 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (8.37 ticks)
+Probing time = 0.00 sec. (2.92 ticks)
+Clique table members: 4604.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.02 sec. (25.81 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.6667       24.0000           800.00%
+*     0+    0                           15.0000       24.0000            60.00%
+      0     0       24.0000    76       15.0000       24.0000      553   60.00%
+*     0+    0                           18.0000       24.0000            33.33%
+*     0+    0                           24.0000       24.0000             0.00%
+      0     0        cutoff             24.0000       24.0000      553    0.00%
+Elapsed time = 0.12 sec. (127.27 ticks, tree = 0.01 MB, solutions = 4)
+
+Root node processing (before b&c):
+  Real time             =    0.12 sec. (127.57 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.12 sec. (127.57 ticks)
+Solver finished in 0.12 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 24.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(3,1)', '(1,1)', '(1,1)', '(1,1)']
+
+--- UAV 2 ---
+  Path (row, col): ['(2,3)', '(1,2)', '(1,2)', '(3,1)']
+
+--- UAV 3 ---
+  Path (row, col): ['(4,4)', '(2,4)', '(2,4)', '(4,2)']
+
+Total Cells Covered (excl. sink): 24 / 24 (100.00%)
+t=0 | Coverage: 79.17% (19/24)
+t=1 | Coverage: 91.67% (22/24)
+t=2 | Coverage: 91.67% (22/24)
+t=3 | Coverage: 100.00% (24/24)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 14: Grid 6×6, UAVs=3, Sink=center
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 12564
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 11677 columns.
+Reduced MIP has 2063 rows, 887 columns, and 19319 nonzeros.
+Reduced MIP has 432 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.04 sec. (11.40 ticks)
+Found incumbent of value 2.666667 after 0.06 sec. (14.73 ticks)
+Probing time = 0.01 sec. (4.16 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 2063 rows, 887 columns, and 19319 nonzeros.
+Reduced MIP has 432 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (11.10 ticks)
+Probing time = 0.01 sec. (3.81 ticks)
+Clique table members: 10323.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.05 sec. (54.99 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                            2.6667       35.0000              --- 
+*     0+    0                            8.0000       35.0000           337.50%
+      0     0       35.0000    88        8.0000       35.0000      787  337.50%
+*     0+    0                           21.0000       35.0000            66.67%
+*     0+    0                           30.0000       35.0000            16.67%
+*     0+    0                           34.0000       35.0000             2.94%
+*     0+    0                           35.0000       35.0000             0.00%
+      0     0        cutoff             35.0000       35.0000      787    0.00%
+Elapsed time = 0.39 sec. (325.83 ticks, tree = 0.01 MB, solutions = 6)
+
+Root node processing (before b&c):
+  Real time             =    0.40 sec. (326.59 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.40 sec. (326.59 ticks)
+Solver finished in 0.40 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 35.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(2,2)', '(4,4)', '(4,2)', '(5,2)']
+
+--- UAV 2 ---
+  Path (row, col): ['(2,4)', '(4,2)', '(5,4)', '(5,4)']
+
+--- UAV 3 ---
+  Path (row, col): ['(2,5)', '(2,4)', '(4,6)', '(5,5)']
+
+Total Cells Covered (excl. sink): 35 / 35 (100.00%)
+t=0 | Coverage: 48.57% (17/35)
+t=1 | Coverage: 77.14% (27/35)
+t=2 | Coverage: 91.43% (32/35)
+t=3 | Coverage: 100.00% (35/35)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 15: Grid 7×7, UAVs=3, Sink=center
+Expected Coverage at t=3: 100%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 22834
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 21622 columns.
+Reduced MIP has 2817 rows, 1212 columns, and 27566 nonzeros.
+Reduced MIP has 588 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (17.77 ticks)
+Found incumbent of value 21.333333 after 0.03 sec. (36.42 ticks)
+Probing time = 0.01 sec. (5.17 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 2817 rows, 1212 columns, and 27566 nonzeros.
+Reduced MIP has 588 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (18.75 ticks)
+Probing time = 0.00 sec. (4.57 ticks)
+Clique table members: 14667.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.09 sec. (130.21 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           21.3333       48.0000           125.00%
+      0     0       48.0000   129       21.3333       48.0000     1332  125.00%
+*     0+    0                           34.0000       48.0000            41.18%
+*     0+    0                           44.0000       48.0000             9.09%
+*     0+    0                           48.0000       48.0000             0.00%
+      0     0        cutoff             48.0000       48.0000     1332    0.00%
+Elapsed time = 0.76 sec. (1097.92 ticks, tree = 0.01 MB, solutions = 4)
+
+Root node processing (before b&c):
+  Real time             =    0.76 sec. (1098.99 ticks)
+Parallel b&c, 4 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.76 sec. (1098.99 ticks)
+Solver finished in 0.76 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal solution
+Objective Value: 48.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(4,4)', '(2,2)', '(4,2)', '(6,3)']
+
+--- UAV 2 ---
+  Path (row, col): ['(6,6)', '(4,4)', '(6,2)', '(4,4)']
+
+--- UAV 3 ---
+  Path (row, col): ['(4,6)', '(2,4)', '(4,4)', '(2,6)']
+
+Total Cells Covered (excl. sink): 48 / 48 (100.00%)
+t=0 | Coverage: 41.67% (20/48)
+t=1 | Coverage: 66.67% (32/48)
+t=2 | Coverage: 87.50% (42/48)
+t=3 | Coverage: 100.00% (48/48)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 100%, Actual: 100.00%)
+
+----------------------------------------
+
+========================================
+Experiment 16: Grid 8×8, UAVs=3, Sink=center
+Expected Coverage at t=3: 96.83%
+========================================
+1. Setting up grid and parameters...
+Using optimization model: maximize_coverage
+Constraints config: {'eq2': 1, 'eq3': 1, 'eq4': 1, 'eq5': 1, 'eq6': 1, 'eq7': 0, 'eq8': 0, 'eq9': 0, 'eq10': 0, 'eq11': 0, 'eq12': 0, 'eq13': 1, 'eq14': 1, 'eq15': 1}
+2. Initializing variable helper...
+VarHelper initialized: Total variables = 38464
+  - has_m_vars: True
+  - has_x_vars: 0
+  - has_b_vars: 0
+2a. Setting up objective function...
+3. Computing neighborhood sets (Sensing/Communication)...
+Using Euclidean distance for movement (same as communication range)
+4. Building common constraint matrices with toggles...
+4a. Building model-specific constraints...
+5. Defining variable bounds and types...
+6. Combining all constraints...
+7. Handing off to CPLEX solver...
+Starting CPLEX solver (timelimit: 6000s, mipgap: 0.01)...
+Version identifier: 22.1.1.0 | 2022-11-28 | 9160aff4d
+CPXPARAM_Read_DataCheck                          1
+CPXPARAM_Threads                                 4
+CPXPARAM_TimeLimit                               6000
+CPXPARAM_MIP_Tolerances_MIPGap                   0.01
+Tried aggregator 1 time.
+MIP Presolve eliminated 1 rows and 36877 columns.
+Reduced MIP has 3687 rows, 1587 columns, and 37283 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (26.38 ticks)
+Found incumbent of value 20.333333 after 0.04 sec. (53.15 ticks)
+Probing time = 0.01 sec. (6.29 ticks)
+Tried aggregator 1 time.
+Detecting symmetries...
+Reduced MIP has 3687 rows, 1587 columns, and 37283 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (21.58 ticks)
+Probing time = 0.01 sec. (5.32 ticks)
+Clique table members: 19781.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 4 threads.
+Root relaxation solution time = 0.21 sec. (289.62 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                           20.3333       63.0000           209.84%
+      0     0       63.0000   158       20.3333       63.0000     2322  209.84%
+*     0+    0                           28.0000       63.0000           125.00%
+*     0+    0                           37.0000       63.0000            70.27%
+*     0+    0                           53.0000       63.0000            18.87%
+*     0+    0                           56.0000       63.0000            12.50%
+      0     2       63.0000    58       56.0000       63.0000     2322   12.50%
+Elapsed time = 1.84 sec. (2324.38 ticks, tree = 0.02 MB, solutions = 5)
+      7     9       58.4697    50       56.0000       63.0000     4829   12.50%
+     23     7       63.0000   101       56.0000       63.0000     5310   12.50%
+     28    18       60.9684    91       56.0000       63.0000    14223   12.50%
+     31    21       62.6296    63       56.0000       63.0000    16204   12.50%
+*    39+   26                           57.0000       63.0000            10.53%
+*    39+   26                           58.0000       63.0000             8.62%
+     47    15       63.0000   113       58.0000       63.0000     7554    8.62%
+     57    31       63.0000    83       58.0000       63.0000    25697    8.62%
+     70    31       63.0000    63       58.0000       63.0000    24242    8.62%
+     95    50       63.0000    75       58.0000       63.0000    37792    8.62%
+    132    63       63.0000    73       58.0000       63.0000    41546    8.62%
+    386   240       60.4000    35       58.0000       63.0000    72071    8.62%
+Elapsed time = 5.08 sec. (5684.76 ticks, tree = 1.98 MB, solutions = 7)
+    757   450       62.4295    60       58.0000       63.0000    92225    8.62%
+   1102   747       59.7302    58       58.0000       63.0000   122274    8.62%
+   1407   920       62.5227    55       58.0000       63.0000   144194    8.62%
+   1685  1185       58.0794    46       58.0000       63.0000   171866    8.62%
+   1879  1263       62.0000    54       58.0000       63.0000   194947    8.62%
+   2114  1419       58.9048    32       58.0000       63.0000   227946    8.62%
+   2261  1473       60.7212    58       58.0000       63.0000   249063    8.62%
+   2480  1542       59.9310    42       58.0000       63.0000   273657    8.62%
+
+Performing restart 1
+
+Repeating presolve.
+Tried aggregator 1 time.
+Reduced MIP has 3687 rows, 1587 columns, and 37283 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (15.78 ticks)
+Tried aggregator 1 time.
+Reduced MIP has 3687 rows, 1587 columns, and 37283 nonzeros.
+Reduced MIP has 768 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.02 sec. (22.06 ticks)
+Represolve time = 0.09 sec. (100.52 ticks)
+   2482     2       63.0000    41       58.0000       63.0000   289914    8.62%
+   2484     4       62.3245    83       58.0000       63.0000   296890    8.62%
+Elapsed time = 19.81 sec. (21614.46 ticks, tree = 0.02 MB, solutions = 7)
+   2496     4       59.3636    54       58.0000       63.0000   301165    8.62%
+   2498     4       63.0000   101       58.0000       63.0000   294628    8.62%
+   2512     8       60.5911    61       58.0000       63.0000   307936    8.62%
+   2764   138        cutoff             58.0000       63.0000   314632    8.62%
+   3149   302       61.0000    39       58.0000       63.0000   334966    8.62%
+   3619   719       60.4593    52       58.0000       63.0000   353016    8.62%
+   4095  1118       61.0000    33       58.0000       63.0000   377742    8.62%
+   4538  1322       63.0000    52       58.0000       63.0000   388092    8.62%
+   4722  1609       61.0000    34       58.0000       63.0000   405193    8.62%
+   4987  1751       58.4444    23       58.0000       63.0000   423109    8.62%
+Elapsed time = 29.39 sec. (32097.25 ticks, tree = 38.60 MB, solutions = 7)
+   5923  2377       62.9437    93       58.0000       63.0000   446728    8.62%
+   6669  2995       63.0000    46       58.0000       63.0000   469302    8.62%
+   7234  3505       60.8103    56       58.0000       63.0000   492060    8.62%
+   8070  4163       60.5446    46       58.0000       63.0000   515520    8.62%
+   8875  4653       60.7282    87       58.0000       63.0000   535286    8.62%
+   9459  5136       59.5441    45       58.0000       63.0000   564278    8.62%
+   9805  5473       60.6954    52       58.0000       63.0000   588541    8.62%
+  10269  5637        cutoff             58.0000       63.0000   600302    8.62%
+  10545  5959       62.9886    68       58.0000       63.0000   629486    8.62%
+  10919  6161       59.2110    58       58.0000       63.0000   643818    8.62%
+Elapsed time = 38.68 sec. (41676.26 ticks, tree = 165.97 MB, solutions = 7)
+  11439  6477       59.1739    36       58.0000       63.0000   660334    8.62%
+  11582  6348       63.0000    61       58.0000       63.0000   653447    8.62%
+  11838  6793       61.5282    65       58.0000       63.0000   681476    8.62%
+  12121  7094       61.5000    34       58.0000       63.0000   704019    8.62%
+  12370  7217       61.9963    77       58.0000       63.0000   719310    8.62%
+  12794  7426       63.0000    42       58.0000       63.0000   740907    8.62%
+  13111  7735       62.6980    77       58.0000       63.0000   758450    8.62%
+  13436  7971       59.3778    49       58.0000       63.0000   785575    8.62%
+  13973  8161       62.8571    64       58.0000       63.0000   796072    8.62%
+  14558  8660        cutoff             58.0000       63.0000   822849    8.62%
+Elapsed time = 51.38 sec. (54808.15 ticks, tree = 238.69 MB, solutions = 7)
+  15179  9244       60.2937    50       58.0000       63.0000   856983    8.62%
+  15610  9380       62.5000    55       58.0000       63.0000   869168    8.62%
+  15975  9881       62.5627    61       58.0000       63.0000   893474    8.62%
+  16282  9939       62.0000    45       58.0000       63.0000   907831    8.62%
+  16594 10265        cutoff             58.0000       63.0000   929662    8.62%
+  16991 10472       62.7842    64       58.0000       63.0000   957432    8.62%
+  17387 10813       59.9959    47       58.0000       63.0000   981176    8.62%
+  17806 11034       61.2542    40       58.0000       63.0000  1011207    8.62%
+  18430 11360       58.6250    28       58.0000       63.0000  1029390    8.62%
+  18729 11536       63.0000    60       58.0000       63.0000  1042993    8.62%
+Elapsed time = 61.11 sec. (64363.56 ticks, tree = 322.20 MB, solutions = 7)
+  18968 12003       62.1312    58       58.0000       63.0000  1073722    8.62%
+* 19083 12068      integral     0       59.0000       63.0000  1078102    6.78%
+  19518 10071       60.2508    72       59.0000       63.0000  1083958    6.78%
+  20074 10332       60.0050    63       59.0000       63.0000  1101594    6.78%
+  20487 10836       62.5867    58       59.0000       63.0000  1139751    6.78%
+  20666 10981        cutoff             59.0000       63.0000  1160542    6.78%
+  20799 11062       63.0000    59       59.0000       63.0000  1183029    6.78%
+  21144 11240       61.0000    59       59.0000       63.0000  1199124    6.78%
+  21721 11357       59.5714    36       59.0000       63.0000  1208172    6.78%
+  22210 11895       62.3043    49       59.0000       63.0000  1247895    6.78%
+  22735 12149       62.4103    60       59.0000       63.0000  1270017    6.78%
+Elapsed time = 70.49 sec. (73945.85 ticks, tree = 340.77 MB, solutions = 8)
+  23180 12454       60.0000    54       59.0000       63.0000  1291309    6.78%
+  23407 12863        cutoff             59.0000       63.0000  1335675    6.78%
+  23555 12936       60.1250    28       59.0000       63.0000  1347947    6.78%
+  23715 13038       59.6929    51       59.0000       63.0000  1369466    6.78%
+  23913 13134        cutoff             59.0000       63.0000  1388834    6.78%
+  24312 13253       59.6227    57       59.0000       63.0000  1402956    6.78%
+  24865 13483       61.1111    35       59.0000       63.0000  1428835    6.78%
+  25472 13977       61.5991    79       59.0000       63.0000  1457090    6.78%
+  25923 14592       61.3239    46       59.0000       63.0000  1490645    6.78%
+* 26021+14723                           60.0000       63.0000             5.00%
+  26042 14358       62.0000    55       60.0000       63.0000  1485830    5.00%
+Elapsed time = 80.17 sec. (83510.33 ticks, tree = 406.08 MB, solutions = 8)
+  26229 14778       60.4419    36       60.0000       63.0000  1514409    5.00%
+  26578 14963       63.0000    43       60.0000       63.0000  1524228    5.00%
+  26950 15481       61.4759    50       60.0000       63.0000  1546704    5.00%
+  27370 15696        cutoff             60.0000       63.0000  1554206    5.00%
+  27549 15944       59.7267    43       60.0000       63.0000  1569295    5.00%
+  27733 15934       62.0085    52       60.0000       63.0000  1576917    5.00%
+  28016 16213        cutoff             60.0000       63.0000  1596487    5.00%
+  28189 16247       61.2439    53       60.0000       63.0000  1604429    5.00%
+  28443 16441        cutoff             60.0000       63.0000  1610631    5.00%
+  28549 16521       59.2073    47       60.0000       63.0000  1627486    5.00%
+Elapsed time = 90.69 sec. (93093.76 ticks, tree = 477.71 MB, solutions = 8)
+  28650 16622       61.5935    44       60.0000       63.0000  1639596    5.00%
+  28938 16734       60.6186    48       60.0000       63.0000  1650500    5.00%
+  29070 16738       59.8506    41       60.0000       63.0000  1661010    5.00%
+  29181 16931       61.4722    55       60.0000       63.0000  1679633    5.00%
+  29361 16963       60.5714    48       60.0000       63.0000  1687547    5.00%
+  29676 17183       63.0000    51       60.0000       63.0000  1699706    5.00%
+  30004 17386       59.1417    45       60.0000       63.0000  1716131    5.00%
+  30137 17512        cutoff             60.0000       63.0000  1726206    5.00%
+  30197 17639       62.8000    52       60.0000       63.0000  1738434    5.00%
+  30622 17853       61.8924    59       60.0000       63.0000  1778341    5.00%
+Elapsed time = 103.88 sec. (105643.38 ticks, tree = 518.07 MB, solutions = 8)
+  31130 18152       62.7500    48       60.0000       63.0000  1819924    5.00%
+  31910 18629       63.0000    48       60.0000       63.0000  1869710    5.00%
+  32637 19019       61.0821    53       60.0000       63.0000  1914143    5.00%
+  33076 14180       62.3858    57       60.0000       63.0000  1960222    5.00%
+  33694 14615        cutoff             60.0000       63.0000  2007965    5.00%
+  34058 14683       63.0000    55       60.0000       63.0000  2046306    5.00%
+  34732 15073        cutoff             60.0000       63.0000  2093086    5.00%
+  35064 15363        cutoff             60.0000       63.0000  2139032    5.00%
+  35205 15388        cutoff             60.0000       63.0000  2171488    5.00%
+  35541 15494       63.0000    64       60.0000       63.0000  2210512    5.00%
+Elapsed time = 142.70 sec. (143917.81 ticks, tree = 452.05 MB, solutions = 9)
+  36108 15926       63.0000    50       60.0000       63.0000  2252263    5.00%
+  36600 16258       61.5646    61       60.0000       63.0000  2298589    5.00%
+  37673 16907       63.0000    53       60.0000       63.0000  2371239    5.00%
+  38005 17066       60.5000    14       60.0000       63.0000  2422207    5.00%
+  38434 17201       63.0000    68       60.0000       63.0000  2500407    5.00%
+  39583 17554        cutoff             60.0000       63.0000  2556670    5.00%
+  40667 18434       61.5573    60       60.0000       63.0000  2660334    5.00%
+  42266 19556       62.1350    56       60.0000       63.0000  2738509    5.00%
+  42974 20136        cutoff             60.0000       63.0000  2836098    5.00%
+  43806 20654       61.2727    46       60.0000       63.0000  2927970    5.00%
+Elapsed time = 181.65 sec. (182106.44 ticks, tree = 535.17 MB, solutions = 11)
+  44680 21144       62.0000    60       60.0000       63.0000  3022921    5.00%
+  45480 21499       63.0000    51       60.0000       63.0000  3089403    5.00%
+  46660 22318       60.8968    64       60.0000       63.0000  3182197    5.00%
+  47140 22631       61.9091    56       60.0000       63.0000  3229001    5.00%
+  48068 22934       61.8377    52       60.0000       63.0000  3321073    5.00%
+  49492 23728       60.8974    60       60.0000       63.0000  3391795    5.00%
+  51500 25160       61.0000    56       60.0000       63.0000  3498553    5.00%
+  52336 25985        cutoff             60.0000       63.0000  3583159    5.00%
+  54029 26713        cutoff             60.0000       63.0000  3663481    5.00%
+  54959 27778       61.6645    48       60.0000       63.0000  3765017    5.00%
+Elapsed time = 219.87 sec. (220309.42 ticks, tree = 687.09 MB, solutions = 11)
+  55574 28129       63.0000    57       60.0000       63.0000  3850623    5.00%
+  56477 28359       63.0000    64       60.0000       63.0000  3915396    5.00%
+  56982 29035       60.2370    72       60.0000       63.0000  3994738    5.00%
+  57638 29266        cutoff             60.0000       63.0000  4037544    5.00%
+  58301 29675        cutoff             60.0000       63.0000  4138791    5.00%
+  59124 30200       62.0102    72       60.0000       63.0000  4224240    5.00%
+  60395 31078       60.3697    64       60.0000       63.0000  4304796    5.00%
+  61817 31584       62.6566    61       60.0000       63.0000  4380134    5.00%
+  62357 32278       62.5970    61       60.0000       63.0000  4491887    5.00%
+  63281 32403       62.9274    46       60.0000       63.0000  4558956    5.00%
+Elapsed time = 261.45 sec. (259077.68 ticks, tree = 782.31 MB, solutions = 11)
+  63745 32920        cutoff             60.0000       63.0000  4653122    5.00%
+  64970 33256       61.6452   100       60.0000       63.0000  4712263    5.00%
+  66876 34458       60.8298    55       60.0000       63.0000  4801597    5.00%
+  67515 35347        cutoff             60.0000       63.0000  4905263    5.00%
+  68629 35969        cutoff             60.0000       63.0000  4982549    5.00%
+  69142 36462       60.3571    40       60.0000       63.0000  5095302    5.00%
+  69434 36528       63.0000    62       60.0000       63.0000  5157071    5.00%
+  69862 36678       62.3309    55       60.0000       63.0000  5199837    5.00%
+  70804 37581       62.5289    53       60.0000       63.0000  5294264    5.00%
+  71385 37770       63.0000    61       60.0000       63.0000  5348094    5.00%
+Elapsed time = 300.39 sec. (297257.94 ticks, tree = 867.48 MB, solutions = 11)
+  72453 38452       60.1857    42       60.0000       63.0000  5446493    5.00%
+  73070 38806       62.2984    75       60.0000       63.0000  5524691    5.00%
+  74201 39534       60.7889    67       60.0000       63.0000  5621592    5.00%
+  74589 39704        cutoff             60.0000       63.0000  5718197    5.00%
+  74967 39952       63.0000    60       60.0000       63.0000  5789569    5.00%
+  76357 40231        cutoff             60.0000       63.0000  5830275    5.00%
+  78169 41754       62.3247    61       60.0000       63.0000  5959386    5.00%
+  79120 42794       61.4167    38       60.0000       63.0000  6078574    5.00%
+  79502 42955       60.8678    82       60.0000       63.0000  6141181    5.00%
+  79841 43132       63.0000    87       60.0000       63.0000  6240853    5.00%
+Elapsed time = 339.60 sec. (335500.63 ticks, tree = 964.03 MB, solutions = 11)
+  80305 43172       62.5000    45       60.0000       63.0000  6271985    5.00%
+  80566 43593       61.2153    71       60.0000       63.0000  6311966    5.00%
+  81561 44168       62.1852    52       60.0000       63.0000  6366576    5.00%
+  82062 44447       60.3718    55       60.0000       63.0000  6452163    5.00%
+  82891 44725       63.0000    77       60.0000       63.0000  6533530    5.00%
+  83706 45203       63.0000    60       60.0000       63.0000  6636434    5.00%
+  84426 45426       61.0901    58       60.0000       63.0000  6707360    5.00%
+  86225 46060       61.2887    59       60.0000       63.0000  6794946    5.00%
+  86894 46516        cutoff             60.0000       62.9849  6912903    4.97%
+  87759 46788        cutoff             60.0000       62.9419  6997358    4.90%
+Elapsed time = 378.99 sec. (373696.21 ticks, tree = 1025.88 MB, solutions = 11)
+* 88987 46938      integral     0       61.0000       62.9153  7060283    3.14%
+  89051 47114       62.3039    68       61.0000       62.9129  7073725    3.14%
+  89766 27347        cutoff             61.0000       62.8980  7187107    3.11%
+  90589 26786        cutoff             61.0000       62.8670  7285747    3.06%
+  91391 26187        cutoff             61.0000       62.8339  7392951    3.01%
+  92324 25799        cutoff             61.0000       62.8032  7470218    2.96%
+  93266 24762       61.7991    60       61.0000       62.7426  7609776    2.86%
+  94262 24081        cutoff             61.0000       62.6741  7692820    2.74%
+  95379 23045       61.1474    56       61.0000       62.6024  7803282    2.63%
+  96664 21636        cutoff             61.0000       62.4762  7919552    2.42%
+  98143 20242    infeasible             61.0000       62.3333  8023713    2.19%
+Elapsed time = 422.19 sec. (411903.57 ticks, tree = 430.80 MB, solutions = 12)
+  99907 18610        cutoff             61.0000       62.1736  8122772    1.92%
+ 100941 17574        cutoff             61.0000       62.1142  8215368    1.83%
+ 102298 16640        cutoff             61.0000       62.0490  8293362    1.72%
+ 104212 14518        cutoff             61.0000       61.9003  8413699    1.48%
+ 106605 12035        cutoff             61.0000       61.7672  8513710    1.26%
+
+Clique cuts applied:  5
+Implied bound cuts applied:  192
+Zero-half cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    1.83 sec. (2311.32 ticks)
+Parallel b&c, 4 threads:
+  Real time             =  445.25 sec. (430432.16 ticks)
+  Sync time (average)   =   19.95 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =  447.08 sec. (432743.48 ticks)
+Solver finished in 447.08 seconds.
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:169: UserWarning: No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+  ax_batt.legend(loc='upper right')
+/Users/shahidkhan/Documents/btp_work_dir/PathPlanning/coverage_model_23Nov/pathplotter_1.py:197: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.
+  plt.tight_layout(rect=[0, 0.1, 1, 1])
+
+--- Final Status ---
+Solver Status: integer optimal, tolerance
+Objective Value: 61.0
+
+==================================================
+OPTIMIZATION RESULTS
+==================================================
+
+--- UAV 1 ---
+  Path (row, col): ['(5,2)', '(3,2)', '(2,3)', '(2,5)']
+
+--- UAV 2 ---
+  Path (row, col): ['(7,2)', '(5,4)', '(4,5)', '(2,7)']
+
+--- UAV 3 ---
+  Path (row, col): ['(8,4)', '(7,6)', '(6,7)', '(4,8)']
+
+Total Cells Covered (excl. sink): 61 / 63 (96.83%)
+t=0 | Coverage: 30.16% (19/63)
+t=1 | Coverage: 57.14% (36/63)
+t=2 | Coverage: 77.78% (49/63)
+t=3 | Coverage: 96.83% (61/63)
+
+Plot saved to plot.png and displayed.
+
+Optimization script finished.
+
+FAILED: t=3 Coverage mismatch (Expected: 96.83%, Actual: 96.83%)
+
+----------------------------------------
+
+
+========================================
+FINAL SUMMARY
+========================================
+Total Experiments: 16
+Passed: 0
+Failed: 16
+Success Rate: % Success Rate: %

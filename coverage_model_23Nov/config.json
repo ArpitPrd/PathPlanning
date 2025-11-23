@@ -2,9 +2,9 @@
   "sensing_radius": 1.415,
   "comm_radius": 2.829,
   "movement_type": "euclidean",
-  "col_size": 7,
-  "row_size": 7,
-  "N": 2,
+  "col_size": 8,
+  "row_size": 8,
+  "N": 3,
   "T": 4,
   "row_sink": 4,
   "col_sink": 4,
@@ -17,11 +17,11 @@
     "ebase": 5.0
   },
   "solver": {
-    "time_limit": 600,
+    "time_limit": 6000,
     "mipgap": 0.01
   },
   "model": {
-    "name": "maximize_coverage", 
+    "name": "maximize_coverage",
     "B_max": 80.0,
     "C_min": 6
   },

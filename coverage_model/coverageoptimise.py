@@ -86,7 +86,7 @@ def main(cfg: dict):
         print("Using Manhattan distance for movement (BFS-based)")
     else:  # euclidean
         Imv, Imv_sink = Irc, Irc_sink
-        Imv[P_sink] = []  # Ensure sink has no movable neighbors
+        # Imv[P_sink] = []  # Ensure sink has no movable neighbors
         print("Using Euclidean distance for movement (same as communication range)")
     # ==============================
     # 4. BUILD CONSTRAINT MATRICES
