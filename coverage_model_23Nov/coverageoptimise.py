@@ -118,7 +118,8 @@ def main(cfg: dict):
     all_coords = np.array([i_to_ij(i, sz) for i in range(row_size * col_size)])
     Irc, Irc_sink = communicable_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
     _,Irs_neighbors,_ = sensing_gpt(P_sink, all_coords, sz, sensing_radius, list(O_lin))
-    
+    Irc[P_sink] = sorted(list(set(Irc[P_sink]) | {P_sink}))
+    Irc_sink = Irc[P_sink]
     
     if movement_type.lower() == "manhattan":
         Imv, Imv_sink = movement_gpt(P_sink, all_coords, sz, comm_radius, list(O_lin))
