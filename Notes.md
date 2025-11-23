@@ -254,3 +254,10 @@ Assuming b_mov = 30.0 and b_steady = 20.0, euclidean metric
 | 8 × 8 | 3 | Center | 96.83 | K | 270 | K |
 
 NOTE: K refers to process getting killed due to memory limitations
+
+
+## Final Presentation Notes
+
+- to match the papers results, use the one in the branch arpit
+- we are going to modify the "main" branch for all the further uses
+- removing all the constraints that did not allow the sink node to be considered as a part of movement, or removed it from being considered as covered.
