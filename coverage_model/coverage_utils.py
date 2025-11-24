@@ -139,6 +139,7 @@ def setup_objective_and_sense(vh, model_cfg, b_mov, b_steady, P_sink):
         for i in range(vh.num_grid_cells):
             if i == P_sink: continue
             f[vh.c_i(i)] = 1.0
+        f[P_sink] = 0.0  # Ensure sink coverage is not counted
         return f, cplex.Cplex().objective.sense.maximize
     
     elif model_name == "minimize_energy":
@@ -368,34 +369,39 @@ def cell_coverage_constraints(vh, Irs, cfg, P_sink):
     return np.array(eq13_leq), np.array(eq13_geq), np.array(eq14), np.array(eq15)
 
 def model_specific_constraints(vh, model_cfg, b_mov, b_steady):
-    """
-    Builds the single constraint unique to each optimization model.
-
-    Implements the Total Energy Budget constraint:
-        Σₙ Σₖ [ - (b⁽ᵏ⁾ₙ - b⁽ᵏ⁻¹⁾ₙ) ] ≤ B_max
-    """
+    """Builds the single constraint unique to each optimization model."""
     model_name = model_cfg.get("name")
 
     if model_name == "maximize_coverage":
-        if model_cfg.get("eq17", None) is None: return None, None
         B_max = model_cfg.get("B_max")
         if B_max is None:
-            return None, None  # No constraint if B_max not provided
+            return None, None # No constraint if B_max is not specified
+        
+        if not vh.has_m_vars:
+            raise ValueError("Cannot set 'B_max': m-variables are not active. Enable 'eq7' or 'eq9' in config.")
 
-        if not vh.has_b_vars:
-            raise ValueError("Cannot set energy budget: battery variables (b) are not active. Enable eq11 or eq12 in config.")
-
-        # Build one linear constraint: sum over all n, k [ - (b_k - b_(k-1)) ] ≤ B_max
+        # Eq 16: Total energy budget: sum(energy) <= B_max
         row = np.zeros(vh.total_vars)
-
-        for t in range(1, vh.T):  # k = 1,...,T-1
+        for t in range(vh.T - 1):
             for n in range(vh.N):
-                row[vh.b(t, n)] -= 1.0       # -b_k
-                row[vh.b(t - 1, n)] += 1.0   # +b_(k-1)
-
-        # The inequality is sum(row * vars) ≤ B_max
+                for i in range(vh.num_grid_cells):
+                    for j in range(vh.num_grid_cells):
+                        cost = b_steady if i == j else b_mov
+                        row[vh.m(t, n, i, j)] = cost
+        
         return (np.array([row]), np.array([B_max])), None
 
+    elif model_name == "minimize_energy":
+        C_min = model_cfg.get("C_min")
+        if C_min is None: raise ValueError("C_min must be set for 'minimize_energy' model.")
+            
+        # Eq 17: Minimum coverage: sum(c_i) >= C_min
+        row = np.zeros(vh.total_vars)
+        for i in range(vh.num_grid_cells):
+            row[vh.c_i(i)] = 1
+            
+        return None, (np.array([row]), np.array([C_min]))
+    
     return None, None
 
 # ==============================================================================

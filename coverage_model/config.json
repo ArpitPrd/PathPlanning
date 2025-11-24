@@ -2,16 +2,16 @@
   "sensing_radius": 1.415,
   "comm_radius": 2.829,
   "movement_type": "euclidean",
-  "col_size": 6,
-  "row_size": 6,
-  "N": 3,
-  "T": 4,
+  "col_size": 1,
+  "row_size": 5,
+  "N": 1,
+  "T": 8,
   "row_sink": 3,
-  "col_sink": 3,
+  "col_sink": 1,
   "coords_obs": [],
   "battery": {
-    "b_mov": 30.0,
-    "b_steady": 20.0,
+    "b_mov": 2.0,
+    "b_steady": 0.1,
     "b_full": 100.0,
     "initial_battery": 100.0,
     "ebase": 5.0
@@ -21,8 +21,8 @@
     "mipgap": 0.01
   },
   "model": {
-    "name": "maximize_coverage", 
-    "B_max": 100.0,
+    "name": "maximize_coverage",
+    "B_max": 80.0,
     "C_min": 6
   },
   "constraints": {
@@ -31,16 +31,14 @@
     "eq4": 1,
     "eq5": 1,
     "eq6": 1,
-    "eq6_allow_stay": true,
-    "eq7": 1,
-    "eq8": 1,
-    "eq9": 1,
-    "eq10": 1,
-    "eq11": 1,
-    "eq12": 1,
+    "eq7": 0,
+    "eq8": 0,
+    "eq9": 0,
+    "eq10": 0,
+    "eq11": 0,
+    "eq12": 0,
     "eq13": 1,
     "eq14": 1,
-    "eq15": 1,
-    "eq17": 1
+    "eq15": 1
   }
 }
