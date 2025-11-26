@@ -270,10 +270,10 @@ NOTE: K refers to process getting killed due to memory limitations
 
 # Work to be done
 
-- prepare some obvious test cases to test
-- put them up on the ppt
-- need to reproduce the above table
-
+- prepare some obvious test cases to test -- Arpit
+- two drone testcases
+- communications radius must be visible
+- mention in the slides that the research papers mention the other way around of our intuitions
 
 ## Points for counter questions
 
@@ -287,4 +287,14 @@ NOTE: K refers to process getting killed due to memory limitations
 2. [2,2],[2,4],[4,4],[4,2] - 5x5
 3. [2,2],[2,4],[2,6],[4,2],[4,6],[6,2],[6,4],[6,6] - 6x6
 4. [1,1],[2,2],[3,3],[5,5],[6,6],[7,7],[1,7],[2,6],[3,5],[5,3],[6,2],[7,1] - 7x7
+5. [2,2],[2,4],[4,4],[4,2],[1,3],[3,1],[3,5],[5,3] - 5x5
 
+
+speed = 25 kmph
+Now testing for -
+- b steady = 370 W
+- b mov = 298 W -> 325 
+- b full = 1000 Wh
+
+Energy-efficient and solar powered mission planning of UAV swarms to reduce the coverage gap in rural areas: The 3D case - Jaime Galán-Jiménez et. al
+Modelling Power Consumptions for Multi-rotor UAVs - Hao Gong et. al
