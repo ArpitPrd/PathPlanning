@@ -267,7 +267,7 @@ def battery_constraints(vh, b_mov, b_steady, b_full, P_sink, initial_battery, cf
         print("Warning: Battery constraints (eq8-10) enabled but no b-vars (eq11/12) are on. Skipping.")
         return results
 
-    M = b_full
+    M = 25
     eq8, eq9a, eq9b, eq10a, eq10b = [], [], [], [], []
 
     for t in range(vh.T - 1):

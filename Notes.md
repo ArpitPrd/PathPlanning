@@ -261,3 +261,27 @@ NOTE: K refers to process getting killed due to memory limitations
 - to match the papers results, use the one in the branch arpit
 - we are going to modify the "main" branch for all the further uses
 - removing all the constraints that did not allow the sink node to be considered as a part of movement, or removed it from being considered as covered.
+- remove the k from the battery update equations
+- We need to enable the collision constraints on the sink node as well
+- we want to maintain the fact that when we move out of the station we wanna be 100. then there is no point in not being 100.
+- if it can cover it shall cover with the least amount of energy
+- need to change the plotter, so that it chooses the bfs route and does not show the euclidean route. (corrected)
+- also corrected the fact that there must be no higihligh on the obstacle
+
+# Work to be done
+
+- prepare some obvious test cases to test
+- put them up on the ppt
+- need to reproduce the above table
+
+
+## Points for counter questions
+
+- the path that we see is a sample that satisfies all equations - and provides the maximum possible obj value, so dont really need to think about 
+
+## Test Cases
+
+1. [1,1],[1,3],[1,5],[3,1],[3,5],[5,1],[5,3],[5,5] - 5x5
+2. [2,2],[2,4],[4,4],[4,2] - 5x5
+3. [2,2],[2,4],[2,6],[4,2],[4,6],[6,2],[6,4],[6,6] - 6x6
+4. [1,1],[2,2],[3,3],[5,5],[6,6],[7,7],[1,7],[2,6],[3,5],[5,3],[6,2],[7,1] - 7x7
