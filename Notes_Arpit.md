@@ -296,5 +296,9 @@ Now testing for -
 - b mov = 298 W -> 325 
 - b full = 1000 Wh
 
+- b steady 464 W
+- b mov 496 W
+- 
+
 Energy-efficient and solar powered mission planning of UAV swarms to reduce the coverage gap in rural areas: The 3D case - Jaime Galán-Jiménez et. al
 Modelling Power Consumptions for Multi-rotor UAVs - Hao Gong et. al

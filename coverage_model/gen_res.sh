@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- CONFIGURATION ---
-PYTHON_SCRIPT="your_script_name.py" # REPLACE with your actual python script name
+PYTHON_SCRIPT="coverageoptimise.py" # REPLACE with your actual python script name
 CONFIG_FILE="config.json"
 OUTPUT_CSV="results.csv"
 
@@ -67,7 +67,7 @@ for scenario in "${scenarios[@]}"; do
        "$CONFIG_FILE" > "temp.json" && mv "temp.json" "$CONFIG_FILE"
 
     # --- 3. RUN PYTHON SCRIPT ---
-    OUTPUT=$(python3 "$PYTHON_SCRIPT" 2>&1)
+    OUTPUT=$(python3 "$PYTHON_SCRIPT" --config "$CONFIG_FILE" 2>&1)
 
     # --- 4. EXTRACT DATA (UPDATED) ---
     
