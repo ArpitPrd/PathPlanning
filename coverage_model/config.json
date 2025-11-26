@@ -1,14 +1,14 @@
 {
   "sensing_radius": 1.415,
   "comm_radius": 2.829,
-  "movement_type": "manhattan",
-  "col_size": 7,
-  "row_size": 7,
+  "movement_type": "euclidean",
+  "col_size": 5,
+  "row_size": 5,
   "N": 1,
   "T": 7,
   "row_sink": 4,
   "col_sink": 4,
-  "coords_obs": [[1,1],[2,2],[3,3],[5,5],[6,6],[7,7],[1,7],[2,6],[3,5],[5,3],[6,2],[7,1]],
+  "coords_obs": [],
   "battery": {
     "b_mov": 2.0,
     "b_steady": 1.5,

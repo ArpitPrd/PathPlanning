@@ -51,6 +51,7 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                            Nx, Ny, O_lin=None, aux_tensor=None):
     """
     Interactive plot for UAV paths (BFS visualization), coverage, and battery.
+    Now includes a dashed circle representing the Communication Radius (Rc).
     """
     if O_lin is None:
         O_lin = []
@@ -66,12 +67,15 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
         return
 
     # --- Battery extraction ---
+    consumption = 0
     battery_levels = {}
     if aux_tensor is not None and getattr(aux_tensor, "ndim", None) == 3:
         for n in range(len(uav_paths)):
             battery_levels[n] = [aux_tensor[t, n, 0] for t in range(T)]
+            consumption += battery_levels[n][0] - battery_levels[n][T-1]
     else:
         battery_levels = {n: [] for n in range(len(uav_paths))}
+    print(f"BATTERY {consumption}")
 
     # --- Precompute cumulative coverage ---
     total_cells = Nx * Ny
@@ -169,10 +173,25 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                         cy, cx = np.unravel_index(int(covered_node_lin), (Ny, Nx))
                         ax_grid.add_patch(patches.Rectangle((cx - 0.5, cy - 0.5), 1, 1, facecolor=color, alpha=0.15))
 
-            # Current position
+            # Current position and Communication Circle
             if t_idx < len(path) and path[t_idx] is not None:
                 pos_y, pos_x = np.unravel_index(int(path[t_idx]), (Ny, Nx))
+                
+                # 1. Plot the UAV dot
                 ax_grid.plot(pos_x, pos_y, 'o', markersize=12, color=color, markeredgecolor='black', label=f'UAV {n+1}')
+                
+                # 2. Plot the Communication Radius (dashed circle)
+                #    Rc must be valid (e.g. > 0) to make sense, but Circle handles 0 fine (it just becomes invisible)
+                comm_circle = patches.Circle(
+                    (pos_x, pos_y), 
+                    radius=Rc, 
+                    edgecolor=color, 
+                    facecolor='none', 
+                    linestyle='--', 
+                    linewidth=1.5,
+                    alpha=0.6
+                )
+                ax_grid.add_patch(comm_circle)
 
         ax_grid.legend(loc='upper right')
 
@@ -239,9 +258,9 @@ def plot_interactive_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
     button_prev.on_clicked(on_prev)
     fig.canvas.mpl_connect('key_press_event', on_key)
 
-    render_at_t(0)
-    plt.tight_layout(rect=[0, 0.1, 1, 1])
-    plt.show()
+    # render_at_t(0)
+    # plt.tight_layout(rect=[0, 0.1, 1, 1])
+    # plt.show()
     return render_at_t, T
 
 
@@ -250,6 +269,7 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
                   filename="uav_animation.mp4", fps=2):
     """
     Save an animation of UAV paths (BFS visualization), coverage, and battery.
+    Now includes a dashed circle representing the Communication Radius (Rc).
     """
     if O_lin is None:
         O_lin = []
@@ -355,7 +375,22 @@ def animate_paths(G, uav_paths, uav_covered_nodes, sink, Rs, Rc,
 
             if t_idx < len(path) and path[t_idx] is not None:
                 pos_y, pos_x = np.unravel_index(int(path[t_idx]), (Ny, Nx))
+                
+                # 1. Plot UAV Dot
                 ax_grid.plot(pos_x, pos_y, 'o', markersize=12, color=color, markeredgecolor='black', label=f'UAV {n+1}')
+                
+                # 2. Plot Communication Circle
+                comm_circle = patches.Circle(
+                    (pos_x, pos_y), 
+                    radius=Rc, 
+                    edgecolor=color, 
+                    facecolor='none', 
+                    linestyle='--', 
+                    linewidth=1.5,
+                    alpha=0.6
+                )
+                ax_grid.add_patch(comm_circle)
+                
         ax_grid.legend(loc='upper right')
 
         # ===== Cumulative coverage =====

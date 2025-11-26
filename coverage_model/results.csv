@@ -1,0 +1,17 @@
+Grid Size,No. of UAVs,Sink Location,Coverage (%),Battery Consumption
+5 x 5,2,Corner,3,N/A
+6 x 6,2,Corner,3,N/A
+7 x 7,2,Corner,3,N/A
+8 x 8,2,Corner,3,N/A
+5 x 5,2,Center,3,N/A
+6 x 6,2,Center,3,N/A
+7 x 7,2,Center,3,N/A
+8 x 8,2,Center,3,N/A
+5 x 5,3,Corner,3,N/A
+6 x 6,3,Corner,3,N/A
+7 x 7,3,Corner,3,N/A
+8 x 8,3,Corner,3,N/A
+5 x 5,3,Center,3,N/A
+6 x 6,3,Center,3,N/A
+7 x 7,3,Center,3,N/A
+8 x 8,3,Center,3,N/A
