@@ -67,7 +67,7 @@ for scenario in "${scenarios[@]}"; do
        "$CONFIG_FILE" > "temp.json" && mv "temp.json" "$CONFIG_FILE"
 
     # --- 3. RUN PYTHON SCRIPT ---
-    OUTPUT=$(python3 "$PYTHON_SCRIPT" --config "$CONFIG_FILE" 2>&1)
+    OUTPUT=$(python3 "$PYTHON_SCRIPT" --config "$CONFIG_FILE")
 
     # --- 4. EXTRACT DATA (UPDATED) ---
     
