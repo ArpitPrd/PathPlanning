@@ -279,6 +279,8 @@ NOTE: K refers to process getting killed due to memory limitations
 
 - the path that we see is a sample that satisfies all equations - and provides the maximum possible obj value, so dont really need to think about 
 
+- The comparison between the battery consumption in the CCPP and BTP were done by altering the value of B_{max}
+
 ## Test Cases
 
 1. [1,1],[1,3],[1,5],[3,1],[3,5],[5,1],[5,3],[5,5] - 5x5
